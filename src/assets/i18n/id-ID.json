@@ -1,0 +1,221 @@
+{
+  "login":{
+    "password": "Kata Sandi"
+  },
+
+  "alert":{
+    "success":{
+      "add": "Berhasil Menambah {{value}}",
+      "update": "Berhasil Mengubah {{value}}",
+      "delete": "Berhasil Menghapus {{value}}",
+      "mail": "Berhasil Mengirim Email"
+    },
+    "failed":{
+      "add": "Gagal Menambah {{value}}",
+      "update": "Gagal Mengubah {{value}}",
+      "delete": "Gagal Menghapus {{value}}",
+      "mail": "Gagal Mengirim Email"
+    }
+  },
+
+  "user":{
+    "add": "Tambah Pengguna",
+    "list": "Daftar Pengguna",
+    "name": "NAMA PENGGUNA",
+    "action": "AKSI",
+    "form":{
+      "userId": "User ID",
+      "user_name": "Nama Pengguna",
+      "user_email": "Email Pengguna",
+      "choose_role": "Pilih Role",
+      "role_desc": "Deskripsi Role"
+    },
+    "edit": "Ubah Pengguna",
+    "detail": "Detail Pengguna",
+    "delete" : "Hapus Pengguna",
+    "delete_confirm": "Apakah Anda yakin ingin menghapus Pengguna"
+  },
+
+  "role":{
+    "add": "Tambah Role",
+    "list": "Daftar Role",
+    "table":{
+      "name": "NAMA ROLE",
+      "action": "AKSI",
+      "desc": "DESKRIPSI ROLE"
+    },
+    "form":{
+      "role_id": "Role ID",
+      "role_name": "Nama Role",
+      "role_desc": "Deskripsi Role"
+    },
+    "edit": "Ubah Role",
+    "detail": "Detail Role",
+    "delete" : "Hapus Role",
+    "delete_confirm": "Apakah Anda yakin ingin menghapus Role"
+  },
+
+  "project":{
+    "add": "Tambah Project",
+    "list": "Daftar Project",
+    "table":{
+      "app": "APLIKASI",
+      "type": "TIPE",
+      "code": "KODE",
+      "action": "AKSI"
+    },
+    "form":{
+      "app": "Aplikasi",
+      "type": "Tipe Project",
+      "choose_type": "Pilih Tipe Project",
+      "code": "Kode Project",
+      "bpro": "BPRO",
+      "status": "Status",
+      "desc": "Deskripsi",
+      "kick_off": "Kick Off",
+      "choose_app": "Pilih Application"
+    },
+    "edit": "Ubah Project",
+    "detail": "Detail Project",
+    "delete": "Hapus Project",
+    "delete_confirm": "Apakah Anda yakin ingin menghapus Project"
+  },
+
+  "projectType":{
+    "add": "Tambah Tipe Project",
+    "list": "Daftar Tipe Project",
+    "table":{
+      "type": "TIPE PROJECT",
+      "desc": "DESKRIPSI TIPE PROJECT",
+      "action": "AKSI"
+    },
+    "form":{
+      "app": "Aplikasi",
+      "projectType_name": "Tipe Project",
+      "projectType_desc": "Deskripsi Tipe Project"
+    },
+    "edit": "Ubah Tipe Project",
+    "detail": "Detail Tipe Project",
+    "delete": "Hapus Tipe Project",
+    "delete_confirm": "Apakah Anda yakin ingin menghapus Tipe Project"
+  },
+
+  "backlogDev":{
+    "list": "Daftar Backlog Development",
+    "edit": "Ubah Backlog Development",
+    "form":{
+      "app": "Aplikasi",
+      "type": "Tipe Backlog Development",
+      "code": "Kode Backlog Development",
+      "bpro": "BPRO",
+      "desc": "Description",
+      "kickoff": "Kick Off",
+      "status": "Status",
+      "start": "Start Dev",
+      "end": "End Dev",
+      "choose_PM": "Pilih PIC PM",
+      "choose_Dev": "Pilih PIC Dev"
+    },
+    "detail": "Detail Backlog Development"
+  },  
+  
+  "backlogSQI":{
+    "list": "Daftar Backlog SQI",
+    "edit": "Ubah Backlog SQI",
+    "form":{
+      "app": "Aplikasi",
+      "type": "Tipe Backlog SQI",
+      "code": "Kode Backlog SQI",
+      "bpro": "BPRO",
+      "desc": "Description",
+      "kickoff": "Kick Off",
+      "status": "Status",
+      "start": "Start Dev",
+      "end": "End Dev",
+      "choose_PIC": "Pilih PIC {{value}}"
+    },
+    "detail": "Detail Backlog SQI"
+  },  
+  
+
+  "application":{
+    "add" : "Tambah Aplikasi",
+    "list": "Daftar Aplikasi",
+    "edit": "Ubah Aplikasi",
+    "header":{
+      "application_name": "NAMA APLIKASI",
+      "application_device": "PERANGKAT APLIKASI",
+      "application_type": "JENIS APLIKASI",
+      "application_server": "SERVER APLIKASI",
+      "application_database": "DATABASE APLIKASI",
+      "action" : "AKSI"
+    },
+    "form":{
+      "application_name": "Nama Aplikasi",
+      "application_desc": "Deskripsi Aplikasi",
+      "application_device": "Perangkat Aplikasi",
+      "application_type": "Jenis Aplikasi",
+      "application_progLang": "Bahasa Pemrograman Aplikasi",
+      "application_server": "Server Aplikasi",
+      "application_database": "Database Aplikasi",
+      "application_os": "Sistem Operasi Aplikasi"
+    },
+    "detail": "Detail Aplikasi",
+    "delete": "Hapus Aplikasi",
+    "delete_confirm": "Apakah Anda yakin ingin menghapus Aplikasi"
+  },
+
+  "sharingDev": {
+    "list": "Daftar Sharing Development",
+    "edit": "Approve Sharing Development",
+    "detail": "Detail Sharing Development",
+    "form": {
+      "sharingDate": "Sharing Date",
+      "actualDate": "Actual Date",
+      "desc": "Deskripsi"
+    }
+  },
+  "approvalDev": {
+    "list": "Daftar Approval Sharing Development",
+    "edit": "Ubah Approval Sharing Development",
+    "detail": "Detail Approval Sharing Development",
+    "form": {
+      "sharingDate": "Sharing Date",
+      "approvalDate": "Approval Date",
+      "desc": "Deskripsi"
+    },
+    "sendMail": "Kirim Ulang Email"
+  },
+
+  "sqiStatus":{
+    "list": "Daftar Status SQI",
+    "edit": "Ubah Status SQI"
+  },
+
+  "form":{
+    "created_by": "Dibuat oleh",
+    "modify_by": "Diubah oleh",
+    "created_date": "Tanggal dibuat",
+    "modify_date": "Tanggal diubah",
+    "validation_required": "wajib diisi",
+    "validation_maxlength": "Maksimal {{value}} karakter",
+    "invalid": " tidak valid"
+  },
+
+  "button":{
+    "close": "Tutup",
+    "save": "Simpan",
+    "save_changes": "Simpan perubahan",
+    "no": "Tidak",
+    "yes": "Iya",
+    "signout": "Keluar"
+  },
+
+  "tooltip":{
+    "edit": "Ubah",
+    "delete": "Hapus",
+    "detail": "Lihat",
+    "clear_filter": "Bersihkan filter",
+    "approve": "Setujui"
+  }
+}

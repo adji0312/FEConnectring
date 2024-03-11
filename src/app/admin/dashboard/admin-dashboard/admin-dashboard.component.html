@@ -1,0 +1,111 @@
+<app-navbar></app-navbar>
+<div class="m-4 mt-5">
+    <div class="d-flex gap-3 mb-2 mt-5">
+        <h5><strong>LIST ALL CATERING</strong></h5>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#registCatering" class="btn" style="background-color: #B0D9B1;">Register Catering</button>
+    </div>
+    <div class="mt-4">
+      <div *ngFor="let merch of merchants" class="d-flex flex-column gap-2 mt-2">
+          <div class="card" style="background-color: #B0D9B1;">
+            <div class="card-body d-flex justify-content-between p-3">
+              <div>
+                  {{ merch.merchant_name }}
+              </div>
+              <div class="d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-sm text-white" style="background-color: #2EC0FF; border-radius: 7px; width: 88px;">detail</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(merch, 'edit')" class="btn btn-sm text-white" style="background-color: #00B960; border-radius: 7px; width: 88px;">edit</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#deleteCatering" (click)="onOpenModal(merch, 'delete')" class="btn btn-sm text-white" style="background-color: #F03838; border-radius: 7px; width: 88px;">delete</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="registCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Catering</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #userForm="ngForm" [formGroup]="registMerchantForm">
+          <label for="" class="form-label">Name</label>
+          <input type="text" #merchant_name name="merchant_name" class="form-control" formControlName="merchant_name" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors}" id="merchant_name" placeholder="" autocomplete="off">
+
+          <label for="" class="form-label">Username</label>
+          <input type="text" #username name="username" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors}" id="username" placeholder="" autocomplete="off">
+
+          <label for="" class="form-label">Address</label>
+          <input type="text" #address name="address" class="form-control" formControlName="address" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['address'].touched && registMerchantForm.controls['address'].errors}" id="address" placeholder="" autocomplete="off">
+
+          <label for="" class="form-label">City</label>
+          <input type="text" #city name="city" class="form-control" formControlName="city" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['city'].touched && registMerchantForm.controls['city'].errors}" id="city" placeholder="" autocomplete="off">
+
+          <label for="" class="form-label">Postal Code</label>
+          <input type="text" #postal_code name="postal_code" class="form-control" formControlName="postal_code" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['postal_code'].touched && registMerchantForm.controls['postal_code'].errors}" id="postal_code" placeholder="" autocomplete="off">
+
+          <label for="" class="form-label">Phone</label>
+          <input type="text" #phone name="phone" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['phone'].touched && registMerchantForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
+
+          <label for="" class="form-label">Photo</label>
+          <input type="file" class="form-control" placeholder="group image">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="add-merchant-form" class="btn btn-sm text-dark" style="background-color: #D9D9D9; border-radius: 7px; width: 88px;" data-bs-dismiss="modal">Close</button>
+        <button type="submit" (click)="registMerchant()" class="btn btn-sm text-dark" style="background-color: #2EC0FF; border-radius: 7px; width: 88px;">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Catering</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="editMerchantForm" (ngSubmit)="onUpdateMerchant()">
+        <div class="modal-body">
+          <label for="" class="form-label">Name</label>
+          <input type="text" class="form-control" name="merchant_name" formControlName="merchant_name" #edit_merchant_name (input)="edit_merchant_name.value">
+          <label for="" class="form-label">Username</label>
+          <input type="text" class="form-control" name="username" formControlName="username" #edit_username (input)="edit_username.value">
+          <label for="" class="form-label">Address</label>
+          <input type="text" class="form-control" name="address" formControlName="address" #edit_address (input)="edit_address.value">
+          <label for="" class="form-label">City</label>
+          <input type="text" class="form-control" name="city" formControlName="city" #edit_city (input)="edit_city.value">
+          <label for="" class="form-label">Postal Code</label>
+          <input type="text" class="form-control" name="postal_code" formControlName="postal_code" #edit_postal_code (input)="edit_postal_code.value">
+          <label for="" class="form-label">Phone</label>
+          <input type="text" class="form-control" name="phone" formControlName="phone" #edit_phone (input)="edit_phone.value">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="edit-merchant-form" class="btn btn-sm text-dark" style="background-color: #D9D9D9; border-radius: 7px; width: 88px;" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-sm text-dark" style="background-color: #2EC0FF; border-radius: 7px; width: 88px;">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Catering</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to delete this Catering?
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-merchant-form" class="btn btn-sm text-dark" style="background-color: #D9D9D9; border-radius: 7px; width: 88px;" data-bs-dismiss="modal">Close</button>
+        <button type="submit" (click)="btnDeleteMerchant(deleteMerchant)" class="btn btn-sm text-dark" style="background-color: #2EC0FF; border-radius: 7px; width: 88px;">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

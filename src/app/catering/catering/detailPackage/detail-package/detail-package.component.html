@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+<div class="m-4 mt-5">
+    <div class="d-flex justify-content-between mb-3">
+        <h2><a href="/detailCatering" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
+        <div class="d-flex flex-column gap-2 align-items-end">
+            <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 50%;" data-bs-toggle="modal" data-bs-target="#addToOrder"><i class="fas fa-shopping-cart"></i> Add to order</button>
+            <p style="font-size: 20px;">Paket 1 Minggu (Rp 120,000)</p>
+        </div>
+    </div>
+
+    <div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 5%;">No</th>
+                    <th scope="col" style="width: 20%;">Date</th>
+                    <th scope="col" style="width: 50%;">Menu</th>
+                    <th scope="col" >Photo</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>01 Januari 2024</td>
+                <td>Nasi, Ayam Goreng, Sambal Matah</td>
+                <td><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
+            </tr>
+            <tr>
+                <th scope="row">1</th>
+                <td>01 Januari 2024</td>
+                <td>Nasi, Ayam Goreng, Sambal Matah</td>
+                <td><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
+            </tr>
+            <tr>
+                <th scope="row">1</th>
+                <td>01 Januari 2024</td>
+                <td>Nasi, Ayam Goreng, Sambal Matah</td>
+                <td><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="addToOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add to Order</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 17px;">Are you sure you want to place an order?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-times"></i> Close</button>
+          <button type="button" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-shopping-cart"></i> Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
+<app-footer></app-footer>

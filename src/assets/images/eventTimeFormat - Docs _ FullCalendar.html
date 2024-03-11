@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://fullcalendar.io/docs/eventTimeFormat -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+
+    <title>
+  
+    
+      eventTimeFormat - Docs
+    
+    
+      
+    
+  
+  | FullCalendar 
+</title>
+
+    
+  <meta name="description" content="Determines the time-text that will be displayed on each event.
+
+">
+
+
+
+    <script async="" src="./eventTimeFormat - Docs _ FullCalendar_files/js"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8LM1SN3K0E');
+    </script>
+
+    
+<link rel="icon" href="https://fullcalendar.io/favicon-32x32.png?v=63734d4d33b09dc30c8e6c8f0ff38e19" type="image/png">
+<link rel="manifest" href="https://fullcalendar.io/manifest.webmanifest" crossorigin="anonymous">
+<link rel="apple-touch-icon" sizes="48x48" href="https://fullcalendar.io/icons/icon-48x48.png?v=63734d4d33b09dc30c8e6c8f0ff38e19">
+<link rel="apple-touch-icon" sizes="72x72" href="https://fullcalendar.io/icons/icon-72x72.png?v=63734d4d33b09dc30c8e6c8f0ff38e19">
+<link rel="apple-touch-icon" sizes="96x96" href="https://fullcalendar.io/icons/icon-96x96.png?v=63734d4d33b09dc30c8e6c8f0ff38e19">
+<link rel="apple-touch-icon" sizes="144x144" href="https://fullcalendar.io/icons/icon-144x144.png?v=63734d4d33b09dc30c8e6c8f0ff38e19">
+<link rel="apple-touch-icon" sizes="192x192" href="https://fullcalendar.io/icons/icon-192x192.png?v=63734d4d33b09dc30c8e6c8f0ff38e19">
+<link rel="apple-touch-icon" sizes="256x256" href="https://fullcalendar.io/icons/icon-256x256.png?v=63734d4d33b09dc30c8e6c8f0ff38e19">
+<link rel="apple-touch-icon" sizes="384x384" href="https://fullcalendar.io/icons/icon-384x384.png?v=63734d4d33b09dc30c8e6c8f0ff38e19">
+<link rel="apple-touch-icon" sizes="512x512" href="https://fullcalendar.io/icons/icon-512x512.png?v=63734d4d33b09dc30c8e6c8f0ff38e19">
+
+    
+
+
+<link rel="stylesheet" href="./eventTimeFormat - Docs _ FullCalendar_files/css">
+
+<link href="./eventTimeFormat - Docs _ FullCalendar_files/base.css" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="./eventTimeFormat - Docs _ FullCalendar_files/docs.css">
+  
+
+  
+
+
+
+
+    
+
+
+
+  
+
+  
+    <script type="text/javascript" src="./eventTimeFormat - Docs _ FullCalendar_files/docs.js.download"></script>
+  
+
+
+
+
+  <script type="text/javascript">
+    window.hasMobileFirstExtension = true;</script></head>
+  <body>
+    <div class="topbar">
+  <div class="topbar__container container">
+
+    <div class="topbar__branding">
+      <a class="branding" href="https://fullcalendar.io/">
+        <div class="branding-graphic"></div>
+        <div class="branding-text">FullCalendar</div>
+      </a>
+    </div>
+
+    <div class="topbar__nav">
+      <div class="topbar__nav-item" id="demos-nav-item">
+        <a class="topbar__nav-handle" href="https://fullcalendar.io/demos">
+          Demos
+        </a>
+      </div>
+      <div class="topbar__nav-item topbar__nav-item--selected">
+        <a class="topbar__nav-handle" href="https://fullcalendar.io/docs">
+          Docs
+        </a>
+      </div>
+      <div class="topbar__nav-item ">
+        <div class="topbar__nav-handle">
+          Support
+        </div>
+        <div class="topbar__flyout-wrap">
+          <div class="topbar__flyout">
+            <div class="topbar__flyout-item">
+              <a class="topbar__flyout-handle" href="https://fullcalendar.io/getting-help">
+                Getting Help
+              </a>
+            </div>
+            <div class="topbar__flyout-item">
+              <a class="topbar__flyout-handle" href="https://fullcalendar.io/reporting-bugs">
+                Reporting Bugs
+              </a>
+            </div>
+            <div class="topbar__flyout-item">
+              <a class="topbar__flyout-handle" href="https://fullcalendar.io/requesting-features">
+                Requesting Features
+              </a>
+            </div>
+            <div class="topbar__flyout-item">
+              <a class="topbar__flyout-handle" href="https://fullcalendar.io/contributing">
+                Contributing
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topbar__nav-item">
+        <a class="topbar__nav-handle button button--lightblue button--outlined" href="https://fullcalendar.io/pricing">
+          Pricing
+        </a>
+      </div>
+    </div>
+
+    <div class="topbar__notice">
+      <a class="topbar__notice-link" href="https://github.com/fullcalendar/fullcalendar/releases" target="_blank">
+        <span style="color: #FAC863">Feb 20</span> —
+        v6.1.11
+      </a>
+      
+    </div>
+
+    <div class="topbar__github">
+      <a class="topbar__github-link" href="https://github.com/fullcalendar/fullcalendar" target="_blank">
+        <div class="topbar__github-graphic"></div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+    <div class="page-content">
+  <div class="page-content__container container">
+
+    <div class="docs-article">
+      
+
+  <div class="docs-article__sidebar">
+
+    <div class="docs-article__sidebar-title">
+      <a href="https://fullcalendar.io/docs/event-display">Event Display</a>
+    </div>
+
+    <ul>
+      
+        <li>
+          
+          <ul>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/eventColor">
+                  <span>eventColor</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/eventBackgroundColor">
+                  <span>eventBackgroundColor</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/eventBorderColor">
+                  <span>eventBorderColor</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/eventTextColor">
+                  <span>eventTextColor</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/eventDisplay">
+                  <span>eventDisplay</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item docs-article__sidebar-item--selected ">
+                <a href="https://fullcalendar.io/docs/eventTimeFormat">
+                  <span>eventTimeFormat</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/displayEventTime">
+                  <span>displayEventTime</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/displayEventEnd">
+                  <span>displayEventEnd</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/nextDayThreshold">
+                  <span>nextDayThreshold</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/eventOrder">
+                  <span>eventOrder</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/eventOrderStrict">
+                  <span>eventOrderStrict</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/progressiveEventRendering">
+                  <span>progressiveEventRendering</span>
+                </a>
+              </li>
+            
+              <li class="docs-article__sidebar-item  ">
+                <a href="https://fullcalendar.io/docs/event-render-hooks">
+                  <span>Event Render Hooks</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+    </ul>
+  </div>
+
+
+
+      <div class="docs-article__main">
+
+        <div class="docs-controls">
+          <div class="docs-controls__warning">
+            
+
+  <div id="docs-controls-warning" style="display:none">
+    
+  </div>
+
+
+          </div>
+          <div class="docs-controls__controls">
+            
+
+
+            
+<a class="control-button" href="https://github.com/fullcalendar/fullcalendar-docs/edit/main/_docs-v6/event-display/eventTimeFormat.md" target="_blank">
+  <span class="control-button__text">
+    edit doc
+  </span>
+</a>
+
+            
+<span class="control-select">
+  <select class="control-select__select">
+    
+      <option value="v6" data-url="/docs/eventTimeFormat" selected="">v6</option>
+    
+      <option value="v5" data-url="/docs/v5/eventTimeFormat">v5</option>
+    
+      <option value="v4" data-url="/docs/v4/eventTimeFormat">v4</option>
+    
+      <option value="v3" data-url="/docs" disabled="">v3</option>
+    
+      <option value="v2" data-url="/docs" disabled="">v2</option>
+    
+      <option value="v1" data-url="/docs" disabled="">v1</option>
+    
+  </select>
+  <span class="control-select__arrow"></span>
+</span>
+
+          </div>
+        </div>
+
+        <h1 class="page-content__title">
+          eventTimeFormat
+
+          
+        </h1>
+
+        <div class="text-content docs-content">
+          <p>Determines the time-text that will be displayed on each event.</p>
+
+<div class="spec">
+  <p><a href="https://fullcalendar.io/docs/date-formatting">Date Formatter</a>, <em>defaults</em>:</p>
+
+  <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// TimeGrid views. '7:00'</span>
+<span class="p">{</span>
+  <span class="nl">hour</span><span class="p">:</span> <span class="s1">'numeric'</span><span class="p">,</span>
+  <span class="nx">minute</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+  <span class="nx">meridiem</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+
+<span class="c1">// DayGrid views. '7p'</span>
+<span class="p">{</span>
+  <span class="nl">hour</span><span class="p">:</span> <span class="s1">'numeric'</span><span class="p">,</span>
+  <span class="nx">minute</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+  <span class="nx">omitZeroMinute</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">meridiem</span><span class="p">:</span> <span class="s1">'narrow'</span>
+<span class="p">}</span>
+
+<span class="c1">// List views. '7pm'</span>
+<span class="p">{</span>
+  <span class="nl">hour</span><span class="p">:</span> <span class="s1">'numeric'</span><span class="p">,</span>
+  <span class="nx">minute</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+  <span class="nx">meridiem</span><span class="p">:</span> <span class="s1">'short'</span>
+<span class="p">}</span>
+</code></pre></div>  </div>
+</div>
+
+<p>As noted above, each view has a specific default. Get fine-tuned control with <a href="https://fullcalendar.io/docs/view-specific-options">View-Specific Options</a>. A single setting alone will set the value for all views.</p>
+
+<p>Time-text will only be displayed for <a href="https://fullcalendar.io/docs/event-object">Event Objects</a> that have <code class="highlighter-rouge">allDay</code> equal to <code class="highlighter-rouge">false</code>.</p>
+
+<p>Here is an example of displaying all events in a 24-hour format without meridiem, i.e. AM or PM::</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">(</span><span class="nx">calendarEl</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">events</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">title</span><span class="p">:</span>  <span class="s1">'My Event'</span><span class="p">,</span>
+      <span class="na">start</span><span class="p">:</span>  <span class="s1">'2010-01-01T14:30:00'</span><span class="p">,</span>
+      <span class="na">allDay</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+    <span class="c1">// other events here...</span>
+  <span class="p">],</span>
+  <span class="na">eventTimeFormat</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// like '14:30:00'</span>
+    <span class="na">hour</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+    <span class="na">minute</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+    <span class="na">second</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+    <span class="na">meridiem</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">eventTimeFormat</code> object also accepts an hour12 property, a boolean like meridiem:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">(</span><span class="nx">calendarEl</span><span class="p">,</span> <span class="p">{</span>
+  <span class="c1">// other options ...</span>
+  <span class="na">eventTimeFormat</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// like '14:30:00'</span>
+    <span class="na">hour</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+    <span class="na">minute</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+    <span class="na">second</span><span class="p">:</span> <span class="s1">'2-digit'</span><span class="p">,</span>
+    <span class="na">hour12</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    
+<div class="footer">
+  <div class="footer__container container">
+    <div class="footer__left">
+      <p>
+        <a href="https://fullcalendar.io/blog/2023/01/multimonth-and-more" style="color: inherit">
+          <span style="color: #FAC863">Jan 27</span> —
+          Multi-Month &amp; more in v6.1
+        </a>
+      </p>
+      <p>
+        <a href="https://fullcalendar.io/blog/2021/02/10percent-profits-to-effective-charities" style="color:inherit">
+          <strong>10%</strong>
+          of profits donated to
+          <strong>effective charities</strong>
+        </a>
+      </p>
+      
+    </div>
+    <div class="footer__right">
+      <p>
+        © 2024&nbsp; FullCalendar LLC
+      </p>
+      <ul class="inline-list">
+        <li><a href="https://github.com/fullcalendar" target="_blank">GitHub</a></li>
+        <li><a href="https://fullcalendar.io/license">License</a></li>
+        <li><a href="https://fullcalendar.io/blog">Blog</a></li>
+        <li><a href="https://fullcalendar.io/roadmap">Roadmap</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+  
+
+</body></html>

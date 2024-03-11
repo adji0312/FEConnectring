@@ -1,0 +1,220 @@
+{
+  "login":{
+    "password": "Password"
+  },
+
+  "alert":{
+    "success":{
+      "add": "Success Add {{value}}",
+      "update": "Success Update {{value}}",
+      "delete": "Success Delete {{value}}",
+      "mail": "Success Send Mail"
+    },
+    "failed":{
+      "add": "Failed Add {{value}}",
+      "update": "Failed Update {{value}}",
+      "delete": "Failed Delete {{value}}",
+      "mail": "Failed Send Mail"
+    }
+  },
+  
+  "user":{
+    "add": "Add User",
+    "list": "User List",
+    "name": "USER NAME",
+    "action": "ACT",
+    "form":{
+      "userId": "User ID",
+      "user_name": "User Name",
+      "user_email": "User Email",
+      "choose_role": "Choose Role",
+      "role_desc": "Role Description"
+    },
+    "edit": "Edit User",
+    "detail": "User Details",
+    "delete" : "Delete User",
+    "delete_confirm": "Are you sure you want to delete User"
+  },
+
+  "role":{
+    "add": "Add Role",
+    "list": "Role List",
+    "table":{
+      "name": "ROLE NAME",
+      "action": "ACT",
+      "desc": "ROLE DESCRIPTION"
+    },
+    "form":{
+      "role_id": "Role ID",
+      "role_name": "Role Name",
+      "role_desc": "Role Description"
+    },
+    "edit": "Edit Role",
+    "detail": "Role Details",
+    "delete" : "Delete Role",
+    "delete_confirm": "Are you sure you want to delete Role"
+  },
+
+  "project":{
+    "add": "Add Project",
+    "list": "Project List",
+    "table":{
+      "app": "APPLICATION",
+      "type": "TYPE",
+      "code": "CODE",
+      "action": "ACT"
+    },
+    "form":{
+      "app": "Application",
+      "type": "Project Type",
+      "choose_type": "Choose Project Type",
+      "code": "Project Code",
+      "bpro": "BPRO",
+      "status": "Status",
+      "desc": "Description",
+      "kick_off": "Kick Off",
+      "choose_app": "Choose Application"
+    },
+    "edit": "Edit Project",
+    "detail": "Project Details",
+    "delete": "Delete Project",
+    "delete_confirm": "Are you sure you want to delete Project"
+  },
+
+  "projectType":{
+    "add": "Add Project Type",
+    "list": "Project Type List",
+    "table":{
+      "type": "PROJECT TYPE",
+      "desc": "PROJECT TYPE DESCRIPTION",
+      "action": "ACT"
+    },
+    "form":{
+      "app": "Application",
+      "projectType_name": "Project Type",
+      "projectType_desc": "Project Type Description"
+    },
+    "edit": "Edit Project Type",
+    "detail": "Project Type Details",
+    "delete": "Delete Project Type",
+    "delete_confirm": "Are you sure you want to delete Project Type"
+  },
+
+  "backlogDev":{
+    "list": "Backlog Development List",
+    "edit": "Edit Backlog Development",
+    "form":{
+      "app": "Application",
+      "type": "Backlog Development Type",
+      "code": "Backlog Development Code",
+      "bpro": "BPRO",
+      "desc": "Description",
+      "kickoff": "Kick Off",
+      "status": "Status",
+      "start": "Start Dev",
+      "end": "End Dev",
+      "choose_PM": "Choose PIC PM",
+      "choose_Dev": "Choose PIC Dev"
+    },
+    "detail": "Backlog Development Details"
+  },
+
+  "backlogSQI":{
+    "list": "Backlog SQI List",
+    "edit": "Edit Backlog SQI",
+    "form":{
+      "app": "Application",
+      "type": "Backlog SQI Type",
+      "code": "Backlog SQI Code",
+      "bpro": "BPRO",
+      "desc": "Description",
+      "kickoff": "Kick Off",
+      "status": "Status",
+      "start": "Start Dev",
+      "end": "End Dev",
+      "choose_PIC": "Choose PIC {{value}}"
+    },
+    "detail": "Backlog SQI Details"
+  },
+
+  "application":{
+    "add" : "Add Application",
+    "list": "Application List",
+    "edit": "Edit Application",
+    "header": {
+      "application_name": "APPLICATION NAME",
+      "application_device": "APPLICATION DEVICE",
+      "application_type": "APPLICATION TYPE",
+      "application_server": "APPLICATION SERVER",
+      "application_database": "APPLICATION DATABASE",
+      "action" : "ACT"
+    },
+    "form":{
+      "application_name": "Application Name",
+      "application_desc": "Application Description",
+      "application_device": "Application Device",
+      "application_type": "Application Type",
+      "application_progLang": "Application Programming Language",
+      "application_server": "Application Server",
+      "application_database": "Application Database",
+      "application_os": "Application Operating System"
+    },
+    "detail": "Application Details",
+    "delete": "Delete Application",
+    "delete_confirm": "Are you sure you want to delete Application"
+  },
+
+  "sharingDev": {
+    "list": "Sharing Development List",
+    "edit": "Approve Sharing Development",
+    "detail": "Sharing Development Details",
+    "form": {
+      "sharingDate": "Sharing Date",
+      "actualDate": "Actual Date",
+      "desc": "Description"
+    }
+  },
+  "approvalDev": {
+    "list": "Approval Sharing Development List",
+    "edit": "Edit Approval Sharing Development",
+    "detail": "Approval Sharing Development Details",
+    "form": {
+      "sharingDate": "Sharing Date",
+      "approvalDate": "Actual Date",
+      "desc": "Description"
+    },
+    "sendMail": "Resend Email"
+  },
+
+  "sqiStatus":{
+    "list": "SQI Status List",
+    "edit": "Edit SQI Status"
+  },
+
+  "form":{
+    "created_by": "Created By",
+    "modify_by": "Modify By",
+    "created_date": "Created Date",
+    "modify_date": "Modify Date",
+    "validation_required": "is required",
+    "validation_maxlength": "Maximum {{value}} characters",
+    "invalid": " is invalid"
+  },
+
+  "button":{
+    "close": "Close",
+    "save": "Save",
+    "save_changes": "Save changes",
+    "no": "No",
+    "yes": "Yes",
+    "signout": "Sign out"
+  },
+
+  "tooltip":{
+    "edit": "Edit",
+    "delete": "Delete",
+    "detail": "View",
+    "clear_filter": "Clear filter",
+    "approve": "Approve"
+  }
+}
