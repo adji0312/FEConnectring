@@ -16,6 +16,7 @@ import { RegisterComponent } from './register/register/register.component';
 import { PackageComponent } from './package/package/package.component';
 import { InvoiceComponent } from './invoice/invoice/invoice.component';
 import { DetailOrderComponent } from './cart/order/DetailOrder/detail-order/detail-order.component';
+import { AddPackageComponent } from './package/addPackage/add-package/add-package.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: "merchant-dashboard", component:MerchantDashboardComponent, canActivate: [AuthGuard]},
   {path: "package", component:PackageComponent, canActivate: [AuthGuard]},
   {path: "orderDetail", component:DetailOrderComponent, canActivate: [AuthGuard]},
+  {path: "addPackage", component:AddPackageComponent, canActivate: [AuthGuard]},
   // {path: "role", component:RoleListComponent, canActivate: [AuthGuard]},
   // {path: "user", component:UserListComponent, canActivate: [AuthGuard]},
   // {path: "dashboard", component:DashboardComponent, canActivate: [AuthGuard]},

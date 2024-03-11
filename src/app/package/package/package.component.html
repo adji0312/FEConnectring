@@ -1,63 +1,27 @@
 <app-navbar></app-navbar>
 <div class="m-4 mt-5">
-    <div class="d-flex gap-3 mb-2 mt-5">
-        <h5><strong>MANAGE FOOD</strong></h5>
-        <button type="button" data-bs-toggle="modal" data-bs-target="#addFood" class="btn" style="background-color: #B0D9B1;">Add Food</button>
+  <div class="d-flex gap-3 mb-4">
+    <h2>Pakcage</h2>
+    <div class="d-flex align-items-center">
+      <a href="/addPackage" type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" ><i class="fas fa-plus"></i> Add Package</a>
     </div>
-    <div class="pb-5 mt-4">
-      <div class="d-flex flex-column gap-2">
-          <div class="card" style="background-color: #FFB000;">
-            <div class="card-body d-flex justify-content-between p-3">
-              <div>
-                  This is some text within a card body.
-              </div>
-              <div>
-                  <a href="">CATERING A</a>
-              </div>
-            </div>
-          </div>
-          <div class="card" style="background-color: #FFB000;">
-            <div class="card-body d-flex justify-content-between p-3">
-              <div>
-                  This is some text within a card body.
-              </div>
-              <div>
-                  <a href="">CATERING A</a>
-              </div>
-            </div>
-          </div>
-          <div class="card" style="background-color: #FFB000;">
-            <div class="card-body d-flex justify-content-between p-3">
-              <div>
-                  This is some text within a card body.
-              </div>
-              <div>
-                  <a href="">CATERING A</a>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
-</div>
+  </div>  
 
-<div class="modal fade" id="addFood" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Catering</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form #userForm="ngForm" [formGroup]="addFoodForm">
-            <label for="" class="form-label">Food Name</label>
-            <input type="text" #food_name name="food_name" class="form-control" formControlName="food_name" [ngClass]="{ 'is-invalid' : addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors}" id="food_name" placeholder="" autocomplete="off">
-  
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="add-merchant-form" class="btn btn-sm text-dark" style="background-color: #D9D9D9; border-radius: 7px; width: 88px;" data-bs-dismiss="modal">Close</button>
-          <button type="submit" (click)="addFood()" class="btn btn-sm text-dark" style="background-color: #2EC0FF; border-radius: 7px; width: 88px;">Create</button>
+  <div class="">
+    <div class="row row-cols-4">
+      <div class="col mb-5">
+        <div class="card shadow" style="width: 18rem; border: none;">
+          <img src="assets/images/foodOfCatering.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Paket 1 Minggu</h5>
+            <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> 01 Januari 2024 - 05 Januari 2024</p>
+            <p class="card-text" style="font-size: 14px;"><i class="fas fa-money-bill"></i> Rp 120,000 </p>
+            <a href="#" class="btn btn-sm" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> View Detail</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<app-footer></app-footer>

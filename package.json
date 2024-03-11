@@ -21,7 +21,7 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "bootstrap": "^5.2.3",
-    "chart.js": "^4.2.1",
+    "chart.js": "^4.4.2",
     "jquery": "^3.7.1",
     "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^9.0.0",
