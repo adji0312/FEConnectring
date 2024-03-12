@@ -7,18 +7,18 @@
       <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#createGroup"><i class="fas fa-plus"></i> Create Group</button>
       <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#joinGroup"><i class="fas fa-sign-in-alt"></i> Join Group</button>
     </div>
-  </div>  
+  </div>
 
   <div class="card shadow" style="border: none;">
     <div class="card-body">
       <div class="d-flex justify-content-between">
-        <div class="d-flex flex-column">
-          <h5>Makan Kuy (7 Anggota)</h5>
-          <p><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
+        <div *ngIf="findGroup" class="d-flex flex-column">
+          <h5>{{ findGroup.group_name }} ( {{ findGroup.customers.length }} Members)</h5>
+          <p><i class="fas fa-map-marker-alt"></i> {{ findGroup.address }}, {{ findGroup.city }}</p>
         </div>
 
         <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editGroup"><i class="fas fa-edit"></i> Edit</button>
+          <button [disabled]="checkOwner()" type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editGroup"><i class="fas fa-edit"></i> Edit</button>
           <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#detailGroup"><i class="fas fa-eye"></i> View</button>
           <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
         </div>
@@ -26,45 +26,10 @@
     </div>
   </div>
 
-  <div class="m-5 mt-3">
-    <div class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
+  <div *ngIf="findGroup" class="m-5 mt-3">
+    <div *ngFor="let cust of findGroup.customers; let i = index" class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
       <div class="card-body">
-        Adji Budhi Setyawan
-      </div>
-    </div>
-    <div class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
-      <div class="card-body">
-        Adji Budhi Setyawan
-      </div>
-    </div>
-    <div class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
-      <div class="card-body">
-        Adji Budhi Setyawan
-      </div>
-    </div>
-    <div class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
-      <div class="card-body">
-        Adji Budhi Setyawan
-      </div>
-    </div>
-    <div class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
-      <div class="card-body">
-        Adji Budhi Setyawan
-      </div>
-    </div>
-    <div class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
-      <div class="card-body">
-        Adji Budhi Setyawan
-      </div>
-    </div>
-    <div class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
-      <div class="card-body">
-        Adji Budhi Setyawan
-      </div>
-    </div>
-    <div class="card mb-2 shadow-sm" style="border: none; background-color: #f1daba; color: #482f20;">
-      <div class="card-body">
-        Adji Budhi Setyawan
+        {{ cust.name }}
       </div>
     </div>
   </div>
@@ -81,11 +46,16 @@
             <form #userForm="ngForm" [formGroup]="editCustomerForm">
               <label for="" class="form-label">Group Code</label>
               <input type="text" #invite_code name="invite_code" class="form-control" formControlName="invite_code" [ngClass]="{ 'is-invalid' : editCustomerForm.controls['invite_code'].touched && editCustomerForm.controls['invite_code'].errors}" id="invite_code" placeholder="" autocomplete="off">
+              <div *ngIf="editCustomerForm.controls['invite_code'].touched && editCustomerForm.controls['invite_code'].errors" class="text-danger">
+                <div *ngIf="editCustomerForm.controls['invite_code'].touched && editCustomerForm.controls['invite_code'].errors['required']">
+                  Invite code must be filled
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-            <button type="submit" (click)="joinGroup()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-sign-in-alt"></i> Join</button>
+            <button [disabled]="editCustomerForm.invalid" type="submit" (click)="joinGroup()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-sign-in-alt"></i> Join</button>
           </div>
         </div>
       </div>
@@ -122,27 +92,44 @@
             <form #userForm="ngForm" [formGroup]="groupForm">
               <label for="" class="form-label">Group Name</label>
               <input type="text" #group_name name="group_name" class="form-control" formControlName="group_name" [ngClass]="{ 'is-invalid' : groupForm.controls['group_name'].touched && groupForm.controls['group_name'].errors}" id="group_name" placeholder="" autocomplete="off">
-
+              <div *ngIf="groupForm.controls['group_name'].touched && groupForm.controls['group_name'].errors" class="text-danger">
+                <div *ngIf="groupForm.controls['group_name'].touched && groupForm.controls['group_name'].errors['required']">
+                  Group Name must be filled
+                </div>
+              </div>
               <label for="" class="form-label">Address</label>
               <input type="text" #address name="address" class="form-control" formControlName="address" [ngClass]="{ 'is-invalid' : groupForm.controls['address'].touched && groupForm.controls['address'].errors}" id="address" placeholder="" autocomplete="off">
-
+              <div *ngIf="groupForm.controls['address'].touched && groupForm.controls['address'].errors" class="text-danger">
+                <div *ngIf="groupForm.controls['address'].touched && groupForm.controls['address'].errors['required']">
+                  Address must be filled
+                </div>
+              </div>
               <label for="" class="form-label">City</label>
               <input type="text" #city name="city" class="form-control" formControlName="city" [ngClass]="{ 'is-invalid' : groupForm.controls['city'].touched && groupForm.controls['city'].errors}" id="city" placeholder="" autocomplete="off">
-
+              <div *ngIf="groupForm.controls['city'].touched && groupForm.controls['city'].errors" class="text-danger">
+                <div *ngIf="groupForm.controls['city'].touched && groupForm.controls['city'].errors['required']">
+                  City must be filled
+                </div>
+              </div>
               <label for="" class="form-label">Postal Code</label>
-              <input type="text" #postal_code name="postal_code" class="form-control" formControlName="postal_code" [ngClass]="{ 'is-invalid' : groupForm.controls['postal_code'].touched && groupForm.controls['postal_code'].errors}" id="postal_code" placeholder="" autocomplete="off">
-
-              <input type="text" #owner name="owner" class="form-control" formControlName="owner" hidden>
+              <input type="number" #postal_code name="postal_code" class="form-control" formControlName="postal_code" [ngClass]="{ 'is-invalid' : groupForm.controls['postal_code'].touched && groupForm.controls['postal_code'].errors}" id="postal_code" placeholder="" autocomplete="off">
+              <div *ngIf="groupForm.controls['postal_code'].touched && groupForm.controls['postal_code'].errors" class="text-danger">
+                <div *ngIf="groupForm.controls['postal_code'].touched && groupForm.controls['postal_code'].errors['required']">
+                  Postal Code must be filled
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-            <button type="submit" (click)="addGroup()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Create</button>
+            <button [disabled]="groupForm.invalid" type="submit" (click)="addGroup()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;">
+              <i class="fas fa-save"></i> Create
+            </button>
           </div>
         </div>
       </div>
   </div>
-  
+
   <!-- modal edit group -->
   <div class="modal fade" id="editGroup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -155,22 +142,37 @@
             <form #userForm="ngForm" [formGroup]="groupForm">
               <label for="" class="form-label">Group Name</label>
               <input type="text" #group_name name="group_name" class="form-control" formControlName="group_name" [ngClass]="{ 'is-invalid' : groupForm.controls['group_name'].touched && groupForm.controls['group_name'].errors}" id="group_name" placeholder="" autocomplete="off">
-
+              <div *ngIf="groupForm.controls['group_name'].touched && groupForm.controls['group_name'].errors" class="text-danger">
+                <div *ngIf="groupForm.controls['group_name'].touched && groupForm.controls['group_name'].errors['required']">
+                  Group Name must be filled
+                </div>
+              </div>
               <label for="" class="form-label">Address</label>
               <input type="text" #address name="address" class="form-control" formControlName="address" [ngClass]="{ 'is-invalid' : groupForm.controls['address'].touched && groupForm.controls['address'].errors}" id="address" placeholder="" autocomplete="off">
-
+              <div *ngIf="groupForm.controls['address'].touched && groupForm.controls['address'].errors" class="text-danger">
+                <div *ngIf="groupForm.controls['address'].touched && groupForm.controls['address'].errors['required']">
+                  Address must be filled
+                </div>
+              </div>
               <label for="" class="form-label">City</label>
               <input type="text" #city name="city" class="form-control" formControlName="city" [ngClass]="{ 'is-invalid' : groupForm.controls['city'].touched && groupForm.controls['city'].errors}" id="city" placeholder="" autocomplete="off">
-
+              <div *ngIf="groupForm.controls['city'].touched && groupForm.controls['city'].errors" class="text-danger">
+                <div *ngIf="groupForm.controls['city'].touched && groupForm.controls['city'].errors['required']">
+                  City must be filled
+                </div>
+              </div>
               <label for="" class="form-label">Postal Code</label>
               <input type="text" #postal_code name="postal_code" class="form-control" formControlName="postal_code" [ngClass]="{ 'is-invalid' : groupForm.controls['postal_code'].touched && groupForm.controls['postal_code'].errors}" id="postal_code" placeholder="" autocomplete="off">
-
-              <input type="text" #owner name="owner" class="form-control" formControlName="owner" hidden>
+              <div *ngIf="groupForm.controls['postal_code'].touched && groupForm.controls['postal_code'].errors" class="text-danger">
+                <div *ngIf="groupForm.controls['postal_code'].touched && groupForm.controls['postal_code'].errors['required']">
+                  Postal Code must be filled
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-            <button type="submit" (click)="addGroup()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Update</button>
+            <button [disabled]="groupForm.invalid" type="submit" (click)="updateGroup()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Update</button>
           </div>
         </div>
       </div>

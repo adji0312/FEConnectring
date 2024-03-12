@@ -1,3 +1,5 @@
+import { Customer } from "../user/customer/customer.model";
+
 export class Group {
     id!: number;
     group_id!: string;
@@ -7,4 +9,5 @@ export class Group {
     postal_code!: string;
     owner!: string;
     invite_code!: string;
+    customers!: Customer[];
 }

@@ -24,6 +24,8 @@ export class GroupComponent implements OnInit {
   realTimeDataSubscription$!: Subscription;
   public groups!: Group[];
 
+  public findGroup!: Group;
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -32,37 +34,52 @@ export class GroupComponent implements OnInit {
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
 
-    // this.editCustomerForm.patchValue({
-    //   name: this.loginuser.us
-    // });
-    
-   }
-
-  ngOnInit(): void {
     this.groupForm = this.formBuilder.group({
       group_name: ['', [Validators.required]],
       address: ['', [Validators.required]],
       city: ['', [Validators.required]],
-      postal_code: ['', Validators.required],
+      postal_code: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       owner: [''],
       username: [''],
     });
 
     this.editCustomerForm = this.formBuilder.group({
       invite_code: ['', Validators.required],
-      username: ['', Validators.required]
+      username: ['']
     });
+
+   }
+
+  ngOnInit(): void {
+
+    // console.log(this.loginuser.userEntity.username);
+
+    this.groupForm.patchValue({
+      username: this.loginuser.userEntity.username
+    });
+
+    console.log(this.groupForm);
+
+    this.groupService.findGroup(this.groupForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.findGroup = data;
+      console.log(this.findGroup);
+
+      this.groupForm.patchValue({
+        group_name: this.findGroup.group_name,
+        address: this.findGroup.address,
+        city: this.findGroup.city,
+        postal_code: this.findGroup.postal_code
+      });
+    });
+
 
     // console.log(this.loginuser.userEntity);
     // this.flagOwner = 1;
-    
-    this.ownerGroup();
-    console.log(this.loginuser.accessToken);
-    
-    this.groupService.getAllGroup(this.loginuser.accessToken).subscribe(data => {
-      console.log(data);
-      
-    });
+
+    // this.ownerGroup();
+    // console.log(this.loginuser.accessToken);
+
+
   }
 
   addGroup(){
@@ -70,9 +87,8 @@ export class GroupComponent implements OnInit {
       owner: this.loginuser.userEntity.username
     });
 
-    console.log(this.groupForm.value);
-    
-    
+    // console.log(this.groupForm.value);
+
     this.groupService.addGroup(this.groupForm.value, this.loginuser.accessToken).subscribe(
       (response: Group) => {
         Swal.fire({
@@ -94,64 +110,101 @@ export class GroupComponent implements OnInit {
       }
     );
 
-    this.customerService.updateCustomerGroupID(this.groupForm.get('username')?.value, this.loginuser.accessToken).subscribe(data => {
-      console.log(data);
-      
+
+  }
+
+  updateGroup(){
+    this.groupForm.patchValue({
+      owner: this.loginuser.userEntity.username
     });
 
-    console.log(this.loginuser.accessToken);
-    
-    
+    // console.log(this.groupForm.value);
 
-    
+    this.groupService.updateGroup(this.groupForm.value, this.loginuser.accessToken).subscribe(
+      (response: Group) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Update Group",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Update Group",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      }
+    );
   }
 
-  updateCustomer(){
-    console.log(this.loginuser.accessToken);
-    
-    
+  checkOwner(){
+    if(this.findGroup.owner == this.loginuser.userEntity.username){
+      return false;
+    }
+
+    return true;
   }
 
-  ownerGroup(){
-    this.realTimeDataSubscription$ = timer(0, 1000)
-      .pipe(switchMap(_ => this.groupService.findGroupByOwner(this.loginuser.userEntity.username, this.loginuser.accessToken)))
-      .subscribe(data => {
-        if(data){
-          this.groupID = data.id;
-          this.flagOwner = 1;
-        }else{
-          this.flagOwner = 0;
-        }
-    });
-    // this.groupService.findGroupByOwner(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
-    //   (response: Group) => {
-    //     if(response){
-    //       console.log('ada');
-          
-    //       this.flagOwner = 1;
-    //     }else{
-    //       console.log('tdk ada');
-          
-    //       this.flagOwner = 0;
-    //     }
-        
-        
-    //   },
-    //   (error: HttpErrorResponse) => {
-    //     console.log(error);
-        
-    //   }
-    // );
-  }
+  // ownerGroup(){
+  //   this.realTimeDataSubscription$ = timer(0, 1000)
+  //     .pipe(switchMap(_ => this.groupService.findGroupByOwner(this.loginuser.userEntity.username, this.loginuser.accessToken)))
+  //     .subscribe(data => {
+  //       if(data){
+  //         this.groupID = data.id;
+  //         this.flagOwner = 1;
+  //       }else{
+  //         this.flagOwner = 0;
+  //       }
+  //   });
+  //   // this.groupService.findGroupByOwner(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
+  //   //   (response: Group) => {
+  //   //     if(response){
+  //   //       console.log('ada');
+
+  //   //       this.flagOwner = 1;
+  //   //     }else{
+  //   //       console.log('tdk ada');
+
+  //   //       this.flagOwner = 0;
+  //   //     }
+
+
+  //   //   },
+  //   //   (error: HttpErrorResponse) => {
+  //   //     console.log(error);
+
+  //   //   }
+  //   // );
+  // }
 
   joinGroup(){
     this.editCustomerForm.patchValue({
       username: this.loginuser.userEntity.username
     });
-    
-    this.customerService.joinGroup(this.editCustomerForm.value, this.loginuser.accessToken).subscribe(data => {
-      console.log(data);
-      
+
+    this.customerService.joinGroup(this.editCustomerForm.value, this.loginuser.accessToken).subscribe(
+      (response: Customer) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Join Group",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Invite code is invalid",
+          showConfirmButton: true,
+          timer: 1500
+        })
     });
   }
 

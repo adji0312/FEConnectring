@@ -20,15 +20,6 @@ export class CustomerService {
     return this.http.get<Customer>(`${this.baseUrl}/findCustomerByUsername/${username}`, {headers:headers});
   }
 
-  updateCustomerGroupID(customer: Customer, accessToken: any): Observable<Customer>{
-    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    console.log(headers);
-    console.log(customer);
-    console.log(accessToken);
-    
-    return this.http.put<Customer>(`${this.baseUrl}/updateGroupID`, customer, {headers: headers});
-  };
-
   joinGroup(customer: Customer, accessToken: any): Observable<Customer>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<Customer>(`${this.baseUrl}/joinGroup`, customer, {headers:headers});
