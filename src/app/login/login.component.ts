@@ -21,12 +21,12 @@ export class LoginComponent implements OnInit {
   public user: any = {};
   public loginuser: any = {};
   loginForm!: FormGroup;
-  
+
 
   constructor(
-    private router: Router, 
-    private authService: UserService, 
-    private formBuilder : FormBuilder, 
+    private router: Router,
+    private authService: UserService,
+    private formBuilder : FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient) {
 
@@ -41,12 +41,12 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser(user: any){
-    
+
     this.authService.loginUser(user).subscribe((response) => {
       if(response){
         if(response.accessToken){
           localStorage.setItem('currentUser', JSON.stringify(response));
-          
+
           if(response.userEntity.flag == 0){
             this.router.navigate(['/admin-dashboard']);
           }else if(response.userEntity.flag == 1){
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
       // console.log(error);
       this.toastr.error('Invalid Username or Password!', 'Login - Failed');
     })
-    
+
   }
 
 }

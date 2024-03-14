@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GroupService } from '../group.service';
@@ -15,6 +15,11 @@ import { Customer } from 'src/app/user/customer/customer.model';
   styleUrls: ['./group.component.css']
 })
 export class GroupComponent implements OnInit {
+
+  @ViewChild('closeJoinGroup') closeJoinGroup: ElementRef | undefined;
+  @ViewChild('closeCreateGroup') closeCreateGroup: ElementRef | undefined;
+  @ViewChild('closeDeleteGroup') closeDeleteGroup: ElementRef | undefined;
+  @ViewChild('closeLeaveGroup') closeLeaveGroup: ElementRef | undefined;
 
   public loginuser: any = {};
   groupForm!: FormGroup;
@@ -60,15 +65,19 @@ export class GroupComponent implements OnInit {
 
     console.log(this.groupForm);
 
-    this.groupService.findGroup(this.groupForm.value, this.loginuser.accessToken).subscribe(data => {
+    this.realTimeDataSubscription$ = timer(0, 1000)
+      .pipe(switchMap(_ => this.groupService.findGroup(this.groupForm.value, this.loginuser.accessToken)))
+      .subscribe(data => {
+
       this.findGroup = data;
-      console.log(this.findGroup);
+      // console.log(this.findGroup);
 
       this.groupForm.patchValue({
         group_name: this.findGroup.group_name,
         address: this.findGroup.address,
         city: this.findGroup.city,
-        postal_code: this.findGroup.postal_code
+        postal_code: this.findGroup.postal_code,
+        owner:  this.findGroup.owner
       });
     });
 
@@ -111,6 +120,10 @@ export class GroupComponent implements OnInit {
     );
 
 
+    this.groupForm.reset();
+    this.closeCreateGroupModal();
+
+
   }
 
   updateGroup(){
@@ -143,44 +156,17 @@ export class GroupComponent implements OnInit {
   }
 
   checkOwner(){
+
+    if(!this.findGroup){
+      return true;
+    }
+
     if(this.findGroup.owner == this.loginuser.userEntity.username){
       return false;
     }
 
     return true;
   }
-
-  // ownerGroup(){
-  //   this.realTimeDataSubscription$ = timer(0, 1000)
-  //     .pipe(switchMap(_ => this.groupService.findGroupByOwner(this.loginuser.userEntity.username, this.loginuser.accessToken)))
-  //     .subscribe(data => {
-  //       if(data){
-  //         this.groupID = data.id;
-  //         this.flagOwner = 1;
-  //       }else{
-  //         this.flagOwner = 0;
-  //       }
-  //   });
-  //   // this.groupService.findGroupByOwner(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
-  //   //   (response: Group) => {
-  //   //     if(response){
-  //   //       console.log('ada');
-
-  //   //       this.flagOwner = 1;
-  //   //     }else{
-  //   //       console.log('tdk ada');
-
-  //   //       this.flagOwner = 0;
-  //   //     }
-
-
-  //   //   },
-  //   //   (error: HttpErrorResponse) => {
-  //   //     console.log(error);
-
-  //   //   }
-  //   // );
-  // }
 
   joinGroup(){
     this.editCustomerForm.patchValue({
@@ -206,6 +192,94 @@ export class GroupComponent implements OnInit {
           timer: 1500
         })
     });
+
+    this.editCustomerForm.reset();
+    this.closeJoinGroupModal();
+  }
+
+
+  leaveGroup(){
+    this.editCustomerForm.patchValue({
+      username: this.loginuser.userEntity.username
+    });
+
+    this.customerService.leaveGroup(this.editCustomerForm.value, this.loginuser.accessToken).subscribe(
+      (response: Customer) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Leave Group",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Leave Group",
+          showConfirmButton: true,
+          timer: 1500
+        })
+
+    });
+
+      this.editCustomerForm.reset();
+      this.closeLeaveGroupModal();
+  }
+
+  deleteGroup(){
+    this.groupService.deleteGroup(this.findGroup.owner, this.loginuser.accessToken).subscribe(
+      (response: void) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Delete Group",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Delete Group",
+          showConfirmButton: true,
+          timer: 1500
+        })
+    });
+
+
+    this.groupForm.reset();
+    this.closeDeleteGroupModal();
+  }
+
+  closeJoinGroupModal(){
+
+    if(this.closeJoinGroup){
+      this.closeJoinGroup.nativeElement.click();
+    }
+
+  }
+
+  closeCreateGroupModal(){
+
+    if(this.closeCreateGroup){
+      this.closeCreateGroup.nativeElement.click();
+    }
+
+  }
+
+  closeLeaveGroupModal(){
+    if(this.closeLeaveGroup){
+      this.closeLeaveGroup.nativeElement.click();
+    }
+  }
+
+  closeDeleteGroupModal(){
+    if(this.closeDeleteGroup){
+      this.closeDeleteGroup.nativeElement.click();
+    }
   }
 
 }

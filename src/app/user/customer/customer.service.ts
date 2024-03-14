@@ -23,5 +23,10 @@ export class CustomerService {
   joinGroup(customer: Customer, accessToken: any): Observable<Customer>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<Customer>(`${this.baseUrl}/joinGroup`, customer, {headers:headers});
-  };
+  }
+
+  leaveGroup(customer: Customer, accessToken: any): Observable<Customer>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<Customer>(`${this.baseUrl}/leaveGroup`, customer, {headers:headers});
+  }
 }

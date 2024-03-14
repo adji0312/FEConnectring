@@ -35,8 +35,13 @@ export class GroupService {
     return this.http.put<Group>(`${this.baseUrl}/update`, group, {headers: headers});
   }
 
-  findGroupByOwner(owner: string, accessToken: any): Observable<Group>{
+  // findGroupByOwner(owner: string, accessToken: any): Observable<Group>{
+  //   const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+  //   return this.http.get<Group>(`${this.baseUrl}/getGroupByOwner/${owner}`, {headers:headers});
+  // }
+
+  deleteGroup(owner: string, accessToken: any): Observable<void>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.get<Group>(`${this.baseUrl}/getGroupByOwner/${owner}`, {headers:headers});
+    return this.http.delete<void>(`${this.baseUrl}/delete/${owner}`, {headers: headers});
   }
 }
