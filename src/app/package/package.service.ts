@@ -13,10 +13,5 @@ export class PackageService {
     this.http = http;
   }
 
-  private baseUrl = `${environment.baseUrl}/food`;
-
-  addFood(food: Food, accessToken: any):Observable<Food>{
-    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.post<Food>(`${this.baseUrl}/add/`, food, {headers: headers});
-  }
+  private baseUrl = `${environment.baseUrl}/package`;
 }
