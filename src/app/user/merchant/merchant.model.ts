@@ -10,4 +10,6 @@ export class Merchant {
     postal_code!: string;
     profile_img!: string;
     parent!: User;
+    // file!: File;
+    // url!: string;
 }

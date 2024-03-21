@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, switchMap, timer } from 'rxjs';
@@ -23,6 +24,7 @@ export class AdminDashboardComponent implements OnInit {
   merchants!: Merchant[];
   editMerchant: Merchant = new Merchant;
   deleteMerchant: Merchant = new Merchant;
+  selectedFile!: File;
 
   realTimeDataSubscription$!: Subscription;
   
@@ -35,7 +37,8 @@ export class AdminDashboardComponent implements OnInit {
     private formBuilder : FormBuilder, 
     private toastr: ToastrService,
     private http: HttpClient,
-    private merchantService: MerchantService) {
+    private merchantService: MerchantService,
+    private sanitizer: DomSanitizer) {
       this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
     }
 
@@ -53,6 +56,7 @@ export class AdminDashboardComponent implements OnInit {
       phone : ['', [Validators.required]],
       postal_code : ['', [Validators.required]],
       merchant_name : ['', [Validators.required]],
+      image_merchant : ['',],
     });
 
     this.editMerchantForm = this.formBuilder.group({
@@ -67,18 +71,21 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   registMerchant(){
-    this.authService.regisMerchant(this.registMerchantForm.value, this.loginuser.accessToken).subscribe((response) => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Success Add Merchant',
-        showConfirmButton: true,
-        timer: 1500
-      })
-    }
-    )
-    document.getElementById('add-merchant-form')!.click();
-    this.registMerchantForm.reset();
+
+    console.log(this.registMerchantForm.value);
+    
+    // this.authService.regisMerchant(this.registMerchantForm.value, this.loginuser.accessToken).subscribe((response) => {
+    //   Swal.fire({
+    //     position: 'center',
+    //     icon: 'success',
+    //     title: 'Success Add Merchant',
+    //     showConfirmButton: true,
+    //     timer: 1500
+    //   })
+    // }
+    // )
+    // document.getElementById('add-merchant-form')!.click();
+    // this.registMerchantForm.reset();
     
   }
 
@@ -170,6 +177,20 @@ export class AdminDashboardComponent implements OnInit {
 
     document.getElementById('edit-merchant-form')!.click();
     this.editMerchantForm.reset();
+  }
+
+  public onFileChanged(event: any){
+    
+    if(event.target.files){
+      const file = event.target.files[0];
+
+      // const merchant: Merchant{
+      //   file: file,
+      //   url: this.sanitizer.bypassSecurityTrustUrl{
+
+      //   }
+      // }
+    }
   }
 
 }
