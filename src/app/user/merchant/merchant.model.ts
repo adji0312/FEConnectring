@@ -1,3 +1,4 @@
+import { SafeUrl } from "@angular/platform-browser";
 import { User } from "../user.model";
 
 export class Merchant {
@@ -10,6 +11,8 @@ export class Merchant {
     postal_code!: string;
     profile_img!: string;
     parent!: User;
+    picByte!: Blob;
+    description!: string;
     // file!: File;
     // url!: string;
 }

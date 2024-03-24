@@ -18,46 +18,27 @@
 
 
     <div class="">
-        <div class="row row-cols-3">
-            <div class="col mb-5">
+        <div class="row row-cols-3" >
+            <div class="col mb-5" *ngFor="let merch of merchants">
                 <div class="d-flex justify-content-between flex-column gap-3">
                     <div>
-                    <a href="/detailCatering" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
+                    <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark">
+                        <img [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
                     </a>
                     </div>
         
                     <div class="d-flex flex-column justify-content-start">
                     <div class="d-flex justify-content-between">
                         <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
+                        <p class="" style="font-size: 20px;">{{ merch.merchant_name }}</p>
                         </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
+                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merch.city }}</p>
                     </div>
-                    <small class="mt-0">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque, odio! Provident quidem fugit saepe nobis, doloremque, illum eveniet aliquam voluptatum ducimus non maiores aut perspiciatis quod quos ut error minus.</small>
+                    <small class="mt-0">{{ merch.description }}</small>
                     </div>
                 </div>
             </div>
-            <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
+            <!-- <div class="col mb-5">
                 <div class="d-flex justify-content-between flex-column gap-3">
                     <div>
                     <a href="" class="text-decoration-none text-dark">
@@ -114,6 +95,25 @@
                     </div>
                 </div>
             </div>
+            <div class="col mb-5">
+                <div class="d-flex justify-content-between flex-column gap-3">
+                    <div>
+                    <a href="" class="text-decoration-none text-dark">
+                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
+                    </a>
+                    </div>
+        
+                    <div class="d-flex flex-column justify-content-start">
+                    <div class="d-flex justify-content-between">
+                        <a href="" class="text-decoration-none text-dark">
+                        <p class="" style="font-size: 20px;">Joko Catering</p>
+                        </a>
+                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
+                    </div>
+                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
 
@@ -142,9 +142,7 @@
             <select class="form-select" aria-label="Default select example">
                 <option selected>Select Location</option>
                 <!-- Looping City Merchant -->
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="{{ cityMerch.city }}" *ngFor="let cityMerch of merchants">{{ cityMerch.city }}</option>
             </select>
         </div>
         <div class="modal-footer">

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Merchant } from 'src/app/user/merchant/merchant.model';
 import { MerchantService } from 'src/app/user/merchant/merchant.service';
@@ -16,7 +17,8 @@ export class DetailCateringComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private merchantService: MerchantService
+    private merchantService: MerchantService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +33,12 @@ export class DetailCateringComponent implements OnInit {
     console.log(i);
     
     
+  }
+
+  getImageUrl(blob: Blob) {
+    // console.log(blob);
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }

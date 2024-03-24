@@ -50,7 +50,7 @@ export class UserService {
   //   return this.http.post(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
   // }
   
-  regisMerchant(user: FormData, accessToken: any): Observable<User> {
+  regisMerchant(user: FormData, image_merchant: File, accessToken: any): Observable<User> {
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.post<User>(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
   }

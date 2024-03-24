@@ -7,17 +7,20 @@
     <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Merchant</button>
   </div>
 
-  <div class="card shadow" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex flex-column">
-          <h5>Catering Ibuku</h5>
-          <p><i class="fas fa-map-marker-alt"></i> Location</p>
-        </div>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering"><i class="fas fa-edit"></i> Edit</button>
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCatering"><i class="fas fa-trash-alt"></i> Delete</button>
+  <div *ngFor="let merch of merchants; index as i">
+    <div class="card shadow mb-2" style="border: none;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex flex-column justify-content-center">
+            <h5>{{ merch.merchant_name }}</h5>
+            <p><i class="fas fa-map-marker-alt"></i> {{ merch.address }}, {{ merch.city }}</p>
+            <img [src]="getImageUrl(merch.picByte)" alt="">
+          </div>
+  
+          <div class="d-flex gap-2 align-items-center">
+            <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(merch, 'edit')"><i class="fas fa-edit"></i> Edit</button>
+            <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCatering" (click)="onOpenModal(merch, 'delete')"><i class="fas fa-trash-alt"></i> Delete</button>
+          </div>
         </div>
       </div>
     </div>
@@ -25,29 +28,6 @@
   
 </div>
 <app-footer></app-footer>
-
-<!-- <div class="m-4 mt-5">
-    <div class="d-flex gap-3 mb-2 mt-5">
-        <h5><strong>LIST ALL CATERING</strong></h5>
-        <button type="button" data-bs-toggle="modal" data-bs-target="#registCatering" class="btn" style="background-color: #B0D9B1;">Register Catering</button>
-    </div>
-    <div class="mt-4">
-      <div *ngFor="let merch of merchants" class="d-flex flex-column gap-2 mt-2">
-          <div class="card" style="background-color: #B0D9B1;">
-            <div class="card-body d-flex justify-content-between p-3">
-              <div>
-                  {{ merch.merchant_name }}
-              </div>
-              <div class="d-flex gap-2 align-items-center">
-                <button type="button" class="btn btn-sm text-white" style="background-color: #2EC0FF; border-radius: 7px; width: 88px;">detail</button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(merch, 'edit')" class="btn btn-sm text-white" style="background-color: #00B960; border-radius: 7px; width: 88px;">edit</button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#deleteCatering" (click)="onOpenModal(merch, 'delete')" class="btn btn-sm text-white" style="background-color: #F03838; border-radius: 7px; width: 88px;">delete</button>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
-</div> -->
 
 <div class="modal fade" id="registCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">

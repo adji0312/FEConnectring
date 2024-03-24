@@ -25,6 +25,7 @@ export class AdminDashboardComponent implements OnInit {
   editMerchant: Merchant = new Merchant;
   deleteMerchant: Merchant = new Merchant;
   selectedFile!: File;
+  foto: any;
 
   realTimeDataSubscription$!: Subscription;
   
@@ -44,7 +45,7 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.loginuser);
+    // console.log(this.loginuser);
     
 
     this.loadData();
@@ -90,11 +91,24 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   private getMerchants(){
+    // this.merchantService.getAllMerchant(this.loginuser.accessToken).subscribe(
+    //   (response) => {
+    //     console.log(response);
+        
+    //   }
+    // )
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
-        
         this.merchants = data.sort();
+
+        // let objectURL = 'data:image/jpeg;base64,' + data[1].picByte;
+
+        //  this.foto = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        //  console.log(this.foto);
+         
+        // console.log(this.merchants);
+        
     });
   }
 
@@ -191,6 +205,12 @@ export class AdminDashboardComponent implements OnInit {
       //   }
       // }
     }
+  }
+
+  getImageUrl(blob: Blob) {
+    // console.log(blob);
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }
