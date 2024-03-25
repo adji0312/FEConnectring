@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderComponent implements OnInit {
 
-
+  public loginuser: any = {};
   x!: number;
 
   constructor() { }
@@ -15,6 +15,7 @@ export class OrderComponent implements OnInit {
   ngOnInit(): void {
 
     this.x = 0;
+    this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
     
   }
 

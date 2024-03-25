@@ -13,6 +13,7 @@ export class Merchant {
     parent!: User;
     picByte!: Blob;
     description!: string;
+    image_merchant!: File;
     // file!: File;
     // url!: string;
 }

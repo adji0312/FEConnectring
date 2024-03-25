@@ -22,7 +22,7 @@
             <div class="col mb-5" *ngFor="let merch of merchants">
                 <div class="d-flex justify-content-between flex-column gap-3">
                     <div>
-                    <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark">
+                    <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark" style="cursor: pointer;">
                         <img [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
                     </a>
                     </div>
@@ -38,95 +38,8 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
-
-    <!-- <div class="d-flex gap-4">
-        <div *ngFor="let merch of merchants" class="card" style="width: 18rem; background-color: #fbf6ee;">
-            <img src="https://www.rewardsnetwork.com/wp-content/uploads/2016/10/CateringMenu_2.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title mb-3"><strong>{{ merch.merchant_name }}</strong></h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a (click)="onOpenCatering(merch)" class="btn text-white w-100" style="background-color: #c5a375;">VISIT</a>
-            </div>
-        </div>
-    </div> -->
 </div>
 
 

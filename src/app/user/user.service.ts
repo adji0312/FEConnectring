@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
@@ -50,9 +50,9 @@ export class UserService {
   //   return this.http.post(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
   // }
   
-  regisMerchant(user: FormData, image_merchant: File, accessToken: any): Observable<User> {
+  regisMerchant(user: FormData, accessToken: any): Observable<FormData> {
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.post<User>(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
+    return this.http.post<FormData>(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
   }
 
   public loginUser(user: any): Observable<any>{

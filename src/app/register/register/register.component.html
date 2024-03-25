@@ -110,26 +110,15 @@
             <label for="" class="form-label">Phone</label>
             <input type="text" #phone name="phone" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid' : regisForm.controls['phone'].touched && regisForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
           </div>
-        </div>
-
-        <div class="w-100">
-          <div class="mb-2">
-            <label for="" class="form-label">Profile Image</label>
-            <input type="file" #profile_img name="profile_img" class="form-control form-control-sm" formControlName="profile_img" [ngClass]="{ 'is-invalid' : regisForm.controls['profile_img'].touched && regisForm.controls['profile_img'].errors}" id="profile_img" placeholder="" autocomplete="off">
-          </div>
           <div class="mb-2">
             <label for="" class="form-label">Password</label>
             <input type="password" name="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid' : regisForm.controls['password'].touched && regisForm.controls['password'].errors}" id="password" placeholder="" autocomplete="off">
-          </div>
-          <div class="mb-2">
-            <label for="" class="form-label">Confirm Password</label>
-            <input type="password" name="confirmpassword" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid' : regisForm.controls['password'].touched && regisForm.controls['password'].errors}" id="password" placeholder="" autocomplete="off">
           </div>
         </div>
 
       </div>
       <div class="d-flex gap-3">
-        <button type="submit" class="btn btn-sm mt-3" style="background-color: #c5a375; color: white;"><i class="fas fa-sign-in-alt"></i> Register</button>
+        <button type="submit" (click)="register()" class="btn btn-sm mt-3" style="background-color: #c5a375; color: white;"><i class="fas fa-sign-in-alt"></i> Register</button>
         <div class="d-flex align-items-end">
           <small class="text-center mt-2">Have an account? <a href="/login" class="text-dark">Login</a></small>
         </div>
