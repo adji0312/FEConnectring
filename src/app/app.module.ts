@@ -35,6 +35,10 @@ import { FooterComponent } from './footer/footer/footer.component';
 import { DetailOrderComponent } from './cart/order/DetailOrder/detail-order/detail-order.component';
 import { AddPackageComponent } from './package/addPackage/add-package/add-package.component';
 import { ViewPackageComponent } from './package/viewPackage/view-package/view-package.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -69,6 +73,16 @@ import { ViewPackageComponent } from './package/viewPackage/view-package/view-pa
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyCqsl25tNFTb4uXkAtmA5ZedtgwsqwHR_8",
+      authDomain: "connectring-418e9.firebaseapp.com",
+      projectId: "connectring-418e9",
+      storageBucket: "connectring-418e9.appspot.com",
+      messagingSenderId: "5258632021",
+      appId: "1:5258632021:web:fea848aa85dfa9c19d6ddc"
+    }),
+    AngularFireStorageModule,
+    NgMultiSelectDropDownModule.forRoot(),
     TooltipModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -95,6 +109,9 @@ import { ViewPackageComponent } from './package/viewPackage/view-package/view-pa
   providers: [
     AuthGuard,
     LoginAuthService
+  ],
+  schemas: [
+    NO_ERRORS_SCHEMA // Add NO_ERRORS_SCHEMA here
   ],
   bootstrap: [AppComponent]
 })

@@ -6,6 +6,8 @@ import { Food } from '../food.model';
 import Swal from 'sweetalert2';
 import { FoodService } from '../food.service';
 import { Subscription, switchMap, timer } from 'rxjs';
+import { Package } from '../package.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-package',
@@ -22,6 +24,8 @@ export class PackageComponent implements OnInit {
   addFoodForm!: FormGroup;
   editFoodForm!: FormGroup;
   public foods!: Food[];
+  public packages!: Package[];
+
   deletedFood!: Food;
 
   realTimeDataSubscription$!: Subscription;
@@ -29,7 +33,8 @@ export class PackageComponent implements OnInit {
   constructor(
     private formBuilder : FormBuilder,
     private packageService: PackageService,
-    private foodService: FoodService
+    private foodService: FoodService,
+    private router: Router
     ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
 
@@ -49,6 +54,7 @@ export class PackageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFood();
+    this.getPackage();
   }
 
   getFood(){
@@ -60,6 +66,18 @@ export class PackageComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
     .pipe(switchMap(_ => this.foodService.findFood(initData, this.loginuser.accessToken))).subscribe(data =>{
       this.foods = data;
+    });
+  }
+
+
+  getPackage(){
+    const initData = {
+      merchant_username: this.loginuser.userEntity.username
+    };
+
+    this.realTimeDataSubscription$ = timer(0, 1000)
+    .pipe(switchMap(_ => this.packageService.getPackageByMerchant(initData, this.loginuser.accessToken))).subscribe(data =>{
+      this.packages = data;
     });
   }
 
@@ -158,6 +176,11 @@ export class PackageComponent implements OnInit {
     });
 
     this.closeDeleteFoodModal();
+  }
+
+  viewPackage(package_header: string){
+    this.packageService.package_header = package_header;
+    this.router.navigate(['/addPackage'], { queryParams: { edit: true }});
   }
 
 

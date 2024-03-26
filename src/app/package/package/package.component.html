@@ -9,14 +9,14 @@
 
   <div class="">
     <div class="row row-cols-4">
-      <div class="col mb-5">
+      <div class="col mb-5" *ngFor="let pack of packages">
         <div class="card shadow" style="width: 18rem; border: none;">
           <img src="assets/images/foodOfCatering.jpg" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title mb-3">Paket 1 Minggu</h5>
-            <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> 01 Januari 2024 - 05 Januari 2024</p>
+            <!-- <h5 class="card-title mb-3">Paket 1 Minggu</h5> -->
+            <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> {{ pack.start_date | date: 'dd MMMM yyyy' }} - {{ pack.end_date | date: 'dd MMMM yyyy' }}</p>
             <p class="card-text" style="font-size: 14px;"><i class="fas fa-money-bill"></i> Rp 120,000 </p>
-            <a href="/viewPackage" class="btn btn-sm" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> View Detail</a>
+            <a type="button" (click)="viewPackage(pack.package_header)" class="btn btn-sm" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> View Detail</a>
           </div>
         </div>
       </div>
