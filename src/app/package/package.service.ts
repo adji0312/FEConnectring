@@ -30,7 +30,7 @@ export class PackageService {
 
   getPackageByPackageHeader(pack: Package, accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.post<any>(`${this.baseUrl}/getByPackageId`, pack, {headers: headers});
+    return this.http.post<any>(`${this.baseUrl}/getByPackageHeader`, pack, {headers: headers});
   }
 
   updatePackage(pack: Package, accessToken: any): Observable<any>{

@@ -4,7 +4,7 @@
         <h2><a href="/package" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex flex-column gap-2 align-items-end" style="width: 300px;">
             <button id="openModalButton" type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 50%;" data-bs-toggle="modal" data-bs-target="#newPackage"><i class="fas fa-plus"></i> New</button>
-            <p style="font-size: 20px;">- (Rp -)</p>
+            <p style="font-size: 20px;">- (Rp {{ packageList ? (packageList[0].total_price | number)  : 0 }} )</p>
         </div>
     </div>
 
@@ -23,10 +23,10 @@
             <tbody>
             <tr *ngFor="let pack of packageList, let i=index">
                 <th scope="row" class="align-middle">{{ i+1 }}</th>
-                <td class="align-middle">{{ pack.value_date | date: 'dd MMMM yyyy' }}</td>
-                <td class="align-middle">Nasi, Ayam Goreng, Sambal Matah</td>
+                <td class="align-middle" *ngIf="foods.length > 0">{{ pack.value_date | date: 'dd MMMM yyyy' }}</td>
+                <td class="align-middle">{{ getFoodNames(pack) }}</td>
                 <td class="align-middle"><img [src]="pack.food_img" alt="" style="width: 300px; border-radius: 10px;"></td>
-                <td class="align-middle">Rp {{ pack.price }}</td>
+                <td class="align-middle">Rp {{ pack.price | number }}</td>
                 <td class="align-middle">
                     <button (click)="editPackage(pack)" type="button" class="btn btn-sm w-100" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editPackageItem"><i class="fas fa-edit"></i> Edit</button>
                 </td>
@@ -83,7 +83,7 @@
                 <!-- <select class="form-select" multiple aria-label="Multiple select example">
                   <option selected>Choose Food</option>
                 </select> -->
-                <ng-multiselect-dropdown formControlName="packageItemList"  [settings]="dropdownSettings" [data]="foods">
+                <ng-multiselect-dropdown class="custom-font-size" [(ngModel)]="selectedFood" formControlName="packageItemList"  [settings]="dropdownSettings" [data]="foods">
                 </ng-multiselect-dropdown>
               </div>
               <div class="mb-2">
@@ -97,8 +97,8 @@
               </div>
               <div class="mb-2">
                 <label for="photo" class="form-label">Photo</label>
-                <input type="file" accept="*.jpg.png" (change)="onFileSelected($event)" formControlName="image" class="form-control" id="photo" [ngClass]="{ 'is-invalid' : addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors}">
-                <!-- <input type="file" formControlName="image" class="form-control" id="photo" [ngClass]="{ 'is-invalid' : addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors}"> -->
+                <!-- <input type="file" accept="*.jpg.png" (change)="onFileSelected($event)" formControlName="image" class="form-control" id="photo" [ngClass]="{ 'is-invalid' : addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors}"> -->
+                <input type="file" accept="*.jpg.png" (change)="onFileSelected($event)" formControlName="image" class="form-control" id="photo">
                 <div *ngIf="addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors" class="text-danger">
                   <div *ngIf="addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors['required']">
                     Image must be filled

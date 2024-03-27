@@ -34,7 +34,9 @@ export class AddPackageComponent implements OnInit {
 
   packageList!: Package[];
   selectedPackage!: Package;
-  package_image!: File;
+  selectedFood: Array<any> = [];
+
+  package_image: File | null = null;
 
   realTimeDataSubscription$!: Subscription;
 
@@ -48,25 +50,29 @@ export class AddPackageComponent implements OnInit {
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
 
+
+
+
+  }
+
+
+  ngOnInit(): void {
+
     this.addPackageForm = this.formBuilder.group({
       start_date: [''],
       end_date: [''],
       value_date: [''],
       price: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      image: ['', Validators.required],
+      image: [''],
       food_img: [''],
       merchant_username: [''],
       package_id: [''],
-      packageItemList: [''],
+      packageItemList: [],
     });
 
     this.combinedForm = this.formBuilder.group({
       packageForms: this.formBuilder.array([])
     });
-  }
-
-
-  ngOnInit(): void {
 
     const initData = {
       merchant_username: this.loginuser.userEntity.username
@@ -122,6 +128,15 @@ export class AddPackageComponent implements OnInit {
   removePackageForm(index: number) {
     this.packageForms.splice(index, 1);
     this.combinedForm.setControl('packageForms', this.formBuilder.array(this.packageForms));
+  }
+
+  getFoodNames(pack: Package): string {
+
+    pack.packageItemDtoList.forEach(packageItem => { // Accessing 'food_name' within 'food' object
+    });
+
+    // return "true";
+    return pack.packageItemDtoList.map(packageItem => packageItem.food_name).join(', ');
   }
 
   addPackage(){
@@ -220,52 +235,105 @@ export class AddPackageComponent implements OnInit {
 
   editPackage(pack: Package){
     this.selectedPackage = pack;
+
+    this.addPackageForm.patchValue({
+      price: this.selectedPackage.price
+    });
+
+    this.selectedFood = this.selectedPackage.packageItemDtoList;
   }
 
   onUpdatePackage(event: any){
 
-    const filePath = `food/${this.package_image.name}_${new Date().getTime()}`;
-    const fileRef = this.af.ref(filePath);
-    const uploadTask = this.af.upload(filePath, this.package_image);
+    var packageList = this.addPackageForm.value.packageItemList;
+    var packageItemDto = [];
 
-    console.log(this.addPackageForm.value);
-
-
-    return uploadTask.then(snapshot => {
-      // console.log(fileRef.getDownloadURL());
-      return fileRef.getDownloadURL().subscribe(data => {
-        console.log(data);
-
-        this.addPackageForm.patchValue({
-          package_id: this.selectedPackage.package_id,
-          food_img: data
-        });
-
-        this.packageService.updatePackage(this.addPackageForm.value, this.loginuser.accessToken).subscribe(
-          (response: Package) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: "Success Update Package",
-              showConfirmButton: true,
-              timer: 1500
-            })
-          },
-          (error: HttpErrorResponse) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: "Failed Update Package",
-              showConfirmButton: true,
-              timer: 1500
-            })
-          }
-        );
-
-        this.addPackageForm.reset();
-        this.closeEditPackageModal();
+    for (let i = 0; i < packageList.length; i++) {
+      const itemFormGroup = this.formBuilder.group({
+        food: this.formBuilder.group({
+          food_id: [packageList[i].food_id]
+        })
       });
+
+      packageItemDto[i] = itemFormGroup.value;
+    }
+
+
+    this.addPackageForm.patchValue({
+      packageItemList: packageItemDto,
+      package_id: this.selectedPackage.package_id,
     });
+
+    if(this.package_image == null){
+      this.packageService.updatePackage(this.addPackageForm.value, this.loginuser.accessToken).subscribe(
+        (response: Package) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: "Success Update Package",
+            showConfirmButton: true,
+            timer: 1500
+          })
+        },
+        (error: HttpErrorResponse) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Failed Update Package",
+            showConfirmButton: true,
+            timer: 1500
+          })
+      });
+
+      this.addPackageForm.reset();
+      this.closeEditPackageModal();
+
+      return null;
+    }
+    else{
+      const filePath = `food/${this.package_image.name}_${new Date().getTime()}`;
+      const fileRef = this.af.ref(filePath);
+      const uploadTask = this.af.upload(filePath, this.package_image);
+
+      return uploadTask.then(snapshot => {
+        // console.log(fileRef.getDownloadURL());
+        return fileRef.getDownloadURL().subscribe(data => {
+          console.log(data);
+
+          this.addPackageForm.patchValue({
+            package_id: this.selectedPackage.package_id,
+            food_img: data
+          });
+
+          this.packageService.updatePackage(this.addPackageForm.value, this.loginuser.accessToken).subscribe(
+            (response: Package) => {
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: "Success Update Package",
+                showConfirmButton: true,
+                timer: 1500
+              })
+            },
+            (error: HttpErrorResponse) => {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: "Failed Update Package",
+                showConfirmButton: true,
+                timer: 1500
+              })
+            }
+          );
+          this.package_image = null
+          this.addPackageForm.reset();
+          this.closeEditPackageModal();
+        });
+      });
+
+    }
+
+
   }
 
   onFileSelected(event: any): void {
