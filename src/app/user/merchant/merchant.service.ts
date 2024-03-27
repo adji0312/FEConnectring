@@ -24,7 +24,7 @@ export class MerchantService {
 
   updateMerchant(merchant: Merchant, id: number,  accessToken: any):Observable<Merchant>{
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.put<Merchant>(`${this.baseUrl}/update/${id}`, merchant, {headers: headers});
+    return this.http.put<Merchant>(`${this.baseUrl}/update`, merchant, {headers: headers});
   }
 
   deleteMerchant(username: string, accessToken: any): Observable<Merchant>{

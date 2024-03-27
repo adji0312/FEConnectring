@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, switchMap, timer } from 'rxjs';
@@ -29,7 +30,8 @@ export class CateringComponent implements OnInit {
     private formBuilder : FormBuilder, 
     private toastr: ToastrService,
     private http: HttpClient,
-    private merchantService: MerchantService
+    private merchantService: MerchantService,
+    private sanitizer: DomSanitizer
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -45,7 +47,7 @@ export class CateringComponent implements OnInit {
       .subscribe(data => {
         
         this.merchants = data.sort();
-        console.log(this.merchants);
+        // console.log(this.merchants);
         
     });
   }
@@ -53,7 +55,13 @@ export class CateringComponent implements OnInit {
   onOpenCatering(merchant: Merchant): void{
     console.log(merchant);
     this.merchantService.viewCatering = merchant;
-    this.router.navigate(['/detailCatering'], {skipLocationChange: true});
+    this.router.navigate(['/detailCatering']);
+  }
+
+  getImageUrl(blob: Blob) {
+    // console.log(blob);
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }

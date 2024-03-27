@@ -18,6 +18,7 @@ import { InvoiceComponent } from './invoice/invoice/invoice.component';
 import { DetailOrderComponent } from './cart/order/DetailOrder/detail-order/detail-order.component';
 import { AddPackageComponent } from './package/addPackage/add-package/add-package.component';
 import { ViewPackageComponent } from './package/viewPackage/view-package/view-package.component';
+import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path: "detailCatering", component:DetailCateringComponent, canActivate: [AuthGuard]},
   {path: "invoice", component:InvoiceComponent, canActivate: [AuthGuard]},
   {path: "chat", component:ChatComponent, canActivate: [AuthGuard]},
+  {path: "detailChat", component:DetailChatComponent, canActivate: [AuthGuard]},
   {path: "group", component:GroupComponent, canActivate: [AuthGuard]},
   {path: "order", component:OrderComponent, canActivate: [AuthGuard]},
   {path: "profile", component:ProfileComponent, canActivate: [AuthGuard]},

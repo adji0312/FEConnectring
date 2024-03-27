@@ -39,6 +39,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
     DetailOrderComponent,
     AddPackageComponent,
     ViewPackageComponent,
+    DetailChatComponent,
   ],
   imports: [
     BrowserModule,
