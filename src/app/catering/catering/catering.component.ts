@@ -47,7 +47,7 @@ export class CateringComponent implements OnInit {
       .subscribe(data => {
         
         this.merchants = data.sort();
-        console.log(this.merchants);
+        // console.log(this.merchants);
         
     });
   }

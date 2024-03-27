@@ -11,8 +11,9 @@
             <p class="m-5 mt-0 mb-3 text-white">{{ viewCatering.description }}</p>
             <p class="m-5 mt-0 mb-3 text-white" style="font-size: 20px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
           </div>
-          <div class="p-3">
-            <a href="#ourPackage" type="button" class="btn m-5 btn-lg" style="background-color: #ffffff; color: #c5a375;"><i class="fas fa-utensils"></i> View Our Package</a>
+          <div class="d-flex mx-5 gap-3">
+            <a href="#ourPackage" type="button" class="btn m-5 mx-0 btn-lg" style="background-color: #ffffff; color: #c5a375;"><i class="fas fa-utensils"></i> View Our Package</a>
+            <a (click)="onChat(viewCatering)" type="button" class="btn m-5 mx-0 btn-lg" style="background-color: #ffffff; color: #c5a375;"><i class="fas fa-comments"></i> Chat Us</a>
           </div>
         </div>
         <div class="d-flex p-3 justify-content-end">

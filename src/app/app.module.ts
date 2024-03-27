@@ -35,6 +35,7 @@ import { FooterComponent } from './footer/footer/footer.component';
 import { DetailOrderComponent } from './cart/order/DetailOrder/detail-order/detail-order.component';
 import { AddPackageComponent } from './package/addPackage/add-package/add-package.component';
 import { ViewPackageComponent } from './package/viewPackage/view-package/view-package.component';
+import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { ViewPackageComponent } from './package/viewPackage/view-package/view-pa
     DetailOrderComponent,
     AddPackageComponent,
     ViewPackageComponent,
+    DetailChatComponent,
   ],
   imports: [
     BrowserModule,

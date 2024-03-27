@@ -1,0 +1,43 @@
+<app-navbar></app-navbar>
+<div class="m-4 mt-5">
+    <!-- <div class="d-flex justify-content-between mb-3">
+        
+    </div> -->
+  <div class="d-flex justify-content-between">
+    <h2><a href="/allCatering" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
+    <div class="d-flex gap-3 mb-4">
+        <h2>Chat with {{ catering.merchant_name }}</h2>
+    </div>
+    
+    <!-- <div class="mb-4">
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search Catering" aria-label="Search">
+            <button type="button" class="btn btn-sm" style="background-color: #c5a375; width: 140px; color: white;"><i class="fas fa-search"></i> Search</button>
+        </form>
+    </div> -->
+  </div>
+  <div style="height: 100vh;" class="bg-light shadow-lg d-flex flex-column justify-content-end">
+
+    <div style="overflow-y: auto;" class="m-3 mt-4 d-flex flex-column">
+
+        <!-- this for other user -->
+        <div class="d-flex justify-content-start">
+            <p class="mx-3 bg-light shadow p-3" style="border-radius: 15px; max-width: 400px;">Lorem ipsum dolor sit amet </p>
+        </div>
+
+        <!-- this for auth user -->
+        <div class="d-flex justify-content-end">
+            <p class="mx-3 bg-primary shadow p-3 bg-primary" style="border-radius: 15px; max-width: 400px; color: white;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum corrupti magnam quibusdam inventore labore consectetur quas alias corporis a?</p>
+        </div>
+    </div>
+
+    
+    <div class="m-3 d-flex gap-2">
+        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Write something here...">
+        <button type="button" class="btn btn-primary btn-sm" style="width: 100px;"><i class="fas fa-paper-plane"></i> Send</button>
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>
