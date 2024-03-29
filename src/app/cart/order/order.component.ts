@@ -26,4 +26,8 @@ export class OrderComponent implements OnInit {
   clickHistory(){
     this.x = 1
   }
+
+  clickDone(){
+    this.x = 2
+  }
 }
