@@ -8,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailOrderComponent implements OnInit {
 
+
+  public loginuser: any = {};
   constructor(private _location: Location) { }
 
   ngOnInit(): void {
+    this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
     
   }
 
