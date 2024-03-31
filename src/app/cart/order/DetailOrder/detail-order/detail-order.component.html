@@ -40,10 +40,17 @@
 <!-- MERCHANT -->
 <div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 2" style="height: 100vh;">
     <div class="d-flex justify-content-between mb-3">
+      <div class="d-flex gap-5">
         <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20; cursor: pointer;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
-        <div class="d-flex align-items-center justify-content-center">
-          <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#checkAll"><i class="fas fa-check"></i> Check All</button></td>
-        </div>
+        <!-- <div class="align-middle d-flex justify-content-center flex-column text-center bg-primary"> -->
+        <h2 class="align-middle">Group A</h2>
+        <!-- </div> -->
+      </div>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <h5 class="align-middle d-flex flex-column justify-content-center">1 January 2023</h5>
+        <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#filterDate"><i class="fas fa-calendar-alt"></i> Filter Date</button></td>
+        <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#checkAll"><i class="fas fa-check"></i> Check All</button></td>
+      </div>
     </div>
 
     <div>
@@ -125,6 +132,28 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
           <button type="submit" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- modal filter date -->
+<div class="modal fade" id="filterDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Choose Date</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Date</label>
+            <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Filter</button>
         </div>
       </div>
     </div>
