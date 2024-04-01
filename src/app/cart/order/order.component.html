@@ -3,7 +3,7 @@
 
   <div class="d-flex justify-content-between mb-4">
     <h2>Order</h2>
-  </div>  
+  </div>
 
 
   <!-- CUSTOMER -->
@@ -11,94 +11,72 @@
     <div class="alert alert-warning" role="alert">
       <strong>*Mohon Konfirmasi Order H-1 Sebelum Makanan Di Kirim</strong>
     </div>
-    
+
     <div *ngIf="x == 0" class="d-flex justify-content-between gap-2 mb-3">
-      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickOngoing()">
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickOrder()">
         <div class="card-body text-center">
           Order
         </div>
       </div>
-      <div class="card w-100" style="cursor: pointer;" (click)="clickHistory()">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickOrderHistory()">
         <div class="card-body text-center">
           History
         </div>
       </div>
     </div>
-  
+
     <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
-      <div class="card w-100" style="cursor: pointer;" (click)="clickOngoing()">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickOrder()">
         <div class="card-body text-center">
           Order
         </div>
       </div>
-      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickHistory()">
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickOrderHistory()">
         <div class="card-body text-center">
           History
         </div>
       </div>
     </div>
-  
-  
-    <!-- TABLE ORDER LOOP HERE ORDER -->
-    <div class="card mb-2" *ngIf="x == 0">
+
+
+    <!-- TABLE ORDER LOOP HERE -->
+    <div *ngFor="let order of orderList, let i=index" class="card mb-2">
       <div class="card-body">
         <div class="d-flex justify-content-between">
           <div class="d-flex align-items-center">
             <div class="d-flex flex-column justify-content-center">
               <div style="font-size: 20px;">
-                Paket Katering
+                <!-- Paket Katering -->
+                {{ order.transactionDetailDtoList[0].package_id.package_name }}
               </div>
               <div>
-                01 Januari 2024
+                {{ order.transactionDetailDtoList[0].package_id.start_date | date: 'dd MMMM yyyy' }} - {{ order.transactionDetailDtoList[0].package_id.end_date |  date: 'dd MMMM yyyy' }}
               </div>
             </div>
           </div>
           <div class="d-flex flex-column gap-2 align-items-center">
-            <!-- <span class="badge text-bg-warning">Waiting</span> -->
-            <span class="badge text-bg-success">Accepted</span>
-            <!-- <span class="badge text-bg-danger">Rejected</span> -->
-            <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" href="/orderDetail"><i class="fas fa-eye"></i> Detail</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- TABLE ORDER LOOP HERE HISTORY -->
-    <div class="card mb-2" *ngIf="x == 1">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="d-flex flex-column justify-content-center">
-              <div style="font-size: 20px;">
-                Paket Katering
-              </div>
-              <div>
-                01 Januari 2024
-              </div>
-            </div>
-          </div>
-          <div class="d-flex flex-column gap-2 align-items-center">
-            <span class="badge text-bg-warning">Waiting</span>
-            <!-- <span class="badge text-bg-success">Accepted</span> -->
-            <!-- <span class="badge text-bg-danger">Rejected</span> -->
-            <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" href="/orderDetail"><i class="fas fa-eye"></i> Detail</a>
+            <span *ngIf="order.payment_status == 'NW'" class="badge text-bg-warning">Waiting</span>
+            <span *ngIf="order.payment_status == 'ACC'" class="badge text-bg-success">Accepted</span>
+            <span *ngIf="order.payment_status == 'DONE'" class="badge text-bg-success">Done</span>
+            <span *ngIf="order.payment_status == 'RJCT'" class="badge text-bg-danger">Rejected</span>
+            <a type="button" (click)="orderDetailPage(order)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-eye"></i> Detail</a>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+
 
   <!-- MERCHANT -->
   <div *ngIf="loginuser.userEntity.flag == 2">
-    
+
     <div *ngIf="x == 0" class="d-flex justify-content-between gap-2 mb-3">
-      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickOngoing()">
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickIncoming()">
         <div class="card-body text-center">
           Incoming
         </div>
       </div>
-      <div class="card w-100" style="cursor: pointer;" (click)="clickHistory()">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickOngoing()">
         <div class="card-body text-center">
           Ongoing
         </div>
@@ -109,14 +87,14 @@
         </div>
       </div>
     </div>
-  
+
     <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
-      <div class="card w-100" style="cursor: pointer;" (click)="clickOngoing()">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickIncoming()">
         <div class="card-body text-center">
           Incoming
         </div>
       </div>
-      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickHistory()">
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickOngoing()">
         <div class="card-body text-center">
           Ongoing
         </div>
@@ -129,12 +107,12 @@
     </div>
 
     <div *ngIf="x == 2" class="d-flex justify-content-between gap-2 mb-3">
-      <div class="card w-100" style="cursor: pointer;" (click)="clickOngoing()">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickIncoming()">
         <div class="card-body text-center">
           Incoming
         </div>
       </div>
-      <div class="card w-100" style="cursor: pointer;" (click)="clickHistory()">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickOngoing()">
         <div class="card-body text-center">
           Ongoing
         </div>
@@ -145,101 +123,37 @@
         </div>
       </div>
     </div>
-  
-  
-    <!-- TABLE ORDER LOOP HERE MERCHANT INCOMING-->
-    <div class="card mb-2" *ngIf="x == 0">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="d-flex flex-column justify-content-center">
-              <div style="font-size: 20px;">
-                Group Keren
-              </div>
-              <div class="d-flex flex-column">
-                <div>
-                  <p class="mb-0">Paket Hemat : 2 Pesanan</p>
-                  <p class="mb-0">Paket Reguler : 5 Pesanan</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <a type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptOrder"><i class="fas fa-check"></i> Accept</a>
-            <a type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#rejectOrder"><i class="fas fa-times"></i> Reject</a>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- TABLE ORDER LOOP HERE MERCHANT ONGOING-->
-    <div class="card mb-2" *ngIf="x == 1">
+
+    <!-- TABLE ORDER LOOP HERE -->
+    <div *ngFor="let order of cateringOrder, let i=index" class="card mb-2">
       <div class="card-body">
         <div class="d-flex justify-content-between">
           <div class="d-flex align-items-center">
             <div class="d-flex flex-column justify-content-center">
               <div style="font-size: 20px;">
-                Group Keren
+                {{ order.group.group_name }}
               </div>
-              <div class="d-flex flex-column">
+              <div *ngFor="let pckg of order.package | order: 'package_header'" class="d-flex flex-column">
                 <div>
-                  <p class="mb-0">Paket Hemat : 2 Pesanan</p>
-                  <p class="mb-0">Paket Reguler : 5 Pesanan</p>
+                  <p class="mb-0">{{ pckg.package_name }} : {{ pckg.totalOrder }} Pesanan</p>
+                  <!-- <p class="mb-0">Paket Reguler : 5 Pesanan</p> -->
                 </div>
               </div>
             </div>
           </div>
-          <div class="d-flex align-items-center gap-2">
+          <div *ngIf="x == 0" class="d-flex align-items-center gap-2">
+            <a type="button" (click)="updateStatus(order.group.group_id)"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptOrder"><i class="fas fa-check"></i> Accept</a>
+            <a type="button" (click)="updateStatus(order.group.group_id)" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#rejectOrder"><i class="fas fa-times"></i> Reject</a>
+          </div>
+          <div *ngIf="x == 1" class="d-flex align-items-center gap-2">
             <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" href="/orderDetail"><i class="fas fa-eye"></i> Detail</a>
           </div>
         </div>
       </div>
     </div>
-    
-    <!-- TABLE ORDER LOOP HERE MERCHANT DONE-->
-    <div class="card mb-2" *ngIf="x == 2">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="d-flex flex-column justify-content-center">
-              <div style="font-size: 20px;">
-                Group Keren
-              </div>
-              <div class="d-flex flex-column">
-                <div>
-                  <p class="mb-0">Paket Reguler : 2 Person</p>
-                </div>
-                <small><strong>Total : Rp 300,000</strong></small>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex align-items-center gap-2 flex-column">
-            <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 150px; color: white;" data-bs-toggle="modal" data-bs-target="#createInvoice"><i class="fas fa-file-invoice-dollar"></i> Create Invoice</a>
-            <span class="badge text-bg-success">Done On 5 January 2024</span>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
-    <div class="modal fade" id="createInvoice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Create Invoice</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Are you sure want to create invoice?
-          </div>
-          <div class="modal-footer">
-            <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-            <button type="submit" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    
     <div class="modal fade" id="acceptOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -248,16 +162,16 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            Are you sure want to reject this Order?
+            Are you sure want to accept this Order?
           </div>
           <div class="modal-footer">
-            <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-            <button type="submit" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</button>
+            <button #closeAcceptOrder type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
+            <button type="submit" (click)="onUpdateStatus('ACC')" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</button>
           </div>
         </div>
       </div>
     </div>
-    
+
     <div class="modal fade" id="rejectOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -269,8 +183,8 @@
             Are you sure want to reject this Order?
           </div>
           <div class="modal-footer">
-            <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-            <button type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Reject</button>
+            <button #closeRejectOrder type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
+            <button type="submit" (click)="onUpdateStatus('RJCT')" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Reject</button>
           </div>
         </div>
       </div>

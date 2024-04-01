@@ -1,11 +1,11 @@
 <app-navbar></app-navbar>
 
 <!-- CUSTOMER -->
-<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 1" style="height: 100vh;">
+<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 1" style="height: 100%;">
     <div class="d-flex justify-content-between mb-3">
         <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20; cursor: pointer;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex align-items-center justify-content-center">
-            <p style="font-size: 20px;">Paket 1 Minggu (Rp 120,000)</p>
+            <p style="font-size: 20px;">{{ selectedOrder.transactionDetailDtoList[0].package_id.package_name }} (Rp {{ selectedOrder.totalPrice | number }})</p>
         </div>
     </div>
 
@@ -23,14 +23,14 @@
                 </tr>
             </thead>
             <tbody>
-            <tr>
-                <th class="align-middle" scope="row">1</th>
-                <td class="align-middle">01 December 2024</td>
-                <td class="align-middle">Nasi, Ayam Goreng, Sambal Matah</td>
-                <td class="align-middle"><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
-                <td class="align-middle">Rp 20,000</td>
-                <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-sticky-note"></i> Take Notes</button></td>
-                <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#cancelOrder"><i class="fas fa-times-circle"></i> Cancel</button></td>
+            <tr *ngFor="let package of packageList, let i=index">
+                <th class="align-middle" scope="row">{{ i+1 }}</th>
+                <td class="align-middle">{{ package.package_id.value_date | date: 'dd MMMM yyyy' }}</td>
+                <td class="align-middle">{{ package.food_names }}</td>
+                <td class="align-middle"><img [src]="package.package_id.food_img" alt="" style="width: 300px; border-radius: 10px;"></td>
+                <td class="align-middle">Rp {{ package.package_id.price | number }}</td>
+                <td class="align-middle"><p *ngIf="package.notes != null">{{ package.notes }}</p><button *ngIf="checkStatus()" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-sticky-note"></i> Take Notes</button></td>
+                <td class="align-middle"><p *ngIf="package.flag_confirm">Canceled</p><button *ngIf="checkStatus() && package.flag_confirm == null" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#cancelOrder"><i class="fas fa-times-circle"></i> Cancel</button></td>
             </tr>
             </tbody>
         </table>
@@ -92,8 +92,8 @@
           Are you sure want to cancel this order?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Cancel</button>
+          <button type="button" #closeCancel class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" class="btn btn-sm" (click)="onUpdateOrderDetail('cancel')" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Cancel</button>
         </div>
       </div>
     </div>
@@ -107,12 +107,14 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel">Take Notes</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="take a notes...">
-        </div>
+        <form [formGroup]="detailOrderForm">
+          <div class="modal-body">
+            <input type="text" class="form-control" formControlName="notes" id="notes" placeholder="take a notes...">
+          </div>
+        </form>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+          <button type="button" #closeNotes class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" class="btn btn-sm" (click)="onUpdateOrderDetail('notes')" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
         </div>
       </div>
     </div>

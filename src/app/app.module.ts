@@ -41,6 +41,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
 import { ListCustomerComponent } from './admin/customer-list/list-customer/list-customer.component';
+import { OrderPipe } from './cart/order/order.pipe';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ListCustomerComponent } from './admin/customer-list/list-customer/list-
     ViewPackageComponent,
     DetailChatComponent,
     ListCustomerComponent,
+    OrderPipe,
   ],
   imports: [
     BrowserModule,

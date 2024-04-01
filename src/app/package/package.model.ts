@@ -1,5 +1,5 @@
 export class Package {
-
+  package_name!: string;
   package_header!: string;
   package_id!: string;
   merchant_id!: string;

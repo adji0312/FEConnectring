@@ -10,7 +10,7 @@
   </div>
 
   <div class="card shadow" style="border: none;">
-    <div class="card-body">
+    <div *ngIf="findGroup" class="card-body">
       <div class="d-flex justify-content-between">
         <div *ngIf="findGroup" class="d-flex flex-column">
           <h5>{{ findGroup.group_name }} ( {{ findGroup.customers.length }} Members)</h5>
