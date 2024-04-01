@@ -8,17 +8,10 @@
     <div class="d-flex gap-3 mb-4">
         <h2>Chat with {{ catering.merchant_name }}</h2>
     </div>
-    
-    <!-- <div class="mb-4">
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search Catering" aria-label="Search">
-            <button type="button" class="btn btn-sm" style="background-color: #c5a375; width: 140px; color: white;"><i class="fas fa-search"></i> Search</button>
-        </form>
-    </div> -->
   </div>
   <div style="height: 100vh;" class="bg-light shadow-lg d-flex flex-column justify-content-end">
 
-    <div style="overflow-y: auto;" class="m-3 mt-4 d-flex flex-column">
+    <div style="overflow-y: auto;" class="m-3 mt-4 d-flex flex-column" let="message of viewChat.messages">
 
         <!-- this for other user -->
         <div class="d-flex justify-content-start">

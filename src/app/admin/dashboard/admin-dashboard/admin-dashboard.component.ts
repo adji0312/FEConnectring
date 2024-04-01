@@ -157,7 +157,10 @@ export class AdminDashboardComponent implements OnInit {
       return;
     }
 
-    this.merchantService.updateMerchant(this.editMerchantForm.value, this.editMerchant.id, this.loginuser.accessToken).subscribe(
+    console.log(this.editMerchantForm.value);
+    
+
+    this.merchantService.updateMerchant(this.editMerchantForm.value, this.loginuser.accessToken).subscribe(
       (response: Merchant) => {
         Swal.fire({
           position: 'center',

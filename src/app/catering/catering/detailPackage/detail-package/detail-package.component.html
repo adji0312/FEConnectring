@@ -4,7 +4,7 @@
         <h2><a href="/detailCatering" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex flex-column gap-2 align-items-end">
             <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 50%;" data-bs-toggle="modal" data-bs-target="#addToOrder"><i class="fas fa-shopping-cart"></i> Add to order</button>
-            <p style="font-size: 20px;">Paket 1 Minggu (Rp 120,000)</p>
+            <p style="font-size: 20px;">{{ packageList[0].package_header }} (Rp {{ packageList[0].total_price | number }})</p>
         </div>
     </div>
 
@@ -20,7 +20,14 @@
                 </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr *ngFor="let pack of packageList, let i=index">
+                <th scope="row">{{ i+1 }}</th>
+                <td>{{ pack.value_date | date: 'dd MMMM yyyy' }}</td>
+                <td>{{ getFoodNames(pack) }}</td>
+                <td><img [src]="pack.food_img" alt="" style="width: 300px; border-radius: 10px;"></td>
+                <td>Rp {{ pack.price | number }}</td>
+            </tr>
+            <!-- <tr>
                 <th scope="row">1</th>
                 <td>01 Januari 2024</td>
                 <td>Nasi, Ayam Goreng, Sambal Matah</td>
@@ -33,14 +40,7 @@
                 <td>Nasi, Ayam Goreng, Sambal Matah</td>
                 <td><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
                 <td>Rp 100,000</td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>01 Januari 2024</td>
-                <td>Nasi, Ayam Goreng, Sambal Matah</td>
-                <td><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
-                <td>Rp 100,000</td>
-            </tr>
+            </tr> -->
             </tbody>
         </table>
     </div>

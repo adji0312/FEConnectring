@@ -22,7 +22,9 @@ export class MerchantService {
     return this.http.get(`${this.baseUrl}/all`, {headers: headers});
   }
 
-  updateMerchant(merchant: Merchant, id: number,  accessToken: any):Observable<Merchant>{
+  updateMerchant(merchant: Merchant, accessToken: any):Observable<Merchant>{
+    console.log(merchant);
+    
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.put<Merchant>(`${this.baseUrl}/update`, merchant, {headers: headers});
   }
@@ -32,5 +34,12 @@ export class MerchantService {
     console.log(username);
     
     return this.http.post<Merchant>(`${this.baseUrl}/delete`, username, {headers: headers});
+  }
+
+  getMerchant(username: string, accessToken: any): Observable<any>{
+    const body = {username};
+    
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post(`${this.baseUrl}/getMerchant`, body, {headers: headers});
   }
 }

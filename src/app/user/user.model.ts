@@ -8,4 +8,7 @@ export class User {
     phone!: string;
     city!: string;
     postal_code!: string;
+
+    oldPassword!: string;
+    newPassword!: string;
 }

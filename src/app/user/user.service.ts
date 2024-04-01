@@ -59,4 +59,12 @@ export class UserService {
     const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
     return this.http.post(environment.baseUrl+"/auth/login", user, {headers: headers});
   }
+
+  changePassword(user: User, accessToken: any): Observable<User>{
+    // const body = {username, oldPassword, newPassword};
+    console.log(user);
+    
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.put<User>(environment.baseUrl+"/auth/change-password", user, {headers: headers});
+  }
 }

@@ -10,6 +10,9 @@ import { Observable } from 'rxjs';
 })
 export class ChatService {
 
+  public chat!: Chat;
+  viewChat: Chat = new Chat;
+
   constructor(private router: Router, private http: HttpClient) {
     this.http = http;
   }
@@ -19,5 +22,17 @@ export class ChatService {
   addChat(chat: Chat, accessToken: any): Observable<Chat>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<Chat>(`${this.baseUrl}/add`, chat, {headers: headers});
+  }
+
+  // findChat(chat: Chat, accessToken: any): Observable<any>{
+  //   const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+  //   return this.http.get(`${this.baseUrl}/findChat`, chat, {headers: headers});
+  // }
+
+  findChat(chat: Chat, accessToken: any): Observable<any>{
+    console.log(chat);
+    
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any>(`${this.baseUrl}/findChat`, chat, {headers:headers});
   }
 }

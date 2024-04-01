@@ -14,6 +14,7 @@ export class Merchant {
     picByte!: Blob;
     description!: string;
     image_merchant!: File;
+    username!: string;
     // file!: File;
     // url!: string;
 }
