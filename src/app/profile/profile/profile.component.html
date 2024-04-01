@@ -2,6 +2,7 @@
 <div class="m-4 mt-5">
     <div class="d-flex justify-content-between mb-4">
         <h2>Profile</h2>
+        <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptOrder"><i class="fas fa-key"></i> Change Password</button>
     </div>
 
     <form>
@@ -11,19 +12,63 @@
         </div>
         <div class="mb-2">
           <label for="exampleInputPassword1" class="form-label">Username</label>
-          <input type="text" class="form-control" id="exampleInputPassword1">
+          <input type="text" class="form-control" id="exampleInputPassword1" disabled>
         </div>
         <div class="mb-2">
           <label for="exampleInputPassword1" class="form-label">Phone</label>
           <input type="text" class="form-control" id="exampleInputPassword1">
         </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <button type="submit" class="btn btn-primary btn-sm">Update Profile</button>
+        <button type="button" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#updateProfile"><i class="fas fa-pencil-alt"></i> Update Profile</button>
     </form>
-    
+</div>
+
+<div class="modal fade" id="acceptOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-2">
+            <label for="exampleInputEmail1" class="form-label">Old Password</label>
+            <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          </div>
+          <div class="mb-2">
+            <label for="exampleInputEmail1" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          </div>
+          <div class="mb-2">
+            <label for="exampleInputEmail1" class="form-label">Confirm New Password</label>
+            <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 100px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100px; color: white;"><i class="fas fa-key"></i> Change</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Update Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to update your profile?
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 100px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100px; color: white;"><i class="fas fa-pencil-alt"></i> Update</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <app-footer></app-footer>

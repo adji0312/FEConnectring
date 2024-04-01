@@ -1,10 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription, switchMap, timer } from 'rxjs';
+import { Package } from 'src/app/package/package.model';
 import { Transaction } from 'src/app/transaction/transaction.model';
 import { TransactionService } from 'src/app/transaction/transaction.service';
 import Swal from 'sweetalert2';
+import { OrderService } from './order.service';
 
 @Component({
   selector: 'app-order',
@@ -30,6 +33,8 @@ export class OrderComponent implements OnInit {
   constructor(
     private transactionService: TransactionService,
     private formBuilder : FormBuilder,
+    private router: Router,
+    private orderService: OrderService
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +72,13 @@ export class OrderComponent implements OnInit {
       // console.log(data);
     });
   }
+
+  orderDetailPage(order: Transaction){
+    this.router.navigate(['orderDetail']);
+
+    this.orderService.order = order;
+  }
+
   clickOrderHistory(){
     this.x = 1
     this.orderList = [];
@@ -117,20 +129,9 @@ export class OrderComponent implements OnInit {
   }
 
   updateStatus(group_id: string){
-
     this.orderForm.patchValue({
       group_id: group_id
     });
-
-    // if(status == "ACC"){
-    //   this.orderForm.patchValue({
-    //     payment_status: "ACC"
-    //   });
-    // }else if(status == "RJCT"){
-    //   this.orderForm.patchValue({
-    //     payment_status: "RJCT"
-    //   });
-    // }
   }
 
   onUpdateStatus(status: string){

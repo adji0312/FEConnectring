@@ -59,7 +59,7 @@
             <span *ngIf="order.payment_status == 'ACC'" class="badge text-bg-success">Accepted</span>
             <span *ngIf="order.payment_status == 'DONE'" class="badge text-bg-success">Done</span>
             <span *ngIf="order.payment_status == 'RJCT'" class="badge text-bg-danger">Rejected</span>
-            <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" href="/orderDetail"><i class="fas fa-eye"></i> Detail</a>
+            <a type="button" (click)="orderDetailPage(order)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-eye"></i> Detail</a>
           </div>
         </div>
       </div>
@@ -142,9 +142,12 @@
               </div>
             </div>
           </div>
-          <div class="d-flex align-items-center gap-2">
+          <div *ngIf="x == 0" class="d-flex align-items-center gap-2">
             <a type="button" (click)="updateStatus(order.group.group_id)"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptOrder"><i class="fas fa-check"></i> Accept</a>
             <a type="button" (click)="updateStatus(order.group.group_id)" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#rejectOrder"><i class="fas fa-times"></i> Reject</a>
+          </div>
+          <div *ngIf="x == 1" class="d-flex align-items-center gap-2">
+            <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" href="/orderDetail"><i class="fas fa-eye"></i> Detail</a>
           </div>
         </div>
       </div>
