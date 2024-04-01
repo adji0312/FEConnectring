@@ -49,25 +49,22 @@ export class AddPackageComponent implements OnInit {
     private af: AngularFireStorage,
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
-
-
-
-
   }
 
 
   ngOnInit(): void {
 
     this.addPackageForm = this.formBuilder.group({
-      start_date: [''],
-      end_date: [''],
+      package_name: ['', Validators.required],
+      start_date: ['', Validators.required],
+      end_date: ['', Validators.required],
       value_date: [''],
       price: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       image: [''],
-      food_img: [''],
+      food_img: ['', Validators.required],
       merchant_username: [''],
       package_id: [''],
-      packageItemList: [],
+      packageItemList: ['', Validators.required],
     });
 
     this.combinedForm = this.formBuilder.group({
@@ -121,7 +118,8 @@ export class AddPackageComponent implements OnInit {
       price: [''],
       food_img: [''],
       merchant_username: [''],
-      package_header: ['']
+      package_header: [''],
+      package_name: ['']
     });
   }
 
@@ -132,11 +130,23 @@ export class AddPackageComponent implements OnInit {
 
   getFoodNames(pack: Package): string {
 
-    pack.packageItemDtoList.forEach(packageItem => { // Accessing 'food_name' within 'food' object
-    });
+    // pack.packageItemDtoList.forEach(packageItem => { // Accessing 'food_name' within 'food' object
+    // });
 
     // return "true";
     return pack.packageItemDtoList.map(packageItem => packageItem.food_name).join(', ');
+  }
+
+  addPackageValidation(formGroup: FormGroup){
+    const packageNameControl = formGroup.get('package_name');
+    const startDateControl = formGroup.get('start_date');
+    const endDateControl = formGroup.get('end_date');
+
+    if (!packageNameControl || !startDateControl || !endDateControl) {
+      return false;
+    }
+
+    return packageNameControl.valid && startDateControl.valid && endDateControl.valid;
   }
 
   addPackage(){
@@ -152,6 +162,7 @@ export class AddPackageComponent implements OnInit {
         start_date: this.addPackageForm.value.start_date,
         end_date: this.addPackageForm.value.end_date,
         value_date: new Date(curr_date),
+        package_name: this.addPackageForm.value.package_name,
         merchant_username: this.loginuser.userEntity.username
       });
 
@@ -225,13 +236,18 @@ export class AddPackageComponent implements OnInit {
     if(this.closeAddPackage){
       this.closeAddPackage.nativeElement.click();
     }
+
+    this.addPackageForm.reset();
   }
 
   closeEditPackageModal(){
     if(this.closeEditPackage){
       this.closeEditPackage.nativeElement.click();
     }
+
+    this.addPackageForm.reset();
   }
+
 
   editPackage(pack: Package){
     this.selectedPackage = pack;
@@ -265,6 +281,11 @@ export class AddPackageComponent implements OnInit {
     });
 
     if(this.package_image == null){
+
+      this.addPackageForm.patchValue({
+        food_img: null
+      });
+
       this.packageService.updatePackage(this.addPackageForm.value, this.loginuser.accessToken).subscribe(
         (response: Package) => {
           Swal.fire({

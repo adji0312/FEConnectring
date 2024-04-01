@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { GroupService } from '../group.service';
 import { Group } from '../group.model';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -32,10 +31,9 @@ export class GroupComponent implements OnInit {
   public findGroup!: Group;
 
   constructor(
-    private router: Router,
     private formBuilder: FormBuilder,
     private groupService: GroupService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
 
@@ -63,32 +61,31 @@ export class GroupComponent implements OnInit {
       username: this.loginuser.userEntity.username
     });
 
-    console.log(this.groupForm);
+    // console.log(this.groupForm);
 
     this.realTimeDataSubscription$ = timer(0, 1000)
-      .pipe(switchMap(_ => this.groupService.findGroup(this.groupForm.value, this.loginuser.accessToken)))
+      .pipe(
+        switchMap(_ => this.groupService.findGroup(this.groupForm.value, this.loginuser.accessToken)))
       .subscribe(data => {
 
       this.findGroup = data;
-      // console.log(this.findGroup);
 
-      this.groupForm.patchValue({
-        group_name: this.findGroup.group_name,
-        address: this.findGroup.address,
-        city: this.findGroup.city,
-        postal_code: this.findGroup.postal_code,
-        owner:  this.findGroup.owner
-      });
+      if(this.findGroup){
+        this.groupForm.patchValue({
+          group_name: this.findGroup.group_name,
+          address: this.findGroup.address,
+          city: this.findGroup.city,
+          postal_code: this.findGroup.postal_code,
+          owner:  this.findGroup.owner
+        });
+      }
     });
+  }
 
-
-    // console.log(this.loginuser.userEntity);
-    // this.flagOwner = 1;
-
-    // this.ownerGroup();
-    // console.log(this.loginuser.accessToken);
-
-
+  ngOnDestroy() {
+    if (this.realTimeDataSubscription$) {
+      this.realTimeDataSubscription$.unsubscribe();
+    }
   }
 
   addGroup(){
@@ -119,11 +116,12 @@ export class GroupComponent implements OnInit {
       }
     );
 
-
     this.groupForm.reset();
     this.closeCreateGroupModal();
 
-
+    this.groupForm.patchValue({
+      username: this.loginuser.userEntity.username
+    });
   }
 
   updateGroup(){

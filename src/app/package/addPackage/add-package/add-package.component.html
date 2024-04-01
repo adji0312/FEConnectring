@@ -4,7 +4,7 @@
         <h2><a href="/package" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex flex-column gap-2 align-items-end" style="width: 300px;">
             <button id="openModalButton" type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 50%;" data-bs-toggle="modal" data-bs-target="#newPackage"><i class="fas fa-plus"></i> New</button>
-            <p style="font-size: 20px;">- (Rp {{ packageList ? (packageList[0].total_price | number)  : 0 }} )</p>
+            <p style="font-size: 20px;">{{ packageList ? packageList[0].package_name : '-' }} (Rp {{ packageList ? (packageList[0].total_price | number)  : 0 }} )</p>
         </div>
     </div>
 
@@ -41,29 +41,44 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">New Package</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeAddPackageModal()"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="addPackageForm">
-            <!-- <div class="mb-2">
-              <label for="exampleFormControlInput1" class="form-label">Package Name</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1">
-            </div> -->
+            <div class="mb-2">
+              <label for="package_name" class="form-label">Package Name</label>
+              <input type="text" class="form-control" formControlName="package_name" id="package_name" [ngClass]="{ 'is-invalid' : addPackageForm.controls['package_name'].touched && addPackageForm.controls['package_name'].errors}">
+              <div *ngIf="addPackageForm.controls['package_name'].touched && addPackageForm.controls['package_name'].errors" class="text-danger">
+                <div *ngIf="addPackageForm.controls['package_name'].touched && addPackageForm.controls['package_name'].errors['required']">
+                  Package Name must be filled
+                </div>
+              </div>
+            </div>
             <div class="mb-2 d-flex justify-content-between gap-2">
               <div class="w-100">
                 <label for="startDate" class="form-label">Start Date</label>
-                <input type="date" class="form-control" formControlName="start_date" id="startDate" rows="3">
+                <input type="date" class="form-control" formControlName="start_date" id="startDate" rows="3" [ngClass]="{ 'is-invalid' : addPackageForm.controls['start_date'].touched && addPackageForm.controls['start_date'].errors}">
+                <div *ngIf="addPackageForm.controls['start_date'].touched && addPackageForm.controls['start_date'].errors" class="text-danger">
+                  <div *ngIf="addPackageForm.controls['start_date'].touched && addPackageForm.controls['start_date'].errors['required']">
+                    Start Date must be filled
+                  </div>
+                </div>
               </div>
               <div class="w-100">
                 <label for="endDate" class="form-label">End Date</label>
-                <input type="date" class="form-control" formControlName="end_date" id="endDate" rows="3">
+                <input type="date" class="form-control" formControlName="end_date" id="endDate" rows="3" [ngClass]="{ 'is-invalid' : addPackageForm.controls['end_date'].touched && addPackageForm.controls['end_date'].errors}">
+                <div *ngIf="addPackageForm.controls['end_date'].touched && addPackageForm.controls['end_date'].errors" class="text-danger">
+                  <div *ngIf="addPackageForm.controls['end_date'].touched && addPackageForm.controls['end_date'].errors['required']">
+                    End Date must be filled
+                  </div>
+                </div>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button #closeAddPackage type="button" class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" (click)="addPackage()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+          <button #closeAddPackage type="button" class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" (click)="closeAddPackageModal()"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" (click)="addPackage()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;" [disabled]="!addPackageValidation(addPackageForm)"><i class="fas fa-save"></i> Save</button>
         </div>
       </div>
     </div>
@@ -74,7 +89,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Item</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeEditPackageModal()"></button>
         </div>
         <div class="modal-body">
           <form #userForm="ngForm" [formGroup]="addPackageForm">
@@ -83,8 +98,13 @@
                 <!-- <select class="form-select" multiple aria-label="Multiple select example">
                   <option selected>Choose Food</option>
                 </select> -->
-                <ng-multiselect-dropdown class="custom-font-size" [(ngModel)]="selectedFood" formControlName="packageItemList"  [settings]="dropdownSettings" [data]="foods">
+                <ng-multiselect-dropdown class="custom-font-size" [(ngModel)]="selectedFood" formControlName="packageItemList"  [settings]="dropdownSettings" [data]="foods" [ngClass]="{ 'is-invalid' : addPackageForm.controls['packageItemList'].touched && addPackageForm.controls['packageItemList'].errors}">
                 </ng-multiselect-dropdown>
+                <div *ngIf="addPackageForm.controls['packageItemList'].touched && addPackageForm.controls['packageItemList'].errors" class="text-danger">
+                  <div *ngIf="addPackageForm.controls['packageItemList'].touched && addPackageForm.controls['packageItemList'].errors['required']">
+                    Food must be filled
+                  </div>
+                </div>
               </div>
               <div class="mb-2">
                 <label for="price" class="form-label">Price</label>
@@ -108,8 +128,8 @@
             </form>
           </div>
         <div class="modal-footer">
-          <button #closeEditPackage type="button" class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-times"></i> Close</button>
-          <button [disabled]="addPackageForm.invalid" (click)="onUpdatePackage($event)" type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+          <button #closeEditPackage type="button" class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" (click)="closeEditPackageModal()"><i class="fas fa-times"></i> Close</button>
+          <button (click)="onUpdatePackage($event)" type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
         </div>
       </div>
     </div>
