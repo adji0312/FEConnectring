@@ -21,6 +21,11 @@ export class TransactionService {
 
   getCateringOrder(transaction: Transaction, accessToken: any){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.post<Transaction[]>(`${this.baseUrl}/getCateringOrder`, transaction, {headers: headers});
+    return this.http.post<any[]>(`${this.baseUrl}/getCateringOrder`, transaction, {headers: headers});
+  }
+
+  updateTransactionStatus(transaction: Transaction, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.put<any[]>(`${this.baseUrl}/updateStatus`, transaction, {headers: headers});
   }
 }

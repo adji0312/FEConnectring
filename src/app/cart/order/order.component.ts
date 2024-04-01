@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { Transaction } from 'src/app/transaction/transaction.model';
 import { TransactionService } from 'src/app/transaction/transaction.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-order',
@@ -10,6 +12,9 @@ import { TransactionService } from 'src/app/transaction/transaction.service';
   styleUrls: ['./order.component.css']
 })
 export class OrderComponent implements OnInit {
+
+  @ViewChild('closeAcceptOrder') closeAcceptOrder: ElementRef | undefined;
+  @ViewChild('closeRejectOrder') closeRejectOrder: ElementRef | undefined;
 
   public loginuser: any = {};
   x!: number;
@@ -41,9 +46,11 @@ export class OrderComponent implements OnInit {
     }else if(this.loginuser.userEntity.flag == 2){
       this.orderForm = this.formBuilder.group({
         customer_username: this.loginuser.userEntity.username,
-        menu: "Order"
+        menu: "Incoming",
+        payment_status: [''],
+        group_id: ['']
       });
-      this.clickOngoing();
+      this.clickIncoming();
     }
   }
 
@@ -75,32 +82,109 @@ export class OrderComponent implements OnInit {
 
   }
 
-  groupByPackageHeader(data: any[]): any[] {
-    return data.reduce((acc, item) => {
-      const packageHeader = item.package.package_header;
-      if (!acc[packageHeader]) {
-        acc[packageHeader] = [];
-      }
-      acc[packageHeader].push(item);
-      return acc;
-    }, {});
+  clickIncoming(){
+    this.x = 0;
+    this.cateringOrder = [];
+
+    this.orderForm.patchValue({
+      menu: "Incoming"
+    });
+
+
+    this.transactionService.getCateringOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.cateringOrder = data;
+      // console.log(this.cateringOrder);
+    });
   }
 
   clickOngoing(){
-    this.x = 0;
+    this.x = 1
+    this.cateringOrder = [];
+
+    this.orderForm.patchValue({
+      menu: "Ongoing"
+    });
 
     this.transactionService.getCateringOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
-      console.log(data);
-      // this.cateringOrder = this.groupByPackageHeader(data);
       this.cateringOrder = data;
-      // console.log(data);
+      // console.log(this.cateringOrder);
     });
-  }
-  clickHistory(){
-    this.x = 1
   }
 
   clickDone(){
     this.x = 2
+    this.cateringOrder = [];
+  }
+
+  updateStatus(group_id: string){
+
+    this.orderForm.patchValue({
+      group_id: group_id
+    });
+
+    // if(status == "ACC"){
+    //   this.orderForm.patchValue({
+    //     payment_status: "ACC"
+    //   });
+    // }else if(status == "RJCT"){
+    //   this.orderForm.patchValue({
+    //     payment_status: "RJCT"
+    //   });
+    // }
+  }
+
+  onUpdateStatus(status: string){
+    var txn_status = "";
+    if(status == "ACC"){
+      this.orderForm.patchValue({
+        payment_status: "ACC",
+      });
+      txn_status = "Accept";
+    }else if(status == "RJCT"){
+      this.orderForm.patchValue({
+        payment_status: "RJCT",
+      });
+      txn_status = "Reject";
+    }
+
+    this.transactionService.updateTransactionStatus(this.orderForm.value, this.loginuser.accessToken).subscribe(
+      (response: any) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success " + txn_status  +  " Order",
+          showConfirmButton: true,
+          timer: 1500
+        });
+
+        this.clickIncoming();
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed " + txn_status + " Order",
+          showConfirmButton: true,
+          timer: 1500
+        })
+    });
+
+    if(status == "ACC"){
+      this.closeAcceptOrderModal();
+    }else if(status == "RJCT"){
+      this.closeRejectOrderModal();
+    }
+  }
+
+  closeAcceptOrderModal(){
+    if(this.closeAcceptOrder){
+      this.closeAcceptOrder.nativeElement.click();
+    }
+  }
+
+  closeRejectOrderModal(){
+    if(this.closeRejectOrder){
+      this.closeRejectOrder.nativeElement.click();
+    }
   }
 }
