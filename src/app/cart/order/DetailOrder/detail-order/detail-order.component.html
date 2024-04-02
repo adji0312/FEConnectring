@@ -1,7 +1,6 @@
 <app-navbar></app-navbar>
-
 <!-- CUSTOMER -->
-<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 1" style="height: 100%;">
+<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 1">
     <div class="d-flex justify-content-between mb-3">
         <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20; cursor: pointer;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex align-items-center justify-content-center">
@@ -38,7 +37,7 @@
 </div>
 
 <!-- MERCHANT -->
-<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 2" style="height: 100vh;">
+<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 2">
     <div class="d-flex justify-content-between mb-3">
       <div class="d-flex gap-5">
         <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20; cursor: pointer;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
