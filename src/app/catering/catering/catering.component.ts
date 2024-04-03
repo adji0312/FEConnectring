@@ -19,6 +19,8 @@ export class CateringComponent implements OnInit {
   public loginuser: any = {};
   merchants!: Merchant[];
   realTimeDataSubscription$!: Subscription;
+  city!: Merchant[];
+  searchText: any;
 
   private loadData(){
     this.getMerchants();
@@ -39,6 +41,7 @@ export class CateringComponent implements OnInit {
   ngOnInit(): void {
 
     this.loadData();
+    this.getCityMerchant();
   }
 
   private getMerchants(){
@@ -62,6 +65,15 @@ export class CateringComponent implements OnInit {
     // console.log(blob);
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
+
+  getCityMerchant(){
+    this.merchantService.getCityMerchant(this.loginuser.accessToken).subscribe(
+      (data) => {
+        this.city = data;
+        
+      }
+    )
   }
 
 }
