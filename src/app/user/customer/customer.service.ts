@@ -45,4 +45,9 @@ export class CustomerService {
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.put<Customer>(`${this.baseUrl}/update`, customer, {headers: headers});
   }
+
+  deleteCustomer(username: string, accessToken: any): Observable<void>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.delete<void>(`${this.baseUrl}/delete/${username}`, {headers: headers});
+  }
 }
