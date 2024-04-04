@@ -20,6 +20,7 @@ export class DetailOrderComponent implements OnInit {
   @ViewChild('closeNotes') closeNotes: ElementRef | undefined;
   @ViewChild('closeCancel') closeCancel: ElementRef | undefined;
   @ViewChild('closeFilterDate') closeFilterDate: ElementRef | undefined;
+  @ViewChild('closeCheckAll') closeCheckAll: ElementRef | undefined;
 
   selectedOrder!: Transaction;
   selectedGroup!: Group;
@@ -79,19 +80,30 @@ export class DetailOrderComponent implements OnInit {
         this.selectedGroup = this.orderService.group;
 
         this.orderForm = this.formBuilder.group({
-          order_date: null,
-          group_id: this.selectedGroup.group_id
+          order_date: new Date(),
+          group_id: this.selectedGroup.group_id,
+          customer_username: null
         });
 
         // console.log(this.orderForm.value);
 
-        this.transactionService.getCateringOrderDetail(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
-          this.orderDetailList = data;
-        });
-
-
+        this.initData();
     }
 
+  }
+
+  initData(){
+    this.transactionService.getCateringOrderDetail(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.orderDetailList = data;
+
+      // console.log(data);
+
+      if(this.orderDetailList[0].customer_username == null){
+        this.orderIsEmpty = true;
+      }else{
+        this.orderIsEmpty = false;
+      }
+    });
   }
 
 
@@ -152,7 +164,6 @@ export class DetailOrderComponent implements OnInit {
         }
     );
 
-    // this.detailOrderForm.get('package_id')?.reset();
     this.detailOrderForm.get('notes')?.setValue("");
     this.detailOrderForm.get('flag_confirm')?.setValue("");
 
@@ -164,16 +175,7 @@ export class DetailOrderComponent implements OnInit {
   }
 
   searchDate(){
-    this.transactionService.getCateringOrderDetail(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
-      // console.log(data);
-      this.orderDetailList = data;
-      if(this.orderDetailList[0].customer_username == null){
-        this.orderIsEmpty = true;
-      }else{
-        this.orderIsEmpty = false;
-      }
-    });
-
+    this.initData();
     this.closeFilterDateModal();
   }
 
@@ -184,6 +186,25 @@ export class DetailOrderComponent implements OnInit {
     }
 
     return false;
+  }
+
+  updateOrderCheck(username: string){
+
+    this.orderForm.patchValue({
+      customer_username: username
+    });
+
+
+    this.transactionService.updateOrderCheck(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.initData();
+    });
+  }
+
+  updateAll(){
+    this.transactionService.updateOrderCheck(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.initData();
+      this.closeCheckAllModal();
+    });
   }
 
   closeNotesModal(){
@@ -201,6 +222,12 @@ export class DetailOrderComponent implements OnInit {
   closeFilterDateModal(){
     if(this.closeFilterDate){
       this.closeFilterDate.nativeElement.click();
+    }
+  }
+
+  closeCheckAllModal(){
+    if(this.closeCheckAll){
+      this.closeCheckAll.nativeElement.click();
     }
   }
 

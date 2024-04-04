@@ -19,5 +19,6 @@ export class TransactionDetail{
   flag_check!: boolean;
   food_names!: string;
   customer_username!: string;
+  customer_name!: string;
   order_date!: Date;
 }

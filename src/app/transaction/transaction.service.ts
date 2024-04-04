@@ -40,6 +40,11 @@ export class TransactionService {
     return this.http.put<any[]>(`${this.baseUrl}/updateDetailOrder`, transaction, {headers: headers});
   }
 
+  updateOrderCheck(transaction: TransactionDetail, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.put<any[]>(`${this.baseUrl}/updateCheck`, transaction, {headers: headers});
+  }
+
   createTransaction(transaction: Transaction, accessToken: any):Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any>(`${this.baseUrl}/create`, transaction, {headers: headers});

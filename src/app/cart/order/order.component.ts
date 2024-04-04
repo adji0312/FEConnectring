@@ -128,6 +128,15 @@ export class OrderComponent implements OnInit {
   clickDone(){
     this.x = 2
     this.cateringOrder = [];
+
+    this.orderForm.patchValue({
+      menu: "Done"
+    });
+
+    this.transactionService.getCateringOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.cateringOrder = data;
+      // console.log(this.cateringOrder);
+    });
   }
 
   updateStatus(group_id: string){

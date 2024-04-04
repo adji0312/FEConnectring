@@ -68,12 +68,12 @@
             <tbody *ngIf="!orderIsEmpty">
             <tr *ngFor="let order of orderDetailList, let i=index">
                 <th class="align-middle" scope="row">{{ i+1 }}</th>
-                <td class="align-middle">{{ order.customer_username }}</td>
+                <td class="align-middle">{{ order.customer_name }}</td>
                 <td class="align-middle">{{ order.package_id.package_name }}</td>
                 <td class="align-middle">{{ order.food_names }}</td>
                 <td class="align-middle">{{ order.notes }}</td>
                 <td class="align-middle">
-                  <button type="button" *ngIf="checkButton(order.flag_check)"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Check</button>
+                  <button type="button" (click)="updateOrderCheck(order.customer_username)" *ngIf="checkButton(order.flag_check)"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Check</button>
                   <button type="button" *ngIf="!checkButton(order.flag_check)" class="btn btn-sm" style="background-color: #b3b3b3; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-check"></i> Checked</button>
                 </td>
                 <!-- <td class="align-middle"></td> -->
@@ -135,8 +135,8 @@
           Are you sure want to confirmation all order?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
+          <button type="button" #closeCheckAll class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" (click)="updateAll()"  class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
         </div>
       </div>
     </div>
