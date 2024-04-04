@@ -36,6 +36,7 @@ export class ProfileComponent implements OnInit {
   type!: string;
   profile_img!: string;
   picByte!: Blob;
+  image_merchant!: File;
 
 
   // oldPassword = '';
@@ -112,6 +113,9 @@ export class ProfileComponent implements OnInit {
         }
       )
     }
+
+    console.log(this.image_merchant);
+    
     
   }
 
@@ -271,14 +275,26 @@ export class ProfileComponent implements OnInit {
     }
 
     console.log(this.editMerchantForm.value);
-    this.formData.append('merchant_name', this.editCustomerForm.get('merchant_name')?.value);
-    this.formData.append('username', this.editCustomerForm.get('username')?.value);
-    this.formData.append('address', this.editCustomerForm.get('address')?.value);
-    this.formData.append('city', this.editCustomerForm.get('city')?.value);
-    this.formData.append('phone', this.editCustomerForm.get('phone')?.value);
-    this.formData.append('postal_code', this.editCustomerForm.get('postal_code')?.value);
+    console.log(this.editMerchantForm.get('city')?.value);
+    
+    this.formData.set('merchant_name', this.merchant_name);
+    this.formData.set('username', this.loginuser.userEntity.username);
+    this.formData.set('address', this.address);
+    this.formData.set('city', this.city);
+    this.formData.set('phone', this.phone);
+    this.formData.set('postal_code', this.postal_code);
+    this.formData.set('description', this.description);
+    // this.formData.set('image_merchant', t)
+    // this.formData.set('merchant_name', this.editMerchantForm.get('merchant_name')?.value);
+    // this.formData.set('username', this.editMerchantForm.get('username')?.value);
+    // this.formData.set('address', this.editMerchantForm.get('address')?.value);
+    // this.formData.set('city', this.editMerchantForm.get('city')?.value);
+    // this.formData.set('phone', this.editMerchantForm.get('phone')?.value);
+    // this.formData.set('postal_code', this.editMerchantForm.get('postal_code')?.value);
     // this.formData.append('image_merchant', this.editCustomerForm.get('description')?.value);
 
+    console.log(this.formData.get('merchant_name'));
+    
     
     
 
@@ -303,7 +319,7 @@ export class ProfileComponent implements OnInit {
       }
     );
 
-    document.getElementById('edit-merchant-form')!.click();
+    // document.getElementById('edit-merchant-form')!.click();
   }
 
   inputMerchantName(){

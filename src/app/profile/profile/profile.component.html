@@ -19,12 +19,12 @@
     </form>
 
     <!-- MERCHANT -->
-    <!-- <form *ngIf="loginuser.userEntity.flag == 2" (ngSubmit)="onUpdateMerchant()">
+    <form *ngIf="loginuser.userEntity.flag == 2" (ngSubmit)="onUpdateMerchant()">
       <label for="merchant_name" class="form-label">Merchant Image</label> <br>
       <img [src]="getImageUrl(catering.picByte)" alt="" style="width: 300px;">
         <div class="mb-2">
           <label for="merchant_name" class="form-label">Merchant Name</label>
-          <input type="text" name="merchant_name" class="form-control" id="merchant_name" [(ngModel)]="merchant_name" (input)="inputMerchantName()">
+          <input type="text" name="merchant_name" class="form-control" id="merchant_name" [(ngModel)]="merchant_name">
         </div>
         <div class="mb-2">
           <label for="phone" class="form-label">Phone</label>
@@ -46,9 +46,13 @@
           <label for="description" class="form-label">Description</label>
           <input type="text" name="description" class="form-control" id="description" [(ngModel)]="description">
         </div>
+        <div class="mb-2">
+          <label for="" class="form-label">Photo</label>
+          <input type="file" class="form-control" value="select" (change)="onFileChanged($event)" name="image_merchant" [(ngModel)]="image_merchant">
+        </div>
         <button type="submit" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;"><i class="fas fa-pencil-alt"></i> Update Profile</button>
-    </form> -->
-    <form *ngIf="loginuser.userEntity.flag == 2" #merchantForm="ngForm" [formGroup]="editMerchantForm">
+    </form>
+    <!-- <form *ngIf="loginuser.userEntity.flag == 2" #merchantForm="ngForm" [formGroup]="editMerchantForm">
       <label for="merchant_name" class="form-label">Merchant Image</label> <br>
       <img [src]="getImageUrl(catering.picByte)" alt="" style="width: 300px;">
         <div class="mb-2">
@@ -80,7 +84,7 @@
           <input type="file" #profile_img name="profile_img" class="form-control" formControlName="profile_img" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['profile_img'].touched && editMerchantForm.controls['profile_img'].errors}" id="profile_img" placeholder="" autocomplete="off" (change)="onFileChanged($event)">
         </div>
         <button type="button" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#updateProfile"><i class="fas fa-pencil-alt"></i> Update Profile</button>
-    </form>
+    </form> -->
 </div>
 
 <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
