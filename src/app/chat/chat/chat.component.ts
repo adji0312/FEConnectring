@@ -26,8 +26,9 @@ export class ChatComponent implements OnInit {
   chatData!: Chat[];
   checkChat!: FormGroup;
   getChat!: FormGroup;
+  addChat!: FormGroup;
   chatExists!: boolean;
-  viewCatering: Merchant = new Merchant;
+  // viewCatering: Merchant = new Merchant;
 
   constructor(
     private customerService: CustomerService,
@@ -50,10 +51,17 @@ export class ChatComponent implements OnInit {
       customerId: [''],
       merchantId: [''],
     });
+    this.addChat = this.formBuilder.group({
+      parent_id: [''],
+      merchant_id: [''],
+    });
 
 
 
-    if(this.loginuser.userEntity.flag == 2){
+    if(this.loginuser.userEntity.flag == 1){
+      this.findCustomer();
+    }
+    else if(this.loginuser.userEntity.flag == 2){
       this.findMerchant();
     }
     
@@ -82,7 +90,29 @@ export class ChatComponent implements OnInit {
     this.showResults = this.searchTerm.length > 0; // Show only if search term exists
   }
 
-  onChat(customer: Customer){
+  onChatCustomer(merchant: Merchant){
+
+    this.checkChat.patchValue({
+      merchantId : merchant.id,
+      // merchantId : 
+    })
+    console.log(this.checkChat.value);
+
+    this.chatService.findChat(this.checkChat.value, this.loginuser.accessToken).subscribe(
+      (data: Chat) => {
+        if(data){
+          console.log(data);
+          
+          this.chatService.viewChat = data;
+          this.merchantService.viewCatering = merchant;
+          // this.customerService.customer = customer;
+          this.router.navigate(['/detailChat']);
+        }
+      }
+    )
+  }
+  
+  onChatMerchant(customer: Customer){
 
     this.checkChat.patchValue({
       customerId : customer.id,
@@ -94,19 +124,48 @@ export class ChatComponent implements OnInit {
       this.merchantService.getMerchant(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
         (data) => {
           this.merchantService.viewCatering = data;
+          this.addChat.controls['merchant_id'].setValue(data.merchant_id);
         }
       )
     }
 
-    this.chatService.findChat(this.checkChat.value, this.loginuser.accessToken).subscribe(
-      (data: Chat) => {
-        if(data){
-          this.chatService.viewChat = data;
-          this.customerService.customer = customer;
-          this.router.navigate(['/detailChat']);
+    if(this.loginuser.userEntity.flag == 2){
+      this.chatService.findChat(this.checkChat.value, this.loginuser.accessToken).subscribe(
+        (data: Chat) => {
+          if(data){
+            this.chatService.viewChat = data;
+            this.customerService.customer = customer;
+            this.router.navigate(['/detailChat']);
+          }
+          else{
+            this.addChat.controls['parent_id'].setValue(customer.parent.id);
+            
+            console.log(this.addChat.value);
+            
+            this.chatService.addChat(this.addChat.value, this.loginuser.accessToken).subscribe(
+              (response: Chat) => {
+                console.log(response);
+                this.chatService.viewChat = response;
+                this.customerService.customer = customer;
+                this.router.navigate(['/detailChat']);
+              }
+            )
+          }
+          
         }
-      }
-    )
+      )
+    }
+    else if(this.loginuser.userEntity.flag == 1){
+      this.chatService.findChat(this.checkChat.value, this.loginuser.accessToken).subscribe(
+        (data: Chat) => {
+          if(data){
+            this.chatService.viewChat = data;
+            this.customerService.customer = customer;
+            this.router.navigate(['/detailChat']);
+          }
+        }
+      )
+    }
     
   }
 
@@ -121,39 +180,50 @@ export class ChatComponent implements OnInit {
     )
   }
 
+  findCustomer(){
+    this.customerService.findCustomerByUsername(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
+      (response) => {
+        this.checkChat.patchValue({
+          customerId : response.id
+        });
+        
+      }
+    )
+  }
+
   getCustomerMerchantChat(){
     if(this.loginuser.userEntity.flag == 1){
-      
+      this.realTimeDataSubscription$ = timer(0, 1000)
+      .pipe(switchMap(_ => this.customerService.findCustomerByUsername(this.loginuser.userEntity.username, this.loginuser.accessToken)))
+      .subscribe(data => {
+        this.getChat.patchValue({
+          customerId : data.id
+        });
+
+        // console.log(this.checkChat.value);
+        
+        this.realTimeDataSubscription$ = timer(0, 1000)
+        .pipe(switchMap(_ => this.chatService.getCustomerChat(this.checkChat.value, this.loginuser.accessToken)))
+        .subscribe(data => {
+          this.chatData = data;
+        });
+      });
     }
     else if(this.loginuser.userEntity.flag == 2){
-      this.merchantService.getMerchant(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
-        async (response) => {
-          if(response){
-            this.getChat.patchValue({
-              merchantId : response.id
-            });
-            console.log(this.getChat.value);
-            this.chatService.getMerchantChat(this.checkChat.value, this.loginuser.accessToken).subscribe(
-              (data: Chat) => {
-                
-                console.log(this.chatData);
-                
-                
-                console.log(data);
-                
-              }
-            )
-          }
-          
-        }
-      )
+      this.realTimeDataSubscription$ = timer(0, 1000)
+      .pipe(switchMap(_ => this.merchantService.getMerchant(this.loginuser.userEntity.username, this.loginuser.accessToken)))
+      .subscribe(data => {
+        this.getChat.patchValue({
+          merchantId : data.id
+        });
 
-      
-      // this.getChat.patchValue({
-      //   merchantId : 
-      // });
+        this.realTimeDataSubscription$ = timer(0, 1000)
+        .pipe(switchMap(_ => this.chatService.getMerchantChat(this.checkChat.value, this.loginuser.accessToken)))
+        .subscribe(data => {
+          this.chatData = data;
 
-      // console.log(this.checkChat.value);
+        });
+      });
       
     }
   }

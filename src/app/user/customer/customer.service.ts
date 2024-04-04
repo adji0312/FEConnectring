@@ -19,8 +19,8 @@ export class CustomerService {
   private baseUrl = `${environment.baseUrl}/customer`;
 
   findCustomerByUsername(username: string, accessToken: any): Observable<any>{
-    console.log(username);
-    console.log(accessToken);
+    // console.log(username);
+    // console.log(accessToken);
 
     const body = {username};
     

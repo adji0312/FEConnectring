@@ -37,14 +37,14 @@ export class ChatService {
     return this.http.post<any>(`${this.baseUrl}/findChat`, chat, {headers:headers});
   }
 
-  getCustomerChat(chat: Chat, accessToken: any): Observable<Chat>{
+  getCustomerChat(chat: Chat, accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.post<Chat>(`${this.baseUrl}/getCustomerChat`, chat, {headers:headers});
+    return this.http.post<any>(`${this.baseUrl}/getCustomerChat`, chat, {headers:headers});
   }
 
-  getMerchantChat(chat: Chat, accessToken: any): Observable<Chat>{
+  getMerchantChat(chat: Chat, accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.post<Chat>(`${this.baseUrl}/getMerchantChat`, chat, {headers:headers});
+    return this.http.post<any>(`${this.baseUrl}/getMerchantChat`, chat, {headers:headers});
   }
 
   getMessage(chat: Chat, accessToken: any): Observable<any>{

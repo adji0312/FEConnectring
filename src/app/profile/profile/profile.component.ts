@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { Customer } from 'src/app/user/customer/customer.model';
 import { CustomerService } from 'src/app/user/customer/customer.service';
@@ -23,6 +24,7 @@ export class ProfileComponent implements OnInit {
   editCustomerForm!: FormGroup;
   realTimeDataSubscription$!: Subscription;
   detailMerchant: Merchant = new Merchant;
+  catering!: Merchant;
 
 
   // oldPassword = '';
@@ -33,7 +35,8 @@ export class ProfileComponent implements OnInit {
     private authService: UserService,
     private formBuilder: FormBuilder,
     private merchantService: MerchantService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private sanitizer: DomSanitizer
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -66,6 +69,15 @@ export class ProfileComponent implements OnInit {
     });
 
     this.getDetailCustomerMerchant();
+
+    if(this.loginuser.userEntity.flag == 2){
+      this.merchantService.getMerchant(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
+        (data) => {
+          console.log(data);
+          this.catering = data;
+        }
+      )
+    }
     
   }
 
@@ -238,6 +250,12 @@ export class ProfileComponent implements OnInit {
 
     document.getElementById('edit-merchant-form')!.click();
     // this.editMerchantForm.reset();
+  }
+
+  getImageUrl(blob: Blob) {
+    // console.log(blob);
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }

@@ -20,6 +20,8 @@
 
     <!-- MERCHANT -->
     <form *ngIf="loginuser.userEntity.flag == 2" #merchantForm="ngForm" [formGroup]="editMerchantForm">
+      <label for="merchant_name" class="form-label">Merchant Image</label> <br>
+      <img [src]="getImageUrl(catering.picByte)" alt="" style="width: 300px;">
         <div class="mb-2">
           <label for="merchant_name" class="form-label">Merchant Name</label>
           <input type="text" #merchant_name name="merchant_name" class="form-control" formControlName="merchant_name" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors}" id="merchant_name" placeholder="" autocomplete="off">

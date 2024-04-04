@@ -97,7 +97,7 @@ export class DetailCateringComponent implements OnInit {
                 this.router.navigate(['/detailChat']);
               }
             }
-            )
+          )
         }else{
           this.chatService.viewChat = data;
           this.router.navigate(['/detailChat']);
