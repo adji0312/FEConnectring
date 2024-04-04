@@ -22,7 +22,7 @@ export class MerchantService {
     return this.http.get(`${this.baseUrl}/all`, {headers: headers});
   }
 
-  updateMerchant(merchant: Merchant, accessToken: any):Observable<Merchant>{
+  updateMerchant(merchant: FormData, accessToken: any):Observable<Merchant>{
     console.log(merchant);
     
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});

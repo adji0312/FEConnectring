@@ -232,6 +232,8 @@ export class AdminDashboardComponent implements OnInit {
     
     if(event.target.files){
       const selectedFile = event.target.files[0];
+      console.log(selectedFile);
+      
       this.formData.append('image_merchant', selectedFile, selectedFile.name);
       // console.log(this.formData.get('image_merchant'));
       

@@ -2,7 +2,7 @@
 <div class="m-4 mt-5">
     <div class="d-flex justify-content-between mb-4">
         <h2>Profile</h2>
-        <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptOrder"><i class="fas fa-key"></i> Change Password</button>
+        <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#changePasswordModal"><i class="fas fa-key"></i> Change Password</button>
     </div>
 
     <!-- CUSTOMER -->
@@ -19,6 +19,35 @@
     </form>
 
     <!-- MERCHANT -->
+    <!-- <form *ngIf="loginuser.userEntity.flag == 2" (ngSubmit)="onUpdateMerchant()">
+      <label for="merchant_name" class="form-label">Merchant Image</label> <br>
+      <img [src]="getImageUrl(catering.picByte)" alt="" style="width: 300px;">
+        <div class="mb-2">
+          <label for="merchant_name" class="form-label">Merchant Name</label>
+          <input type="text" name="merchant_name" class="form-control" id="merchant_name" [(ngModel)]="merchant_name" (input)="inputMerchantName()">
+        </div>
+        <div class="mb-2">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="text" name="phone" class="form-control" id="phone" [(ngModel)]="phone">
+        </div>
+        <div class="mb-2">
+          <label for="address" class="form-label">Address</label>
+          <input type="text" name="address" class="form-control" id="address" [(ngModel)]="address">
+        </div>
+        <div class="mb-2">
+          <label for="city" class="form-label">City</label>
+          <input type="text" name="city" class="form-control" id="city" [(ngModel)]="city">
+        </div>
+        <div class="mb-2">
+          <label for="postal_code" class="form-label">Postal Code</label>
+          <input type="text" name="postal_code" class="form-control" id="postal_code" [(ngModel)]="postal_code">
+        </div>
+        <div class="mb-2">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" name="description" class="form-control" id="description" [(ngModel)]="description">
+        </div>
+        <button type="submit" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;"><i class="fas fa-pencil-alt"></i> Update Profile</button>
+    </form> -->
     <form *ngIf="loginuser.userEntity.flag == 2" #merchantForm="ngForm" [formGroup]="editMerchantForm">
       <label for="merchant_name" class="form-label">Merchant Image</label> <br>
       <img [src]="getImageUrl(catering.picByte)" alt="" style="width: 300px;">
@@ -46,11 +75,15 @@
           <label for="description" class="form-label">Description</label>
           <input type="text" #description name="description" class="form-control" formControlName="description" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['description'].touched && editMerchantForm.controls['description'].errors}" id="description" placeholder="" autocomplete="off">
         </div>
+        <div class="mb-2">
+          <label for="profile_img" class="form-label">Photo</label>
+          <input type="file" #profile_img name="profile_img" class="form-control" formControlName="profile_img" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['profile_img'].touched && editMerchantForm.controls['profile_img'].errors}" id="profile_img" placeholder="" autocomplete="off" (change)="onFileChanged($event)">
+        </div>
         <button type="button" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#updateProfile"><i class="fas fa-pencil-alt"></i> Update Profile</button>
     </form>
 </div>
 
-<div class="modal fade" id="acceptOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

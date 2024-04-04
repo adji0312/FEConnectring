@@ -44,12 +44,16 @@
     <div class="card shadow mb-2" style="border: none;" *ngFor="let chat of chatData">
       <div class="card-body">
         <div class="d-flex justify-content-between">
-          <a href="/message" class="text-decoration-none text-dark">
-            <div class="d-flex flex-column">
-              <h5 *ngIf="loginuser.userEntity.flag == 1">{{ chat.merchant.merchant_name }}</h5>
-              <h5 *ngIf="loginuser.userEntity.flag == 2">{{ chat.customer.name }}</h5>
-              <p *ngIf="loginuser.userEntity.flag == 1" style="font-size: 15px;">{{ chat.merchant.phone }}</p>
-              <p *ngIf="loginuser.userEntity.flag == 2" style="font-size: 15px;">{{ chat.customer.phone }}</p>
+          <a class="text-decoration-none text-dark">
+            <div class="d-flex gap-3">
+              <img *ngIf="loginuser.userEntity.flag == 1" [src]="getImageUrl(chat.merchant.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+              <img *ngIf="loginuser.userEntity.flag == 2" [src]="getImageUrl(chat.customer.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+              <div class="d-flex flex-column justify-content-center">
+                <h5 *ngIf="loginuser.userEntity.flag == 1">{{ chat.merchant.merchant_name }}</h5>
+                <h5 *ngIf="loginuser.userEntity.flag == 2">{{ chat.customer.name }}</h5>
+                <p *ngIf="loginuser.userEntity.flag == 1" style="font-size: 15px;">{{ chat.merchant.phone }}</p>
+                <p *ngIf="loginuser.userEntity.flag == 2" style="font-size: 15px;">{{ chat.customer.phone }}</p>
+              </div>
             </div>
           </a>
   

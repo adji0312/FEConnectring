@@ -8,6 +8,7 @@ import { ChatService } from '../chat.service';
 import { Chat } from '../chat.model';
 import { Router } from '@angular/router';
 import { Merchant } from 'src/app/user/merchant/merchant.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chat',
@@ -36,6 +37,7 @@ export class ChatComponent implements OnInit {
     private merchantService: MerchantService,
     private chatService: ChatService,
     private router: Router,
+    private sanitizer: DomSanitizer
   ) {
   }
 
@@ -226,6 +228,12 @@ export class ChatComponent implements OnInit {
       });
       
     }
+  }
+
+  getImageUrl(blob: Blob) {
+    // console.log(blob);
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }

@@ -15,4 +15,6 @@ export class Customer {
     group_id!: number;
     group: Group = new Group;
     parent!: User;
+    picByte!: Blob;
+    image_customer!: File;
 }
