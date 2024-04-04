@@ -18,9 +18,11 @@ export class CateringComponent implements OnInit {
 
   public loginuser: any = {};
   merchants!: Merchant[];
+  filterMerchants!: Merchant[];
   realTimeDataSubscription$!: Subscription;
   city!: Merchant[];
-  searchText: any;
+  searchText = '';
+  filteredItem: Merchant[] = [];
 
   private loadData(){
     this.getMerchants();
@@ -41,7 +43,9 @@ export class CateringComponent implements OnInit {
   ngOnInit(): void {
 
     this.loadData();
-    this.getCityMerchant();
+    console.log(this.searchText.length);
+    
+    // this.getCityMerchant();
   }
 
   private getMerchants(){
@@ -67,13 +71,22 @@ export class CateringComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
-  getCityMerchant(){
-    this.merchantService.getCityMerchant(this.loginuser.accessToken).subscribe(
-      (data) => {
-        this.city = data;
+  // getCityMerchant(){
+  //   this.merchantService.getCityMerchant(this.loginuser.accessToken).subscribe(
+  //     (data) => {
+  //       this.city = data;
         
-      }
-    )
+  //     }
+  //   )
+  // }
+  onSearch(){
+    this.filteredItem = this.merchants.filter(item =>
+      item.merchant_name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      item.city.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+
+    console.log(this.searchText.length);
+    
   }
 
 }

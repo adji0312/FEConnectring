@@ -9,14 +9,38 @@
         </div>
         
         <div class="mb-4">
-            <input class="form-control me-2" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Search Catering and Location" aria-label="Search" style="width: 300px;">
+            <input class="form-control me-2" type="text" name="search" [(ngModel)]="searchText" (keyup)="onSearch()" autocomplete="off" placeholder="Search Catering and Location" aria-label="Search" style="width: 300px;">
         </div>
     </div>
 
 
-    <div class="">
+    <div class="" *ngIf="searchText.length != 0">
         <div class="row row-cols-3" >
-            <div class="col mb-5" *ngFor="let merch of merchants | filter:searchText">
+            <div class="col mb-5" *ngFor="let merch of filteredItem">
+                <div class="d-flex justify-content-between flex-column gap-3">
+                    <div>
+                    <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark" style="cursor: pointer;">
+                        <img [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
+                    </a>
+                    </div>
+        
+                    <div class="d-flex flex-column justify-content-start">
+                    <div class="d-flex justify-content-between">
+                        <a href="" class="text-decoration-none text-dark">
+                        <p class="" style="font-size: 20px;">{{ merch.merchant_name }}</p>
+                        </a>
+                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merch.city }}</p>
+                    </div>
+                    <small class="mt-0">{{ merch.description }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="" *ngIf="searchText.length == 0">
+        <div class="row row-cols-3" >
+            <div class="col mb-5" *ngFor="let merch of merchants">
                 <div class="d-flex justify-content-between flex-column gap-3">
                     <div>
                     <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark" style="cursor: pointer;">

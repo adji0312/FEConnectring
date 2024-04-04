@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Chat } from './chat.model';
 import { Observable } from 'rxjs';
+import { ChatMessage } from './chat-message.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,25 @@ export class ChatService {
     
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any>(`${this.baseUrl}/findChat`, chat, {headers:headers});
+  }
+
+  getCustomerChat(chat: Chat, accessToken: any): Observable<Chat>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<Chat>(`${this.baseUrl}/getCustomerChat`, chat, {headers:headers});
+  }
+
+  getMerchantChat(chat: Chat, accessToken: any): Observable<Chat>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<Chat>(`${this.baseUrl}/getMerchantChat`, chat, {headers:headers});
+  }
+
+  getMessage(chat: Chat, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any>(`${this.baseUrl}/getMessage`, chat, {headers:headers});
+  }
+
+  addMessage(chat: Chat, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any>(`${this.baseUrl}/addMessage`, chat, {headers:headers});
   }
 }

@@ -6,5 +6,5 @@ export class Chat {
     id!: number;
     customer!: Customer;
     merchant!: Merchant;
-    message!: ChatMessage[];
+    messages!: ChatMessage[];
 }

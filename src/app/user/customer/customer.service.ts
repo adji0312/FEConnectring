@@ -10,6 +10,8 @@ import { Customer } from './customer.model';
 })
 export class CustomerService {
 
+  customer: Customer = new Customer;
+
   constructor(private http: HttpClient) {
     this.http = http;
   }
