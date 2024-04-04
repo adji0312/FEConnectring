@@ -49,29 +49,35 @@ export class DetailOrderComponent implements OnInit {
     this.detailOrderForm = this.formBuilder.group({
       notes: [''],
       flag_check: [''],
-      flag_confirm: [''],
+      flag_cancel: [''],
       transaction_id: [''],
       package_id: [''],
       customer_username: [''],
       menu: [''],
     });
 
+    this.orderForm = this.formBuilder.group({
+      order_date: [''],
+      group_id: [''],
+      customer_username: ['']
+    })
+
     if(this.loginuser.userEntity.flag == 1){
 
       this.selectedOrder = this.orderService.order;
-      this.packageList = this.selectedOrder.transactionDetailDtoList;
+      this.packageList = this.orderService.order.transactionDetailDtoList;
 
       this.detailOrderForm.patchValue({
         transaction_id: this.selectedOrder.transaction_id,
         customer_username: this.loginuser.userEntity.username,
-        menu: "Order",
+        menu: this.orderService.menu,
       });
-
 
       this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.transactionService.getCustomerOrder(this.detailOrderForm.value, this.loginuser.accessToken))).subscribe(data => {
+
         this.selectedOrder = data[0];
-        this.packageList = this.selectedOrder.transactionDetailDtoList;
+        this.packageList = data[0].transactionDetailDtoList;
       });
     }
 
@@ -79,7 +85,7 @@ export class DetailOrderComponent implements OnInit {
 
         this.selectedGroup = this.orderService.group;
 
-        this.orderForm = this.formBuilder.group({
+        this.orderForm.patchValue({
           order_date: new Date(),
           group_id: this.selectedGroup.group_id,
           customer_username: null
@@ -112,7 +118,7 @@ export class DetailOrderComponent implements OnInit {
   }
 
   checkStatus(){
-    if(this.selectedOrder.payment_status == 'ACC'){
+    if(this.selectedOrder && this.selectedOrder.payment_status == 'ACC' && this.orderService.menu != 'History' ){
       return true;
     }
 
@@ -122,7 +128,7 @@ export class DetailOrderComponent implements OnInit {
   updateOrderDetail(selectedPackage: Package){
     this.detailOrderForm.patchValue({
       package_id: selectedPackage,
-      flag_confirm: false
+      flag_cancel: false
     });
 
     console.log(this.detailOrderForm);
@@ -134,7 +140,7 @@ export class DetailOrderComponent implements OnInit {
 
     if (mode == 'cancel'){
       this.detailOrderForm.patchValue({
-        flag_confirm: true
+        flag_cancel: true
       });
       status = 'Cancel Order';
     }else if(mode == 'notes'){
@@ -165,7 +171,7 @@ export class DetailOrderComponent implements OnInit {
     );
 
     this.detailOrderForm.get('notes')?.setValue("");
-    this.detailOrderForm.get('flag_confirm')?.setValue("");
+    this.detailOrderForm.get('flag_cancel')?.setValue("");
 
     if(mode == 'notes'){
       this.closeNotesModal();

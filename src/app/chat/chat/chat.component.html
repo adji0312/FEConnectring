@@ -6,94 +6,51 @@
         <h2>Chat</h2>
     </div>
     
-    <div class="mb-4">
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search Catering" aria-label="Search">
-            <button type="button" class="btn btn-sm" style="background-color: #c5a375; width: 140px; color: white;"><i class="fas fa-search"></i> Search</button>
-        </form>
+    <div class="mb-4" *ngIf="loginuser.userEntity.flag == 1">
+      <input class="form-control me-2" type="search" placeholder="Search Catering" aria-label="Search" style="width: 300px;">
+    </div>
+    <div class="mb-4" *ngIf="loginuser.userEntity.flag == 2">
+      <input class="form-control me-2" [(ngModel)]="searchTerm" (keyup)="onSearch()" type="text" placeholder="Search Customer" aria-label="Search" style="width: 300px;">
     </div>
   </div>
 
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
+  <div *ngIf="showResults">
+    <div class="card shadow mb-2" style="border: none;" *ngFor="let customer of filteredItem">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <a href="/message" class="text-decoration-none text-dark">
+            <div class="d-flex flex-column">
+              <h5>{{ customer.name }}</h5>
+              <p style="font-size: 15px;">{{ customer.phone }}</p>
+            </div>
+          </a>
+  
+          <div class="d-flex gap-2 align-items-center">
+            <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: #ffffff; border-radius: 7px; width: 88px;" (click)="onChat(customer)"><i class="fas fa-comments"></i> Chat</button>
           </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteChat"><i class="fas fa-trash-alt"></i> Delete</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
+  
+  <!-- <div *ngIf="!showResults">
+    <div class="card shadow mb-2" style="border: none;" *ngFor="let customer of chatData">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <a href="/message" class="text-decoration-none text-dark">
+            <div class="d-flex flex-column">
+              <h5>{{ customer.id }}</h5>
+              <p style="font-size: 15px;">{{ customer.merchant.address }}</p>
+            </div>
+          </a>
+  
+          <div class="d-flex gap-2 align-items-center">
+            <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: #ffffff; border-radius: 7px; width: 88px;" (click)="onChat(customer)"><i class="fas fa-comments"></i> Chat</button>
           </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
         </div>
       </div>
     </div>
-  </div>
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-          </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-          </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-          </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  </div> -->
 
 </div>
 

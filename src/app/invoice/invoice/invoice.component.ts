@@ -8,12 +8,14 @@ import { Component, OnInit } from '@angular/core';
 export class InvoiceComponent implements OnInit {
 
   x!: number;
+  public loginuser: any = {};
 
   constructor() { }
 
   ngOnInit(): void {
 
     this.x = 0;
+    this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
     
   }
 

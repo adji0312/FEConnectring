@@ -42,6 +42,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
 import { ListCustomerComponent } from './admin/customer-list/list-customer/list-customer.component';
 import { OrderPipe } from './cart/order/order.pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { OrderPipe } from './cart/order/order.pipe';
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    Ng2SearchPipeModule,
     AngularFireModule.initializeApp({
       apiKey: "AIzaSyCqsl25tNFTb4uXkAtmA5ZedtgwsqwHR_8",
       authDomain: "connectring-418e9.firebaseapp.com",

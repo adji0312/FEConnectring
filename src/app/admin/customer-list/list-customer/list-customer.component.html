@@ -16,8 +16,8 @@
           </div>
   
           <div class="d-flex gap-2 align-items-center">
-            <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(customer, 'view')"><i class="fas fa-eye"></i> Detail</button>
-            <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCatering" (click)="onOpenModal(customer, 'delete')"><i class="fas fa-trash-alt"></i> Delete</button>
+            <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#viewCustomer" (click)="onOpenModal(customer, 'view')"><i class="fas fa-eye"></i> Detail</button>
+            <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCustomer" (click)="onOpenModal(customer, 'delete')"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
         </div>
       </div>
@@ -52,51 +52,67 @@
   </div>
 </div>
 
-<!-- <div class="modal fade" id="editCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewCustomer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Catering</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">View Customer</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form [formGroup]="editMerchantForm" (ngSubmit)="onUpdateMerchant()">
+      <form [formGroup]="viewCustomerForm">
         <div class="modal-body">
           <label for="" class="form-label">Name</label>
-          <input type="text" class="form-control" name="merchant_name" formControlName="merchant_name" #edit_merchant_name (input)="edit_merchant_name.value">
-          <label for="" class="form-label">Username</label>
-          <input type="text" class="form-control" name="username" formControlName="username" #edit_username (input)="edit_username.value">
-          <label for="" class="form-label">Address</label>
-          <input type="text" class="form-control" name="address" formControlName="address" #edit_address (input)="edit_address.value">
-          <label for="" class="form-label">City</label>
-          <input type="text" class="form-control" name="city" formControlName="city" #edit_city (input)="edit_city.value">
-          <label for="" class="form-label">Postal Code</label>
-          <input type="text" class="form-control" name="postal_code" formControlName="postal_code" #edit_postal_code (input)="edit_postal_code.value">
+          <input type="text" class="form-control" name="name" formControlName="name" readonly>
           <label for="" class="form-label">Phone</label>
-          <input type="text" class="form-control" name="phone" formControlName="phone" #edit_phone (input)="edit_phone.value">
+          <input type="text" class="form-control" name="phone" formControlName="phone" readonly>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="edit-merchant-form"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Update</button>
+          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="add-customer-form"><i class="fas fa-times"></i> Close</button>
         </div>
-      </form>
+    </form>
     </div>
   </div>
-</div> -->
+</div>
 
-<!-- <div class="modal fade" id="deleteCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="registCustomer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Catering</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Customer</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="addCustomerForm" (ngSubmit)="onAddCustomer()">
+        <div class="modal-body">
+          <label for="" class="form-label">Name</label>
+          <input type="text" class="form-control" name="name" formControlName="name">
+          <label for="" class="form-label">Username</label>
+          <input type="text" class="form-control" name="username" formControlName="username">
+          <label for="" class="form-label">Phone</label>
+          <input type="text" class="form-control" name="phone" formControlName="phone">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="add-customer-form"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Add</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteCustomer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Customer</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Are you sure want to delete this Catering?
+        Are you sure want to delete this customer?
       </div>
       <div class="modal-footer">
-        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" (click)="btnDeleteMerchant(deleteMerchant)" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
+        <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-customer-form"><i class="fas fa-times"></i> Close</button>
+        <button (click)="onDeleteCustomer()" type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
       </div>
     </div>
   </div>
-</div> -->
+</div>

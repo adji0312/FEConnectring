@@ -20,6 +20,7 @@ export class ListCustomerComponent implements OnInit {
   customers!: Customer[];
   deleteCustomer: Customer = new Customer;
   addCustomerForm!: FormGroup;
+  viewCustomerForm!: FormGroup;
 
   private loadData(){
     this.getCustomers();
@@ -44,6 +45,11 @@ export class ListCustomerComponent implements OnInit {
       phone : ['', [Validators.required]],
       password : ['', [Validators.required]],
     });
+
+    this.viewCustomerForm = this.formBuilder.group({
+      name : [''],
+      phone : ['']
+    });
   }
 
   private getCustomers(){
@@ -55,27 +61,46 @@ export class ListCustomerComponent implements OnInit {
   }
 
   onOpenModal(customer: Customer, mode: string){
-    console.log(customer);
+    // console.log(customer);
     // console.log(mode);
 
     if(mode == 'view'){
-      // this.editMerchant = merchant;
-      // this.editMerchantForm.setValue({
-      //   username : this.editMerchant.parent.username,
-      //   address : this.editMerchant.address,
-      //   city : this.editMerchant.city,
-      //   phone : this.editMerchant.phone,
-      //   postal_code : this.editMerchant.postal_code,
-      //   merchant_name : this.editMerchant.merchant_name,
-      // });
+      this.viewCustomerForm.setValue({
+        name : customer.name,
+        phone : customer.phone
+      });
     }else if(mode === 'delete'){
       this.deleteCustomer = customer;
-      console.log(this.deleteCustomer);
-      
       // console.log(this.deleteCustomer.parent.username);
       
     }
     
+  }
+
+  onDeleteCustomer(){
+    console.log(this.deleteCustomer);
+
+    this.customerService.deleteCustomer(this.deleteCustomer.parent.username, this.loginuser.accessToken).subscribe(
+      (response: void) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Delete Customer",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Delete Customer",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      }
+    );
+    document.getElementById('delete-customer-form')!.click();
   }
 
   onAddCustomer(){

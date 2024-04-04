@@ -15,7 +15,7 @@ export class Transaction{
 export class TransactionDetail{
   package_id!: Package;
   notes!: string;
-  flag_confirm!: boolean;
+  flag_cancel!: boolean;
   flag_check!: boolean;
   food_names!: string;
   customer_username!: string;

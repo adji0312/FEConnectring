@@ -10,6 +10,8 @@ import { Customer } from './customer.model';
 })
 export class CustomerService {
 
+  customer: Customer = new Customer;
+
   constructor(private http: HttpClient) {
     this.http = http;
   }
@@ -44,5 +46,10 @@ export class CustomerService {
   updateCustomer(customer: Customer, accessToken: any):Observable<Customer>{
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.put<Customer>(`${this.baseUrl}/update`, customer, {headers: headers});
+  }
+
+  deleteCustomer(username: string, accessToken: any): Observable<void>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.delete<void>(`${this.baseUrl}/delete/${username}`, {headers: headers});
   }
 }

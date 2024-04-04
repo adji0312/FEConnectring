@@ -42,4 +42,9 @@ export class MerchantService {
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post(`${this.baseUrl}/getMerchant`, body, {headers: headers});
   }
+
+  getCityMerchant(accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.get(`${this.baseUrl}/findCityMerchant`, {headers: headers});
+  }
 }

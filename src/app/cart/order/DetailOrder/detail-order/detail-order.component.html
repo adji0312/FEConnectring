@@ -1,11 +1,10 @@
 <app-navbar></app-navbar>
-
 <!-- CUSTOMER -->
-<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 1" style="height: 100%;">
+<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 1">
     <div class="d-flex justify-content-between mb-3">
         <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20; cursor: pointer;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex align-items-center justify-content-center">
-            <p style="font-size: 20px;">{{ selectedOrder.transactionDetailDtoList[0].package_id.package_name }} (Rp {{ selectedOrder.totalPrice | number }})</p>
+            <p *ngIf="selectedOrder" style="font-size: 20px;">{{ selectedOrder.transactionDetailDtoList[0].package_id.package_name }} (Rp {{ selectedOrder.totalPrice | number }})</p>
         </div>
     </div>
 
@@ -30,7 +29,7 @@
                 <td class="align-middle"><img [src]="package.package_id.food_img" alt="" style="width: 300px; border-radius: 10px;"></td>
                 <td class="align-middle">Rp {{ package.package_id.price | number }}</td>
                 <td class="align-middle"><p *ngIf="package.notes != null">{{ package.notes }}</p><button *ngIf="checkStatus()" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-sticky-note"></i> Take Notes</button></td>
-                <td class="align-middle"><p *ngIf="package.flag_confirm">Canceled</p><button *ngIf="checkStatus() && package.flag_confirm == null" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#cancelOrder"><i class="fas fa-times-circle"></i> Cancel</button></td>
+                <td class="align-middle"><p *ngIf="package.flag_cancel">Canceled</p><button *ngIf="checkStatus() && package.flag_cancel == null" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#cancelOrder"><i class="fas fa-times-circle"></i> Cancel</button></td>
             </tr>
             </tbody>
         </table>
@@ -38,7 +37,7 @@
 </div>
 
 <!-- MERCHANT -->
-<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 2" style="height: 100vh;">
+<div class="m-4 mt-5" *ngIf="loginuser.userEntity.flag == 2">
     <div class="d-flex justify-content-between mb-3">
       <div class="d-flex gap-5">
         <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20; cursor: pointer;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>

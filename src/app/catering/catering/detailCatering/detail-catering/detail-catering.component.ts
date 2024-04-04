@@ -27,6 +27,7 @@ export class DetailCateringComponent implements OnInit {
   findChat!: FormGroup;
   realTimeDataSubscription$!: Subscription;
   packages!: Package[];
+  nullChat!: boolean;
 
   constructor(
     private router: Router,
@@ -54,15 +55,15 @@ export class DetailCateringComponent implements OnInit {
     });
 
     this.findChat = this.formBuilder.group({
-      customer_id : [''],
-      id_merchant : ['']
+      customerId : [''],
+      merchantId : ['']
     });
 
     console.log(this.loginuser.userEntity);
 
     this.getPackage();
     this.getCustomerId();
-
+    this.nullChat = false;
   }
 
   goOurPackage(){
@@ -79,13 +80,31 @@ export class DetailCateringComponent implements OnInit {
   }
 
   getChat(){
-    this.findChat.controls['id_merchant'].setValue(this.viewCatering.id);
+    this.findChat.controls['merchantId'].setValue(this.viewCatering.id);
     this.chatService.findChat(this.findChat.value, this.loginuser.accessToken).subscribe(
-      data => {
+      (data: Chat) => {
         console.log(data);
+        if(data == null){
 
+          this.newChat.controls['parent_id'].setValue(this.loginuser.userEntity.id);
+          this.newChat.controls['merchant_id'].setValue(this.viewCatering.merchant_id);
+          console.log(this.newChat.value);
+
+          this.chatService.addChat(this.newChat.value, this.loginuser.accessToken).subscribe(
+            (response: Chat) => {
+              if(response){
+                this.chatService.viewChat = response;
+                this.router.navigate(['/detailChat']);
+              }
+            }
+            )
+        }else{
+          this.chatService.viewChat = data;
+          this.router.navigate(['/detailChat']);
+        }
       }
     )
+
   }
 
   onChat(viewCatering: any){
@@ -95,42 +114,6 @@ export class DetailCateringComponent implements OnInit {
     // console.log(this.findChat.value);
     //find chat dlu klo ada return ke chat nya klo gk ada add chat
     this.getChat();
-
-    // this.merchantService.viewCatering = viewCatering;
-
-    // this.newChat.controls['parent_id'].setValue(this.loginuser.userEntity.id);
-    // this.newChat.controls['merchant_id'].setValue(this.viewCatering.merchant_id);
-
-
-    // console.log(this.findChat.value);
-
-    // const customerData = { username: this.loginuser.userEntity.username };
-    // const body = JSON.stringify(customerData);
-
-    // console.log(body);
-
-
-    // console.log(this.newChat.value);
-    // console.log(this.findChat.value);
-
-
-    // this.chatService.addChat(this.newChat.value, this.loginuser.accessToken).subscribe(
-    //   (response: Chat) => {
-    //     console.log(response);
-    //     if(response == null){
-    //       this.chatService.findChat(this.findChat.value, this.loginuser.accessToken).subscribe(
-    //         (r: Chat) => {
-    //           console.log(r);
-    //           this.chatService.viewChat = r;
-    //           this.router.navigate(['/detailChat']);
-    //         }
-    //         )
-    //     }else{
-    //       this.router.navigate(['/detailChat']);
-
-    //     }
-    //   }
-    // )
   }
 
   getPackage(){
@@ -149,7 +132,8 @@ export class DetailCateringComponent implements OnInit {
       username: this.loginuser.userEntity.username
     };
     this.customerService.findCustomerByUsername(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(data => {
-      this.findChat.controls['customer_id'].setValue(data.id);
+      this.findChat.controls['customerId'].setValue(data.id);
+      console.log(data);
     });
 
     // this.getChat();

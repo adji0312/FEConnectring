@@ -8,6 +8,7 @@ import { Transaction } from 'src/app/transaction/transaction.model';
 
 export class OrderService{
   order!: Transaction;
-
   group!: Group;
+
+  menu!: string;
 }
