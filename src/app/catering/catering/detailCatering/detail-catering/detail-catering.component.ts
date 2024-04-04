@@ -59,17 +59,17 @@ export class DetailCateringComponent implements OnInit {
     });
 
     console.log(this.loginuser.userEntity);
-    
+
     this.getPackage();
     this.getCustomerId();
-    
+
   }
 
   goOurPackage(){
     let i = document.getElementById('ourPackage');
     console.log(i);
-    
-    
+
+
   }
 
   getImageUrl(blob: Blob) {
@@ -77,13 +77,13 @@ export class DetailCateringComponent implements OnInit {
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
-  
+
   getChat(){
     this.findChat.controls['id_merchant'].setValue(this.viewCatering.id);
     this.chatService.findChat(this.findChat.value, this.loginuser.accessToken).subscribe(
       data => {
         console.log(data);
-        
+
       }
     )
   }
@@ -95,24 +95,24 @@ export class DetailCateringComponent implements OnInit {
     // console.log(this.findChat.value);
     //find chat dlu klo ada return ke chat nya klo gk ada add chat
     this.getChat();
-    
+
     // this.merchantService.viewCatering = viewCatering;
 
     // this.newChat.controls['parent_id'].setValue(this.loginuser.userEntity.id);
     // this.newChat.controls['merchant_id'].setValue(this.viewCatering.merchant_id);
-    
+
 
     // console.log(this.findChat.value);
-    
+
     // const customerData = { username: this.loginuser.userEntity.username };
     // const body = JSON.stringify(customerData);
 
     // console.log(body);
 
-    
+
     // console.log(this.newChat.value);
     // console.log(this.findChat.value);
-    
+
 
     // this.chatService.addChat(this.newChat.value, this.loginuser.accessToken).subscribe(
     //   (response: Chat) => {
@@ -150,9 +150,8 @@ export class DetailCateringComponent implements OnInit {
     };
     this.customerService.findCustomerByUsername(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(data => {
       this.findChat.controls['customer_id'].setValue(data.id);
-      console.log(data);
     });
-    
+
     // this.getChat();
   }
 

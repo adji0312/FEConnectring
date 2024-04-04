@@ -8,6 +8,7 @@ import { Transaction } from 'src/app/transaction/transaction.model';
 import { TransactionService } from 'src/app/transaction/transaction.service';
 import Swal from 'sweetalert2';
 import { OrderService } from './order.service';
+import { Group } from 'src/app/group/group.model';
 
 @Component({
   selector: 'app-order',
@@ -68,7 +69,7 @@ export class OrderComponent implements OnInit {
     });
 
     console.log(this.orderForm.value);
-    
+
     this.transactionService.getCustomerOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.orderList = data;
       // console.log(data);
@@ -76,9 +77,8 @@ export class OrderComponent implements OnInit {
   }
 
   orderDetailPage(order: Transaction){
-    this.router.navigate(['orderDetail']);
-
     this.orderService.order = order;
+    this.router.navigate(['orderDetail']);
   }
 
   clickOrderHistory(){
@@ -177,6 +177,11 @@ export class OrderComponent implements OnInit {
     }else if(status == "RJCT"){
       this.closeRejectOrderModal();
     }
+  }
+
+  openOrderDetail(selectedGroup: Group){
+    this.orderService.group = selectedGroup;
+    this.router.navigate(['orderDetail']);
   }
 
   closeAcceptOrderModal(){

@@ -1,13 +1,14 @@
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { OrderService } from '../../order.service';
-import { Transaction } from 'src/app/transaction/transaction.model';
+import { Transaction, TransactionDetail } from 'src/app/transaction/transaction.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription, switchMap, timer } from 'rxjs';
+import { GroupedObservable, Subscription, switchMap, timer } from 'rxjs';
 import { TransactionService } from 'src/app/transaction/transaction.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Package } from 'src/app/package/package.model';
+import { Group } from 'src/app/group/group.model';
 
 @Component({
   selector: 'app-detail-order',
@@ -18,11 +19,17 @@ export class DetailOrderComponent implements OnInit {
 
   @ViewChild('closeNotes') closeNotes: ElementRef | undefined;
   @ViewChild('closeCancel') closeCancel: ElementRef | undefined;
+  @ViewChild('closeFilterDate') closeFilterDate: ElementRef | undefined;
 
   selectedOrder!: Transaction;
+  selectedGroup!: Group;
+
   packageList!: any[];
+  orderDetailList!: TransactionDetail[];
+  orderIsEmpty!: Boolean;
 
   detailOrderForm!: FormGroup;
+  orderForm!: FormGroup;
 
   public loginuser: any = {};
 
@@ -37,27 +44,54 @@ export class DetailOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
-    this.selectedOrder = this.orderService.order;
-    this.packageList = this.selectedOrder.transactionDetailDtoList;
 
     this.detailOrderForm = this.formBuilder.group({
       notes: [''],
       flag_check: [''],
       flag_confirm: [''],
-      transaction_id: this.selectedOrder.transaction_id,
+      transaction_id: [''],
       package_id: [''],
-      customer_username: this.loginuser.userEntity.username,
-      menu: "Order",
+      customer_username: [''],
+      menu: [''],
     });
 
+    if(this.loginuser.userEntity.flag == 1){
 
-    this.realTimeDataSubscription$ = timer(0, 1000)
-    .pipe(switchMap(_ => this.transactionService.getCustomerOrder(this.detailOrderForm.value, this.loginuser.accessToken))).subscribe(data => {
-      this.selectedOrder = data[0];
+      this.selectedOrder = this.orderService.order;
       this.packageList = this.selectedOrder.transactionDetailDtoList;
-    });
 
-    // console.log(this.detailOrderForm.value);
+      this.detailOrderForm.patchValue({
+        transaction_id: this.selectedOrder.transaction_id,
+        customer_username: this.loginuser.userEntity.username,
+        menu: "Order",
+      });
+
+
+      this.realTimeDataSubscription$ = timer(0, 1000)
+      .pipe(switchMap(_ => this.transactionService.getCustomerOrder(this.detailOrderForm.value, this.loginuser.accessToken))).subscribe(data => {
+        this.selectedOrder = data[0];
+        this.packageList = this.selectedOrder.transactionDetailDtoList;
+      });
+    }
+
+    if(this.loginuser.userEntity.flag == 2){
+
+        this.selectedGroup = this.orderService.group;
+
+        this.orderForm = this.formBuilder.group({
+          order_date: null,
+          group_id: this.selectedGroup.group_id
+        });
+
+        // console.log(this.orderForm.value);
+
+        this.transactionService.getCateringOrderDetail(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+          this.orderDetailList = data;
+        });
+
+
+    }
+
   }
 
 
@@ -129,6 +163,29 @@ export class DetailOrderComponent implements OnInit {
     }
   }
 
+  searchDate(){
+    this.transactionService.getCateringOrderDetail(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      // console.log(data);
+      this.orderDetailList = data;
+      if(this.orderDetailList[0].customer_username == null){
+        this.orderIsEmpty = true;
+      }else{
+        this.orderIsEmpty = false;
+      }
+    });
+
+    this.closeFilterDateModal();
+  }
+
+  checkButton(check: Boolean){
+
+    if(check == null){
+      return true;
+    }
+
+    return false;
+  }
+
   closeNotesModal(){
     if(this.closeNotes){
       this.closeNotes.nativeElement.click();
@@ -138,6 +195,12 @@ export class DetailOrderComponent implements OnInit {
   closeCancelModal(){
     if(this.closeCancel){
       this.closeCancel.nativeElement.click();
+    }
+  }
+
+  closeFilterDateModal(){
+    if(this.closeFilterDate){
+      this.closeFilterDate.nativeElement.click();
     }
   }
 
