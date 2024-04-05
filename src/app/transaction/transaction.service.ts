@@ -25,6 +25,11 @@ export class TransactionService {
     return this.http.post<any[]>(`${this.baseUrl}/getCateringOrder`, transaction, {headers: headers});
   }
 
+  getCateringOrderDetail(transaction: Transaction, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any[]>(`${this.baseUrl}/getCateringOrderDetail`, transaction, {headers: headers});
+  }
+
   updateTransactionStatus(transaction: Transaction, accessToken: any){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.put<any[]>(`${this.baseUrl}/updateStatus`, transaction, {headers: headers});
@@ -33,6 +38,11 @@ export class TransactionService {
   updateCustomerOrderDetail(transaction: TransactionDetail, accessToken: any){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.put<any[]>(`${this.baseUrl}/updateDetailOrder`, transaction, {headers: headers});
+  }
+
+  updateOrderCheck(transaction: TransactionDetail, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.put<any[]>(`${this.baseUrl}/updateCheck`, transaction, {headers: headers});
   }
 
   createTransaction(transaction: Transaction, accessToken: any):Observable<any>{

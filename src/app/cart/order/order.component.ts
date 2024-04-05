@@ -8,6 +8,7 @@ import { Transaction } from 'src/app/transaction/transaction.model';
 import { TransactionService } from 'src/app/transaction/transaction.service';
 import Swal from 'sweetalert2';
 import { OrderService } from './order.service';
+import { Group } from 'src/app/group/group.model';
 
 @Component({
   selector: 'app-order',
@@ -18,6 +19,7 @@ export class OrderComponent implements OnInit {
 
   @ViewChild('closeAcceptOrder') closeAcceptOrder: ElementRef | undefined;
   @ViewChild('closeRejectOrder') closeRejectOrder: ElementRef | undefined;
+  @ViewChild('closeSendInvoice') closeSendInvoice: ElementRef | undefined;
 
   public loginuser: any = {};
   x!: number;
@@ -62,13 +64,14 @@ export class OrderComponent implements OnInit {
   clickOrder(){
     this.x = 0;
     this.orderList = [];
+    this.orderService.menu = "Order";
 
     this.orderForm.patchValue({
       menu: "Order"
     });
 
-    console.log(this.orderForm.value);
-    
+    // console.log(this.orderForm.value);
+
     this.transactionService.getCustomerOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.orderList = data;
       // console.log(data);
@@ -76,14 +79,14 @@ export class OrderComponent implements OnInit {
   }
 
   orderDetailPage(order: Transaction){
-    this.router.navigate(['orderDetail']);
-
     this.orderService.order = order;
+    this.router.navigate(['orderDetail']);
   }
 
   clickOrderHistory(){
     this.x = 1
     this.orderList = [];
+    this.orderService.menu = "History";
 
     this.orderForm.patchValue({
       menu: "History"
@@ -104,13 +107,13 @@ export class OrderComponent implements OnInit {
       menu: "Incoming"
     });
 
-    console.log(this.orderForm.value);
-    
+    // console.log(this.orderForm.value);
+
 
     this.transactionService.getCateringOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.cateringOrder = data;
-      console.log(data);
-      
+      // console.log(data);
+
       // console.log(this.cateringOrder);
     });
   }
@@ -132,6 +135,15 @@ export class OrderComponent implements OnInit {
   clickDone(){
     this.x = 2
     this.cateringOrder = [];
+
+    this.orderForm.patchValue({
+      menu: "Done"
+    });
+
+    this.transactionService.getCateringOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.cateringOrder = data;
+      // console.log(this.cateringOrder);
+    });
   }
 
   updateStatus(group_id: string){
@@ -146,12 +158,17 @@ export class OrderComponent implements OnInit {
       this.orderForm.patchValue({
         payment_status: "ACC",
       });
-      txn_status = "Accept";
+      txn_status = "Accept Order";
     }else if(status == "RJCT"){
       this.orderForm.patchValue({
         payment_status: "RJCT",
       });
-      txn_status = "Reject";
+      txn_status = "Reject Order";
+    }else if(status == "UNPAID"){
+      this.orderForm.patchValue({
+        payment_status: "UNPAID",
+      });
+      txn_status = "Send Invoice";
     }
 
     this.transactionService.updateTransactionStatus(this.orderForm.value, this.loginuser.accessToken).subscribe(
@@ -159,7 +176,7 @@ export class OrderComponent implements OnInit {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: "Success " + txn_status  +  " Order",
+          title: "Success " + txn_status,
           showConfirmButton: true,
           timer: 1500
         });
@@ -170,7 +187,7 @@ export class OrderComponent implements OnInit {
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: "Failed " + txn_status + " Order",
+          title: "Failed " + txn_status,
           showConfirmButton: true,
           timer: 1500
         })
@@ -180,7 +197,14 @@ export class OrderComponent implements OnInit {
       this.closeAcceptOrderModal();
     }else if(status == "RJCT"){
       this.closeRejectOrderModal();
+    }else if(status == "UNPAID"){
+      this.closeSendInvoiceModal();
     }
+  }
+
+  openOrderDetail(selectedGroup: Group){
+    this.orderService.group = selectedGroup;
+    this.router.navigate(['orderDetail']);
   }
 
   closeAcceptOrderModal(){
@@ -192,6 +216,12 @@ export class OrderComponent implements OnInit {
   closeRejectOrderModal(){
     if(this.closeRejectOrder){
       this.closeRejectOrder.nativeElement.click();
+    }
+  }
+
+  closeSendInvoiceModal(){
+    if(this.closeSendInvoice){
+      this.closeSendInvoice.nativeElement.click();
     }
   }
 }

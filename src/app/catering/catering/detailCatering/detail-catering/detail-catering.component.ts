@@ -60,7 +60,7 @@ export class DetailCateringComponent implements OnInit {
     });
 
     console.log(this.loginuser.userEntity);
-    
+
     this.getPackage();
     this.getCustomerId();
     this.nullChat = false;
@@ -69,8 +69,8 @@ export class DetailCateringComponent implements OnInit {
   goOurPackage(){
     let i = document.getElementById('ourPackage');
     console.log(i);
-    
-    
+
+
   }
 
   getImageUrl(blob: Blob) {
@@ -78,7 +78,7 @@ export class DetailCateringComponent implements OnInit {
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
-  
+
   getChat(){
     this.findChat.controls['merchantId'].setValue(this.viewCatering.id);
     this.chatService.findChat(this.findChat.value, this.loginuser.accessToken).subscribe(
@@ -104,7 +104,7 @@ export class DetailCateringComponent implements OnInit {
         }
       }
     )
-    
+
   }
 
   onChat(viewCatering: any){
@@ -135,7 +135,7 @@ export class DetailCateringComponent implements OnInit {
       this.findChat.controls['customerId'].setValue(data.id);
       console.log(data);
     });
-    
+
     // this.getChat();
   }
 

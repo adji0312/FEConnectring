@@ -1,13 +1,14 @@
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { OrderService } from '../../order.service';
-import { Transaction } from 'src/app/transaction/transaction.model';
+import { Transaction, TransactionDetail } from 'src/app/transaction/transaction.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription, switchMap, timer } from 'rxjs';
+import { GroupedObservable, Subscription, switchMap, timer } from 'rxjs';
 import { TransactionService } from 'src/app/transaction/transaction.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Package } from 'src/app/package/package.model';
+import { Group } from 'src/app/group/group.model';
 
 @Component({
   selector: 'app-detail-order',
@@ -18,11 +19,18 @@ export class DetailOrderComponent implements OnInit {
 
   @ViewChild('closeNotes') closeNotes: ElementRef | undefined;
   @ViewChild('closeCancel') closeCancel: ElementRef | undefined;
+  @ViewChild('closeFilterDate') closeFilterDate: ElementRef | undefined;
+  @ViewChild('closeCheckAll') closeCheckAll: ElementRef | undefined;
 
   selectedOrder!: Transaction;
+  selectedGroup!: Group;
+
   packageList!: any[];
+  orderDetailList!: TransactionDetail[];
+  orderIsEmpty!: Boolean;
 
   detailOrderForm!: FormGroup;
+  orderForm!: FormGroup;
 
   public loginuser: any = {};
 
@@ -37,27 +45,71 @@ export class DetailOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
-    this.selectedOrder = this.orderService.order;
-    this.packageList = this.selectedOrder.transactionDetailDtoList;
 
     this.detailOrderForm = this.formBuilder.group({
       notes: [''],
       flag_check: [''],
-      flag_confirm: [''],
-      transaction_id: this.selectedOrder.transaction_id,
+      flag_cancel: [''],
+      transaction_id: [''],
       package_id: [''],
-      customer_username: this.loginuser.userEntity.username,
-      menu: "Order",
+      customer_username: [''],
+      menu: [''],
     });
 
+    this.orderForm = this.formBuilder.group({
+      order_date: [''],
+      group_id: [''],
+      customer_username: ['']
+    })
 
-    this.realTimeDataSubscription$ = timer(0, 1000)
-    .pipe(switchMap(_ => this.transactionService.getCustomerOrder(this.detailOrderForm.value, this.loginuser.accessToken))).subscribe(data => {
-      this.selectedOrder = data[0];
-      this.packageList = this.selectedOrder.transactionDetailDtoList;
+    if(this.loginuser.userEntity.flag == 1){
+
+      this.selectedOrder = this.orderService.order;
+      this.packageList = this.orderService.order.transactionDetailDtoList;
+
+      this.detailOrderForm.patchValue({
+        transaction_id: this.selectedOrder.transaction_id,
+        customer_username: this.loginuser.userEntity.username,
+        menu: this.orderService.menu,
+      });
+
+      this.realTimeDataSubscription$ = timer(0, 1000)
+      .pipe(switchMap(_ => this.transactionService.getCustomerOrder(this.detailOrderForm.value, this.loginuser.accessToken))).subscribe(data => {
+
+        this.selectedOrder = data[0];
+        this.packageList = data[0].transactionDetailDtoList;
+      });
+    }
+
+    if(this.loginuser.userEntity.flag == 2){
+
+        this.selectedGroup = this.orderService.group;
+
+        this.orderForm.patchValue({
+          order_date: new Date(),
+          group_id: this.selectedGroup.group_id,
+          customer_username: null
+        });
+
+        // console.log(this.orderForm.value);
+
+        this.initData();
+    }
+
+  }
+
+  initData(){
+    this.transactionService.getCateringOrderDetail(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.orderDetailList = data;
+
+      // console.log(data);
+
+      if(this.orderDetailList[0].customer_username == null){
+        this.orderIsEmpty = true;
+      }else{
+        this.orderIsEmpty = false;
+      }
     });
-
-    // console.log(this.detailOrderForm.value);
   }
 
 
@@ -66,7 +118,7 @@ export class DetailOrderComponent implements OnInit {
   }
 
   checkStatus(){
-    if(this.selectedOrder.payment_status == 'ACC'){
+    if(this.selectedOrder && this.selectedOrder.payment_status == 'ACC' && this.orderService.menu != 'History' ){
       return true;
     }
 
@@ -76,7 +128,7 @@ export class DetailOrderComponent implements OnInit {
   updateOrderDetail(selectedPackage: Package){
     this.detailOrderForm.patchValue({
       package_id: selectedPackage,
-      flag_confirm: false
+      flag_cancel: false
     });
 
     console.log(this.detailOrderForm);
@@ -88,7 +140,7 @@ export class DetailOrderComponent implements OnInit {
 
     if (mode == 'cancel'){
       this.detailOrderForm.patchValue({
-        flag_confirm: true
+        flag_cancel: true
       });
       status = 'Cancel Order';
     }else if(mode == 'notes'){
@@ -118,15 +170,47 @@ export class DetailOrderComponent implements OnInit {
         }
     );
 
-    // this.detailOrderForm.get('package_id')?.reset();
     this.detailOrderForm.get('notes')?.setValue("");
-    this.detailOrderForm.get('flag_confirm')?.setValue("");
+    this.detailOrderForm.get('flag_cancel')?.setValue("");
 
     if(mode == 'notes'){
       this.closeNotesModal();
     }else if (mode == 'cancel'){
       this.closeCancelModal();
     }
+  }
+
+  searchDate(){
+    this.initData();
+    this.closeFilterDateModal();
+  }
+
+  checkButton(check: Boolean){
+
+    if(check == null){
+      return true;
+    }
+
+    return false;
+  }
+
+  updateOrderCheck(username: string){
+
+    this.orderForm.patchValue({
+      customer_username: username
+    });
+
+
+    this.transactionService.updateOrderCheck(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.initData();
+    });
+  }
+
+  updateAll(){
+    this.transactionService.updateOrderCheck(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.initData();
+      this.closeCheckAllModal();
+    });
   }
 
   closeNotesModal(){
@@ -138,6 +222,18 @@ export class DetailOrderComponent implements OnInit {
   closeCancelModal(){
     if(this.closeCancel){
       this.closeCancel.nativeElement.click();
+    }
+  }
+
+  closeFilterDateModal(){
+    if(this.closeFilterDate){
+      this.closeFilterDate.nativeElement.click();
+    }
+  }
+
+  closeCheckAllModal(){
+    if(this.closeCheckAll){
+      this.closeCheckAll.nativeElement.click();
     }
   }
 
