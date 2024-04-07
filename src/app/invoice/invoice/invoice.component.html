@@ -3,7 +3,7 @@
 
   <div class="d-flex justify-content-between mb-4">
     <h2>Invoice</h2>
-  </div> 
+  </div>
 
   <!-- CUSTOMER -->
   <div *ngIf="loginuser.userEntity.flag == 1">
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-  
+
     <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
       <div class="card w-100" style="cursor: pointer;" (click)="clickUnpaid()">
         <div class="card-body text-center">
@@ -32,56 +32,60 @@
         </div>
       </div>
     </div>
-  
+
     <!-- TABLE ORDER LOOP HERE UNPAID CUSTOMER -->
-    <div class="card mb-2" *ngIf="x == 0">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="d-flex flex-column">
-              <div style="font-size: 20px;">
-                Paket Katering
-              </div>
-              <div>
-                Rp 300,000
-              </div>
-              <div>
-                <small>01 Januari 2024</small>
+    <div *ngIf="x == 0">
+      <div *ngFor="let inv of customerInvoice" class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <div style="font-size: 20px;">
+                  {{ inv.package_header }}
+                </div>
+                <div>
+                  Rp {{ inv.totalPrice | number }}
+                </div>
+                <div>
+                  <!-- <small>01 Januari 2024</small> -->
+                </div>
               </div>
             </div>
-          </div>
-          <div class="d-flex flex-column align-items-center gap-2">
-            <span class="badge text-bg-warning">Need Payment</span>
-            <!-- <span class="badge text-bg-success">Waiting Confirm</span> -->
-            <div class="d-flex gap-2">
-              <a href="/orderDetail" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-eye"></i> View</a>
-              <a type="button" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#paidInvoice"><i class="fas fa-money-bill"></i> Pay</a>
+            <div class="d-flex flex-column align-items-center gap-2">
+              <span *ngIf="inv.payment_status == 'UNPAID' " class="badge text-bg-warning">Need Payment</span>
+              <span *ngIf="inv.payment_status == 'PND' " class="badge text-bg-success">Waiting Confirm</span>
+              <div class="d-flex gap-2">
+                <a type="button" (click)="orderDetailPage(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-eye"></i> View</a>
+                <a type="button" (click)="selectPackage(inv)" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#paidInvoice"><i class="fas fa-money-bill"></i> Pay</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- TABLE ORDER LOOP HERE PAID CUSTOMER -->
-    <div class="card mb-2" *ngIf="x == 1">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="d-flex flex-column">
-              <div style="font-size: 20px;">
-                Paket Katering
-              </div>
-              <div>
-                Rp 300,000
-              </div>
-              <div>
-                <small>01 Januari 2024</small>
+    <div *ngIf="x == 1">
+      <div *ngFor="let inv of customerInvoice" class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <div style="font-size: 20px;">
+                  {{ inv.package_header }}
+                </div>
+                <div>
+                  Rp {{ inv.totalPrice | number }}
+                </div>
+                <div>
+                  <!-- <small>01 Januari 2024</small> -->
+                </div>
               </div>
             </div>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <div class="d-flex gap-2">
-              <a href="/orderDetail" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-eye"></i> View</a>
+            <div class="d-flex align-items-center gap-2">
+              <div class="d-flex gap-2">
+                <a (click)="selectTransactionImage(inv)" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptPayment"><i class="fas fa-eye"></i> View</a>
+              </div>
             </div>
           </div>
         </div>
@@ -93,77 +97,81 @@
   <!-- MERCHANT -->
   <div *ngIf="loginuser.userEntity.flag == 2">
     <div *ngIf="x == 0" class="d-flex justify-content-between gap-2 mb-3">
-      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickUnpaid()">
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickUnpaidCatering()">
         <div class="card-body text-center">
           Unpaid
         </div>
       </div>
-      <div class="card w-100" style="cursor: pointer;" (click)="clickPaid()">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickPaidCatering()">
         <div class="card-body text-center">
           Paid
         </div>
       </div>
     </div>
-  
+
     <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
-      <div class="card w-100" style="cursor: pointer;" (click)="clickUnpaid()">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickUnpaidCatering()">
         <div class="card-body text-center">
           Unpaid
         </div>
       </div>
-      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickPaid()">
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickPaidCatering()">
         <div class="card-body text-center">
           Paid
         </div>
       </div>
     </div>
-  
+
     <!-- TABLE ORDER LOOP HERE UNPAID MERCHANT -->
-    <div class="card mb-2" *ngIf="x == 0">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="d-flex flex-column">
-              <div style="font-size: 20px;">
-                Customer Satu
-              </div>
-              <div>
-                Rp 200,000
-              </div>
-              <div>
-                <small>01 Januari 2024</small>
+    <div *ngIf="x == 0">
+      <div *ngFor="let inv of cateringInvoice" class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <div  class="d-flex flex-column">
+                <div style="font-size: 20px;">
+                  {{ inv.customer_username }}
+                </div>
+                <div>
+                  Rp {{ inv.totalPrice | number }}
+                </div>
+                <div>
+                  <!-- <small>01 Januari 2024</small> -->
+                </div>
               </div>
             </div>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <div class="d-flex gap-2">
-              <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptOrder"><i class="fas fa-eye"></i> Detail</a>
+            <div class="d-flex align-items-center gap-2">
+              <div class="d-flex gap-2">
+                <a type="button" (click)="selectTransactionImage(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptPayment"><i class="fas fa-eye"></i> Detail</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- TABLE ORDER LOOP HERE PAID MERCHANT -->
-    <div class="card mb-2" *ngIf="x == 1">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="d-flex flex-column">
-              <div style="font-size: 20px;">
-                Customer Satu
-              </div>
-              <div>
-                Rp 200,000
-              </div>
-              <div>
-                <small>01 Januari 2024</small>
+    <div *ngIf="x == 1">
+      <div *ngFor="let inv of cateringInvoice" class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <div  class="d-flex flex-column">
+                <div style="font-size: 20px;">
+                  {{ inv.customer_username }}
+                </div>
+                <div>
+                  Rp {{ inv.totalPrice | number }}
+                </div>
+                <div>
+                  <!-- <small>01 Januari 2024</small> -->
+                </div>
               </div>
             </div>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <div class="d-flex gap-2">
-              <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptOrder"><i class="fas fa-eye"></i> Detail</a>
+            <div class="d-flex align-items-center gap-2">
+              <div class="d-flex gap-2">
+                <a type="button" (click)="selectTransactionImage(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptPayment"><i class="fas fa-eye"></i> Detail</a>
+              </div>
             </div>
           </div>
         </div>
@@ -180,21 +188,21 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Payment</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" (click)="resetSelectedFile()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <input type="file" class="form-control" id="exampleFormControlInput1" placeholder="take a notes...">
+          <input #fileInput type="file" (change)="onFileSelected($event)" class="form-control" id="exampleFormControlInput1" placeholder="take a notes...">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-money-bill"></i> Pay</button>
+        <button type="button" (click)="resetSelectedFile()" #closePayInvoice class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" (click)="uploadPaymentImage()" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-money-bill"></i> Pay</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- modal detail screenshot and acc Invoice -->
-<div class="modal fade" id="acceptOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="acceptPayment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -202,11 +210,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <img src="" alt="">
+        <img [src]="detailPayment()" alt="" style="width: 100%; height: 100%;">
       </div>
       <div class="modal-footer">
-        <button #closeAcceptOrder type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-        <button *ngIf="x == 0" type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</button>
+        <button #closeAcceptPayment type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
+        <button *ngIf="x == 0" (click)="acceptPayment()" type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</button>
       </div>
     </div>
   </div>

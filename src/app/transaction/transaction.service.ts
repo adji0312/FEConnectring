@@ -15,6 +15,11 @@ export class TransactionService {
 
   private baseUrl = `${environment.baseUrl}/transaction`;
 
+  createTransaction(transaction: Transaction, accessToken: any):Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any>(`${this.baseUrl}/create`, transaction, {headers: headers});
+  }
+
   getCustomerOrder(transaction: Transaction, accessToken: any){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<Transaction[]>(`${this.baseUrl}/getCustomerOrder`, transaction, {headers: headers});
@@ -23,6 +28,16 @@ export class TransactionService {
   getCateringOrder(transaction: Transaction, accessToken: any){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any[]>(`${this.baseUrl}/getCateringOrder`, transaction, {headers: headers});
+  }
+
+  getCateringInvoice(transaction: Transaction, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any[]>(`${this.baseUrl}/getCateringInvoice`, transaction, {headers: headers});
+  }
+
+  getCustomerInvoice(transaction: Transaction, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any[]>(`${this.baseUrl}/getCustomerInvoice`, transaction, {headers: headers});
   }
 
   getCateringOrderDetail(transaction: Transaction, accessToken: any){
@@ -45,8 +60,13 @@ export class TransactionService {
     return this.http.put<any[]>(`${this.baseUrl}/updateCheck`, transaction, {headers: headers});
   }
 
-  createTransaction(transaction: Transaction, accessToken: any):Observable<any>{
+  uploadPaymentImage(formData: FormData, accessToken: any){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.post<any>(`${this.baseUrl}/create`, transaction, {headers: headers});
+    return this.http.put<any>(`${this.baseUrl}/uploadPaymentImg`, formData, {headers: headers});
+  }
+
+  acceptPayment(transaction: Transaction, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.put<any>(`${this.baseUrl}/acceptPayment`, transaction, {headers: headers});
   }
 }

@@ -9,6 +9,7 @@ export class Transaction{
   merchant_id!: string;
   package_header!: string;
   group_id!: string;
+  payment_img!: Blob;
   transactionDetailDtoList!: TransactionDetail[];
 }
 
