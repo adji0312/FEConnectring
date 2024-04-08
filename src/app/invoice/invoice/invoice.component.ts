@@ -143,7 +143,7 @@ export class InvoiceComponent implements OnInit {
     this.image_url = 'data:image/jpeg;base64,' + txn.payment_img;
   }
 
-  detailPayment(){
+  loadImage(){
     if(!this.image_url){
       return null;
     }

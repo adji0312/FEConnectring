@@ -18,7 +18,6 @@ import { HomeComponent } from './home/home/home.component';
 import { NavbarComponent } from './navbar/navbar/navbar.component';
 import { CateringComponent } from './catering/catering/catering.component';
 import { DetailCateringComponent } from './catering/catering/detailCatering/detail-catering/detail-catering.component';
-import { TransactionComponent } from './transaction/transaction/transaction.component';
 import { ChatComponent } from './chat/chat/chat.component';
 import { GroupComponent } from './group/group/group.component';
 import { OrderComponent } from './cart/order/order.component';
@@ -34,7 +33,6 @@ import { InvoiceComponent } from './invoice/invoice/invoice.component';
 import { FooterComponent } from './footer/footer/footer.component';
 import { DetailOrderComponent } from './cart/order/DetailOrder/detail-order/detail-order.component';
 import { AddPackageComponent } from './package/addPackage/add-package/add-package.component';
-import { ViewPackageComponent } from './package/viewPackage/view-package/view-package.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -52,7 +50,6 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     NavbarComponent,
     CateringComponent,
     DetailCateringComponent,
-    TransactionComponent,
     ChatComponent,
     GroupComponent,
     OrderComponent,
@@ -68,7 +65,6 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     FooterComponent,
     DetailOrderComponent,
     AddPackageComponent,
-    ViewPackageComponent,
     DetailChatComponent,
     ListCustomerComponent,
     OrderPipe,

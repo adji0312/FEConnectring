@@ -25,7 +25,7 @@
                 <th scope="row" class="align-middle">{{ i+1 }}</th>
                 <td class="align-middle" *ngIf="foods.length > 0">{{ pack.value_date | date: 'dd MMMM yyyy' }}</td>
                 <td class="align-middle">{{ getFoodNames(pack) }}</td>
-                <td class="align-middle"><img [src]="pack.food_img" alt="" style="width: 300px; border-radius: 10px;"></td>
+                <td class="align-middle"><img [src]="loadImage(pack.food_img)" alt="" style="width: 300px; border-radius: 10px;"></td>
                 <td class="align-middle">Rp {{ pack.price | number }}</td>
                 <td class="align-middle">
                     <button (click)="editPackage(pack)" type="button" class="btn btn-sm w-100" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editPackageItem"><i class="fas fa-edit"></i> Edit</button>
@@ -118,12 +118,12 @@
               <div class="mb-2">
                 <label for="photo" class="form-label">Photo</label>
                 <!-- <input type="file" accept="*.jpg.png" (change)="onFileSelected($event)" formControlName="image" class="form-control" id="photo" [ngClass]="{ 'is-invalid' : addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors}"> -->
-                <input type="file" accept="*.jpg.png" (change)="onFileSelected($event)" formControlName="image" class="form-control" id="photo">
-                <div *ngIf="addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors" class="text-danger">
-                  <div *ngIf="addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors['required']">
+                <input type="file" accept="*.jpg.png" (change)="onFileSelected($event)" formControlName="food_img" class="form-control" id="photo">
+                <!-- <div *ngIf="addPackageForm.controls['food_img'].touched && addPackageForm.controls['food_img'].errors" class="text-danger">
+                  <div *ngIf="addPackageForm.controls['food_img'].touched && addPackageForm.controls['food_img'].errors['required']">
                     Image must be filled
                   </div>
-                </div>
+                </div> -->
               </div>
             </form>
           </div>

@@ -12,7 +12,7 @@
       <div class="col mb-5" *ngFor="let pack of packages">
         <div class="card shadow" style="width: 18rem; border: none;">
           <!-- <img src="assets/images/foodOfCatering.jpg" class="card-img-top" alt="..."> -->
-          <img src="{{ pack.food_img }}" class="card-img-top" alt="...">
+          <img [src]="loadImage(pack.food_img)" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title mb-3">{{ pack.package_name }}</h5>
             <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> {{ pack.start_date | date: 'dd MMMM yyyy' }} - {{ pack.end_date | date: 'dd MMMM yyyy' }}</p>

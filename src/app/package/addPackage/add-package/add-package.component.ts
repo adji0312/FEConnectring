@@ -9,6 +9,7 @@ import { Observable, Subscription, finalize, switchMap, timer } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Food } from '../../food.model';
 import { FoodService } from '../../food.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class AddPackageComponent implements OnInit {
   selectedFood: Array<any> = [];
 
   package_image: File | null = null;
+  formData: FormData = new FormData();
 
   realTimeDataSubscription$!: Subscription;
 
@@ -46,7 +48,8 @@ export class AddPackageComponent implements OnInit {
     private foodService: FoodService,
     private elementRef: ElementRef,
     private route: ActivatedRoute,
-    private af: AngularFireStorage,
+    // private af: AngularFireStorage,
+    private sanitizer: DomSanitizer
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -60,8 +63,7 @@ export class AddPackageComponent implements OnInit {
       end_date: ['', Validators.required],
       value_date: [''],
       price: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      image: [''],
-      food_img: ['', Validators.required],
+      food_img: [''],
       merchant_username: [''],
       package_id: [''],
       packageItemList: ['', Validators.required],
@@ -280,85 +282,51 @@ export class AddPackageComponent implements OnInit {
       package_id: this.selectedPackage.package_id,
     });
 
-    if(this.package_image == null){
-
-      this.addPackageForm.patchValue({
-        food_img: null
-      });
-
-      this.packageService.updatePackage(this.addPackageForm.value, this.loginuser.accessToken).subscribe(
-        (response: Package) => {
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: "Success Update Package",
-            showConfirmButton: true,
-            timer: 1500
-          })
-        },
-        (error: HttpErrorResponse) => {
-          Swal.fire({
-            position: 'center',
-            icon: 'error',
-            title: "Failed Update Package",
-            showConfirmButton: true,
-            timer: 1500
-          })
-      });
-
-      this.addPackageForm.reset();
-      this.closeEditPackageModal();
-
-      return null;
-    }
-    else{
-      const filePath = `food/${this.package_image.name}_${new Date().getTime()}`;
-      const fileRef = this.af.ref(filePath);
-      const uploadTask = this.af.upload(filePath, this.package_image);
-
-      return uploadTask.then(snapshot => {
-        // console.log(fileRef.getDownloadURL());
-        return fileRef.getDownloadURL().subscribe(data => {
-          console.log(data);
-
-          this.addPackageForm.patchValue({
-            package_id: this.selectedPackage.package_id,
-            food_img: data
-          });
-
-          this.packageService.updatePackage(this.addPackageForm.value, this.loginuser.accessToken).subscribe(
-            (response: Package) => {
-              Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: "Success Update Package",
-                showConfirmButton: true,
-                timer: 1500
-              })
-            },
-            (error: HttpErrorResponse) => {
-              Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: "Failed Update Package",
-                showConfirmButton: true,
-                timer: 1500
-              })
-            }
-          );
-          this.package_image = null
-          this.addPackageForm.reset();
-          this.closeEditPackageModal();
-        });
-      });
-
+    if(this.package_image){
+      this.formData.append("file", this.package_image);
     }
 
+    this.addPackageForm.patchValue({
+      food_img: null
+    });
 
+    this.formData.append("packageDto", JSON.stringify(this.addPackageForm.value));
+
+    console.log(this.addPackageForm.value);
+
+
+    this.packageService.updatePackage(this.formData, this.loginuser.accessToken).subscribe(
+      (response: Package) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Update Package",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Update Package",
+          showConfirmButton: true,
+          timer: 1500
+        })
+    });
+
+    this.formData = new FormData();
+    this.addPackageForm.reset();
+    this.closeEditPackageModal();
+  }
+
+  loadImage(blob: Blob){
+    let imageUrl = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
   onFileSelected(event: any): void {
-    this.package_image= event.target.files[0];
+    this.package_image = event.target.files[0];
   }
 
   // readFile(file: File): void {

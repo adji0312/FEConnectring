@@ -33,8 +33,8 @@ export class PackageService {
     return this.http.post<any>(`${this.baseUrl}/getByPackageHeader`, pack, {headers: headers});
   }
 
-  updatePackage(pack: Package, accessToken: any): Observable<any>{
+  updatePackage(formData: FormData, accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.put<any>(`${this.baseUrl}/update`, pack, {headers: headers});
+    return this.http.put<any>(`${this.baseUrl}/update`, formData, {headers: headers});
   }
 }
