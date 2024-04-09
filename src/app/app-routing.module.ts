@@ -17,10 +17,8 @@ import { PackageComponent } from './package/package/package.component';
 import { InvoiceComponent } from './invoice/invoice/invoice.component';
 import { DetailOrderComponent } from './cart/order/DetailOrder/detail-order/detail-order.component';
 import { AddPackageComponent } from './package/addPackage/add-package/add-package.component';
-import { ViewPackageComponent } from './package/viewPackage/view-package/view-package.component';
 import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
 import { ListCustomerComponent } from './admin/customer-list/list-customer/list-customer.component';
-// import { CustomerListComponent } from './admin/customer-list/customer-list/customer-list.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -42,7 +40,6 @@ const routes: Routes = [
   {path: "package", component:PackageComponent, canActivate: [AuthGuard]},
   {path: "orderDetail", component:DetailOrderComponent, canActivate: [AuthGuard]},
   {path: "addPackage", component:AddPackageComponent, canActivate: [AuthGuard]},
-  {path: "viewPackage", component:ViewPackageComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

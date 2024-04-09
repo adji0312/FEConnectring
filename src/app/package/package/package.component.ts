@@ -8,6 +8,7 @@ import { FoodService } from '../food.service';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { Package } from '../package.model';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-package',
@@ -34,7 +35,8 @@ export class PackageComponent implements OnInit {
     private formBuilder : FormBuilder,
     private packageService: PackageService,
     private foodService: FoodService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
     ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
 
@@ -79,6 +81,11 @@ export class PackageComponent implements OnInit {
     .pipe(switchMap(_ => this.packageService.getPackageByMerchant(initData, this.loginuser.accessToken))).subscribe(data =>{
       this.packages = data;
     });
+  }
+
+  loadImage(blob: Blob){
+    let imageUrl = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
   addFood(){

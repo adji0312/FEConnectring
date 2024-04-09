@@ -9,7 +9,7 @@ export class Package {
   end_date!: Date;
   price!: number;
   total_price!: number;
-  food_img!: string;
+  food_img!: Blob;
   packageItemDtoList!: PackageItem[];
 }
 
