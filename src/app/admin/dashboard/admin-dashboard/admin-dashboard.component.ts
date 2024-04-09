@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -19,7 +19,7 @@ declare var $: any;
 export class AdminDashboardComponent implements OnInit {
 
   @ViewChild('closeAddMerchantBtn') closeAddMerchant: ElementRef | undefined;
-  // registMerchantForm!: FormGroup;
+  registMerchantForm!: FormGroup;
   editMerchantForm!: FormGroup;
   public loginuser: any = {};
   merchants!: Merchant[];
@@ -58,15 +58,15 @@ export class AdminDashboardComponent implements OnInit {
 
     this.loadData();
 
-    // this.registMerchantForm = this.formBuilder.group({
-    //   username : ['', [Validators.required]],
-    //   address : ['', [Validators.required]],
-    //   city : ['', [Validators.required]],
-    //   phone : ['', [Validators.required]],
-    //   postal_code : ['', [Validators.required]],
-    //   merchant_name : ['', [Validators.required]],
-    //   // image_merchant : ['',],
-    // });
+    this.registMerchantForm = this.formBuilder.group({
+      username : ['', [Validators.required]],
+      address : ['', [Validators.required]],
+      city : ['', [Validators.required]],
+      phone : ['', [Validators.required]],
+      postal_code : ['', [Validators.required]],
+      merchant_name : ['', [Validators.required]],
+      // image_merchant : ['',],
+    });
 
     this.editMerchantForm = this.formBuilder.group({
       username : ['', [Validators.required]],
@@ -186,46 +186,47 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onSubmit(){
-    this.formData.append('merchant_name', this.merchant_name);
-    this.formData.append('username', this.username);
-    this.formData.append('address', this.address);
-    this.formData.append('city', this.city);
-    this.formData.append('phone', this.phone);
-    this.formData.append('postal_code', this.postal_code);
 
-    // this.authService.regisMerchant(this.formData, this.loginuser.accessToken).subscribe(
-    //   (response: FormData) => {
-    //     console.log(response);
-    //     Swal.fire({
-    //       position: 'center',
-    //       icon: 'success',
-    //       title: 'Success Add Merchant',
-    //       showConfirmButton: true,
-    //       timer: 1500
-    //     })
-    //   },
-    //   (error: HttpErrorResponse) => {
-    //     console.log(error);
-        
-    //     Swal.fire({
-    //       position: 'center',
-    //       icon: 'error',
-    //       title: "Failed Add Merchant",
-    //       showConfirmButton: true,
-    //       timer: 1500
-    //     })
-    //   });
-
+    console.log(this.registMerchantForm.value);
     
-    this.http.post('http://localhost:8080/auth/register-merchant', this.formData)
-    .subscribe(response => {
-      console.log('Registration successful:', response);
-      // Handle successful registration response (e.g., display confirmation message)
-    }, error => {
-      console.error('Error registering merchant:', error);
-      // Handle registration errors (e.g., display error message)
-    });
+    this.formData.append('merchant_name', this.registMerchantForm.get('merchant_name')?.value);
+    this.formData.append('username', this.registMerchantForm.get('username')?.value);
+    this.formData.append('address', this.registMerchantForm.get('address')?.value);
+    this.formData.append('city', this.registMerchantForm.get('city')?.value);
+    this.formData.append('phone', this.registMerchantForm.get('phone')?.value);
+    this.formData.append('postal_code', this.registMerchantForm.get('postal_code')?.value);
+
+    this.authService.regisMerchant(this.formData, this.loginuser.accessToken).subscribe(
+      (response: Merchant) => {
+        console.log(response);
+        
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Register Merchant",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.error,
+          showConfirmButton: true,
+          timer: 1500
+        })
+      }
+    )
     this.closeAddMerchantModal();
+    
+    // this.http.post('http://localhost:8080/auth/register-merchant', this.formData)
+    // .subscribe(response => {
+    //   console.log('Registration successful:', response);
+    // }, error => {
+    //   console.error('Error registering merchant:', error);
+    // });
   }
 
   onFileChanged(event: any){
@@ -234,11 +235,7 @@ export class AdminDashboardComponent implements OnInit {
       const selectedFile = event.target.files[0];
       console.log(selectedFile);
       
-      this.formData.append('image_merchant', selectedFile, selectedFile.name);
-      // console.log(this.formData.get('image_merchant'));
-      
-      // this.selectedFile = event.target.files[0];
-      // console.log(this.selectedFile);
+      this.formData.append('profile_image', selectedFile, selectedFile.name);
     }
   }
 

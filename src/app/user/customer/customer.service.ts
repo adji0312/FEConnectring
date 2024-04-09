@@ -43,9 +43,9 @@ export class CustomerService {
     return this.http.get(`${this.baseUrl}/all`, {headers:headers});
   }
 
-  updateCustomer(customer: Customer, accessToken: any):Observable<Customer>{
+  updateCustomer(customer: FormData, accessToken: any):Observable<any>{
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.put<Customer>(`${this.baseUrl}/update`, customer, {headers: headers});
+    return this.http.put(`${this.baseUrl}/update`, customer, {headers: headers});
   }
 
   deleteCustomer(username: string, accessToken: any): Observable<void>{

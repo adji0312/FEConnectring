@@ -25,7 +25,8 @@ export class ProfileComponent implements OnInit {
   realTimeDataSubscription$!: Subscription;
   detailMerchant: Merchant = new Merchant;
   catering!: Merchant;
-  formData = new FormData();
+  merchantData = new FormData();
+  customerData = new FormData();
   merchant_name!: string;
   username!: string;
   address!: string;
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit {
   picByte!: Blob;
   image_merchant!: Blob;
   changeImage!: boolean;
+  customer!: Customer;
 
 
   // oldPassword = '';
@@ -63,26 +65,23 @@ export class ProfileComponent implements OnInit {
     this.changePasswordForm = this.formBuilder.group({
       username: [''],
       oldPassword: ['', Validators.required],
-      newPassword: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
+      newPassword: ['', Validators.required, Validators.minLength(8)],
+      confirmPassword: ['', Validators.required, Validators.minLength(8)],
     });
 
     this.editMerchantForm = this.formBuilder.group({
-      address : [''],
-      city : [''],
-      phone : [''],
-      postal_code : [''],
-      merchant_name : [''],
+      address : ['', Validators.required],
+      city : ['', Validators.required],
+      phone : ['', Validators.required],
+      postal_code : ['', Validators.required],
+      merchant_name : ['', Validators.required],
       description : [''],
-      username : [''],
-      profile_img : [''],
-      picByte : [''],
-      image_merchant : [''],
+      username : ['']
     });
 
     this.editCustomerForm = this.formBuilder.group({
-      name : [''],
-      phone : [''],
+      name : ['', Validators.required],
+      phone : ['', Validators.required],
       username : [''],
     });
 
@@ -105,6 +104,14 @@ export class ProfileComponent implements OnInit {
           this.picByte = data.picByte;
           this.profile_img = data.profile_img;
           this.catering = data;
+        }
+      )
+    }
+    else if(this.loginuser.userEntity.flag == 1){
+      this.customerService.findCustomerByUsername(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
+        (data) => {
+          console.log(data);
+          this.customer = data;
         }
       )
     }
@@ -222,75 +229,17 @@ export class ProfileComponent implements OnInit {
     }
 
     console.log(this.editCustomerForm.value);
+
+    this.customerData.set('name', this.editCustomerForm.get('name')?.value);
+    this.customerData.set('phone', this.editCustomerForm.get('phone')?.value);
+    this.customerData.set('username', this.editCustomerForm.get('username')?.value);
     
     
 
-    this.customerService.updateCustomer(this.editCustomerForm.value, this.loginuser.accessToken).subscribe(
+    this.customerService.updateCustomer(this.customerData, this.loginuser.accessToken).subscribe(
       (response: Customer) => {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Success Update Profile',
-          showConfirmButton: true,
-          timer: 1500
-        })
-      },
-      (error: HttpErrorResponse) => {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: "Failed Update Profile",
-          showConfirmButton: true,
-          timer: 1500
-        });
-      }
-    );
-
-    document.getElementById('edit-merchant-form')!.click();
-    // this.editMerchantForm.reset();
-  }
-  
-  onUpdateMerchant(){
-    this.editMerchantForm.patchValue({
-      username: this.loginuser.userEntity.username
-    });
-    if(this.editMerchantForm.invalid){
-      return;
-    }
-    
-    // console.log(this.picByte);
-    
-
-    console.log(this.editMerchantForm.value);
-    console.log(this.editMerchantForm.get('city')?.value);
-    
-    this.formData.set('merchant_name', this.merchant_name);
-    this.formData.set('username', this.loginuser.userEntity.username);
-    this.formData.set('address', this.address);
-    this.formData.set('city', this.city);
-    this.formData.set('phone', this.phone);
-    this.formData.set('postal_code', this.postal_code);
-    this.formData.set('description', this.description);
-
-    // if(!this.changeImage){
-    //   var myBlob = new Blob([this.picByte], {type : this.type});
-    //   console.log(myBlob);
-      
-  
-  
-    //   this.formData.append('image_merchant', myBlob, this.profile_img);
-    //   console.log(this.formData.get('image_merchant'));
-    // }
-    
-    
-
-    console.log(this.formData.get('merchant_name'));
-    
-    
-    
-
-    this.merchantService.updateMerchant(this.formData, this.loginuser.accessToken).subscribe(
-      (response: Merchant) => {
+        console.log(response);
+        
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -311,18 +260,57 @@ export class ProfileComponent implements OnInit {
         });
       }
     );
-  }
 
-  inputMerchantName(){
-    console.log(this.merchant_name);
+    document.getElementById('edit-merchant-form')!.click();
+    // this.editMerchantForm.reset();
+  }
+  
+  onUpdateMerchant(){
+
     
-    this.formData.append('merchant_name', this.merchant_name);
-    console.log(this.formData.get('merchant_name'));
+    this.editMerchantForm.patchValue({
+      username: this.loginuser.userEntity.username
+    });
+    console.log(this.editMerchantForm.value);
+    if(this.editMerchantForm.invalid){
+      return;
+    }
     
+    this.merchantData.set('merchant_name', this.editMerchantForm.get('merchant_name')?.value);
+    this.merchantData.set('username', this.editMerchantForm.get('username')?.value);
+    this.merchantData.set('address', this.editMerchantForm.get('address')?.value);
+    this.merchantData.set('city', this.editMerchantForm.get('city')?.value);
+    this.merchantData.set('phone', this.editMerchantForm.get('phone')?.value);
+    this.merchantData.set('postal_code', this.editMerchantForm.get('postal_code')?.value);
+    this.merchantData.set('description', this.editMerchantForm.get('description')?.value);
+
+    this.merchantService.updateMerchant(this.merchantData, this.loginuser.accessToken).subscribe(
+      (response: Merchant) => {
+        console.log(response);
+        
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Update Profile",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Update Profile",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      }
+    )
   }
 
   getImageUrl(blob: Blob) {
-    // console.log(blob);
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
@@ -331,13 +319,13 @@ export class ProfileComponent implements OnInit {
     if(event.target.files){
       const selectedFile = event.target.files[0];
       console.log(selectedFile);
-      
-      this.formData.append('image_merchant', selectedFile, selectedFile.name);
-      this.changeImage = true;
-      // console.log(this.formData.get('image_merchant'));
-      
-      // this.selectedFile = event.target.files[0];
-      // console.log(this.selectedFile);
+      if(this.loginuser.userEntity.flag == 1){
+        this.customerData.append('profile_image', selectedFile, selectedFile.name);
+        this.changeImage = true;
+      }else if(this.loginuser.userEntity.flag == 2){
+        this.merchantData.append('profile_image', selectedFile, selectedFile.name);
+        this.changeImage = true;
+      }
     }
   }
 

@@ -22,11 +22,11 @@ export class MerchantService {
     return this.http.get(`${this.baseUrl}/all`, {headers: headers});
   }
 
-  updateMerchant(merchant: FormData, accessToken: any):Observable<Merchant>{
+  updateMerchant(merchant: FormData, accessToken: any):Observable<any>{
     console.log(merchant);
     
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.put<Merchant>(`${this.baseUrl}/update`, merchant, {headers: headers});
+    return this.http.put(`${this.baseUrl}/update`, merchant, {headers: headers});
   }
 
   deleteMerchant(username: string, accessToken: any): Observable<Merchant>{

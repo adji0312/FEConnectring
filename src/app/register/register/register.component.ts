@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoginAuthService } from 'src/app/auth/login-auth.service';
@@ -18,6 +18,12 @@ export class RegisterComponent implements OnInit {
 
   public user: any = {};
   regisForm!: FormGroup;
+  formRegis = new FormData();
+  // name!: string;
+  // username!: string;
+  // phone!: string;
+  // password!: string;
+  // confirm_password!: string;
 
   constructor(
     private router: Router, 
@@ -34,17 +40,32 @@ export class RegisterComponent implements OnInit {
       name: ['', [Validators.required]],
       username: ['', [Validators.required]],
       phone: ['', [Validators.required]],
-      password: ['', Validators.required],
-    })
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmpassword: ['', [Validators.required, Validators.minLength(8)]],
+    },
+    {
+      validators: this.passwordMatchValidator, 
+    }
+    )
+  }
+
+  passwordMatchValidator(control: AbstractControl){
+    return control.get('password')?.value ===
+      control.get('confirmpassword')?.value
+      ? null
+      : { mismatch: true };
   }
 
   register(){
     console.log(this.regisForm.value);
-
+    this.formRegis.append('name', this.regisForm.get('name')?.value);
+    this.formRegis.append('username', this.regisForm.get('username')?.value);
+    this.formRegis.append('phone', this.regisForm.get('phone')?.value);
+    this.formRegis.append('password', this.regisForm.get('password')?.value);
     
-    
-    this.authService.regisUser(this.regisForm.value).subscribe(
+    this.authService.regisUser(this.formRegis).subscribe(
       (response: User) => {
+        console.log(response);
         
         Swal.fire({
           position: 'center',
@@ -53,51 +74,30 @@ export class RegisterComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         })
+        this.router.navigate(['/login']);
       },
       (error: HttpErrorResponse) => {
-        // Swal.fire({
-        //   position: 'center',
-        //   icon: 'error',
-        //   title: this.translate.instant('alert.failed.add', {value: 'User'}),
-        //   showConfirmButton: true,
-        //   timer: 1500
-        // })
+        console.log(error);
+        
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.error,
+          showConfirmButton: true,
+          timer: 1500
+        })
       }
     );
-    this.router.navigate(['/login']);
-    // console.log('012938123');
+  }
 
-    // this.authService.regisUser(user).subscribe((response) => {
-    //   if(response){
-    //     console.log(response);
-        
-    //   }
-    // }, (error) => {
+  onFileChanged(event: any){
+    
+    if(event.target.files){
+      const selectedFile = event.target.files[0];
+      console.log(selectedFile);
       
-    // });
-    
-    // this.userService.loginUser(user).subscribe((response) => {
-    //   if(response){
-    //     // console.log(response);
-    //     // console.log(user);
-    //     if(response.token){
-    //       // console.log(response);
-    //       localStorage.setItem('currentUser', JSON.stringify(response));
-    //       this.router.navigate(['/dashboard']);
-    //       this.toastr.success('You are success login', 'Login - Success');
-
-    //       const jwtToken = JSON.parse(atob(response.token.split('.')[1]));
-    //       const expires = new Date(jwtToken.exp * 1000);
-    //       const timeout = expires.getTime() - Date.now();
-
-    //       setTimeout(() => this.authService.logout(), timeout);
-    //     }
-    //   }
-    // }, (error) => {
-    //   // console.log(error);
-    //   this.toastr.error('Invalid Username or Password!', 'Login - Failed');
-    // })
-    
+      this.formRegis.append('profile_image', selectedFile, selectedFile.name);
+    }
   }
 
 }

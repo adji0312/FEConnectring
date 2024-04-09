@@ -40,7 +40,10 @@ export class UserService {
     this.router.navigate(['/login']);
   }
 
-  public regisUser(user: any): Observable<any>{
+  public regisUser(user: FormData): Observable<any>{
+    console.log(user);
+    
+    
     const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
     return this.http.post(environment.baseUrl+"/auth/register-customer", user, {headers: headers});
   }
@@ -50,9 +53,9 @@ export class UserService {
   //   return this.http.post(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
   // }
   
-  regisMerchant(user: FormData, accessToken: any): Observable<FormData> {
+  regisMerchant(merchant: FormData, accessToken: any): Observable<any> {
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.post<FormData>(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
+    return this.http.post(environment.baseUrl+"/auth/register-merchant", merchant, {headers: headers});
   }
 
   public loginUser(user: any): Observable<any>{

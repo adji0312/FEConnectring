@@ -44,6 +44,8 @@ export class LoginComponent implements OnInit {
 
     this.authService.loginUser(user).subscribe((response) => {
       if(response){
+        console.log(response);
+        
         if(response.accessToken){
           localStorage.setItem('currentUser', JSON.stringify(response));
 
@@ -64,7 +66,7 @@ export class LoginComponent implements OnInit {
         }
       }
     }, (error) => {
-      // console.log(error);
+      console.log(error);
       this.toastr.error('Invalid Username or Password!', 'Login - Failed');
     })
 
