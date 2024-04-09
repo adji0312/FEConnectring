@@ -1,11 +1,28 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<div class="m-4 mt-5" style="min-height: 100vh;">
     <div class="d-flex justify-content-between mb-3">
         <h2><a href="/package" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
-        <div class="d-flex flex-column gap-2 align-items-end" style="width: 300px;">
+        <!-- <div class=""> -->
+          
+          <div class="d-flex flex-column gap-2 align-items-end" style="width: 300px;">
             <button id="openModalButton" type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 50%;" data-bs-toggle="modal" data-bs-target="#newPackage"><i class="fas fa-plus"></i> New</button>
             <p style="font-size: 20px;">{{ packageList ? packageList[0].package_name : '-' }} (Rp {{ packageList ? (packageList[0].total_price | number)  : 0 }} )</p>
-        </div>
+
+            <!-- IF THIS ACTIVE FLAG ON, HIDDEN ON ACTIVE LIST -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Active
+              </label>
+            </div>
+            <!-- <div class="form-check" hidden>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Active
+              </label>
+            </div> -->
+          </div>
+        <!-- </div> -->
     </div>
 
     <div>

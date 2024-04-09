@@ -1,9 +1,9 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<div class="m-4 mt-5" style="min-height: 100vh;">
     <div class="d-flex justify-content-between mb-3">
         <h2><a href="/detailCatering" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex flex-column gap-2 align-items-end">
-            <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 50%;" data-bs-toggle="modal" data-bs-target="#addToOrder"><i class="fas fa-shopping-cart"></i> Add to order</button>
+            <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 200px;" data-bs-toggle="modal" data-bs-target="#addToOrder"><i class="fas fa-shopping-cart"></i> Add to order</button>
             <p *ngIf="packageList" style="font-size: 20px;">{{ packageList[0].package_name }} (Rp {{ packageList[0].total_price | number }})</p>
         </div>
     </div>

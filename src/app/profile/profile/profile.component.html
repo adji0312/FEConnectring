@@ -7,6 +7,8 @@
 
     <!-- CUSTOMER -->
     <form *ngIf="loginuser.userEntity.flag == 1" #customerForm="ngForm" [formGroup]="editCustomerForm">
+      <!-- <label for="merchant_name" class="form-label">Profile Image</label> <br> -->
+      <img src="https://media.japanesestation.com/images/750x422/2021/04/16/85531-kirito.jpg" alt="" style="border-radius: 50%; width: 200px; height: 200px;" class="mb-3">
         <div class="mb-2">
           <label for="name" class="form-label">Name</label>
           <input type="text" #name name="name" class="form-control" formControlName="name" [ngClass]="{ 'is-invalid' : editCustomerForm.controls['name'].touched && editCustomerForm.controls['name'].errors}" id="name" placeholder="" autocomplete="off">
@@ -15,13 +17,17 @@
           <label for="exampleInputPassword1" class="form-label">Phone</label>
           <input type="text" #phone name="phone" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid' : editCustomerForm.controls['phone'].touched && editCustomerForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
         </div>
+        <div class="mb-2">
+          <label for="" class="form-label">Photo</label>
+          <input type="file" class="form-control" value="select" (change)="onFileChanged($event)" name="image_merchant" [(ngModel)]="image_merchant">
+        </div>
         <button type="button" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#updateProfile"><i class="fas fa-pencil-alt"></i> Update Profile</button>
     </form>
 
     <!-- MERCHANT -->
     <form *ngIf="loginuser.userEntity.flag == 2" (ngSubmit)="onUpdateMerchant()">
-      <label for="merchant_name" class="form-label">Merchant Image</label> <br>
-      <img [src]="getImageUrl(catering.picByte)" alt="" style="width: 300px;">
+      <!-- <label for="merchant_name" class="form-label">Profile Image</label> <br> -->
+      <img [src]="getImageUrl(catering.picByte)" alt="" class="mb-3" style="border-radius: 50%; width: 200px; height: 200px;">
         <div class="mb-2">
           <label for="merchant_name" class="form-label">Merchant Name</label>
           <input type="text" name="merchant_name" class="form-control" id="merchant_name" [(ngModel)]="merchant_name">

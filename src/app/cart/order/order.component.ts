@@ -74,7 +74,7 @@ export class OrderComponent implements OnInit {
 
     this.transactionService.getCustomerOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.orderList = data;
-      // console.log(data);
+      console.log(data);
     });
   }
 
@@ -107,12 +107,12 @@ export class OrderComponent implements OnInit {
       menu: "Incoming"
     });
 
-    // console.log(this.orderForm.value);
+    console.log(this.orderForm.value);
 
 
     this.transactionService.getCateringOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.cateringOrder = data;
-      // console.log(data);
+      console.log(data);
 
       // console.log(this.cateringOrder);
     });

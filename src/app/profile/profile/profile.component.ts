@@ -36,7 +36,8 @@ export class ProfileComponent implements OnInit {
   type!: string;
   profile_img!: string;
   picByte!: Blob;
-  image_merchant!: File;
+  image_merchant!: Blob;
+  changeImage!: boolean;
 
 
   // oldPassword = '';
@@ -55,6 +56,8 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+    this.changeImage = false;
     console.log(this.loginuser);
 
     this.changePasswordForm = this.formBuilder.group({
@@ -88,17 +91,8 @@ export class ProfileComponent implements OnInit {
     if(this.loginuser.userEntity.flag == 2){
       this.merchantService.getMerchant(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
         (data) => {
-          // console.log(data);
-          // this.formData.append('merchant_name', data.merchant_name);
-          // this.formData.append('username', data.parent.username);
-          // this.formData.append('address', data.address);
-          // this.formData.append('city', data.city);
-          // this.formData.append('phone', data.phone);
-          // this.formData.append('postal_code', data.postal_code);
-          // this.formData.append('description', data.description);
-          // this.formData.append('profile_img', data.profile_img);
-          // this.formData.append('picByte', data.picByte);
-          // this.formData.append('type', data.type);
+          console.log(data);
+          
           this.merchant_name = data.merchant_name;
           this.username = data.parent.username;
           this.address = data.address;
@@ -109,6 +103,7 @@ export class ProfileComponent implements OnInit {
           this.profile_img = data.profile_img;
           this.type = data.type;
           this.picByte = data.picByte;
+          this.profile_img = data.profile_img;
           this.catering = data;
         }
       )
@@ -256,23 +251,15 @@ export class ProfileComponent implements OnInit {
   }
   
   onUpdateMerchant(){
-
-    // this.formData.append('merchant_name', this.merchant_name);
-    // this.formData.append('username', this.username);
-    // this.formData.append('address', this.address);
-    // this.formData.append('city', this.city);
-    // this.formData.append('phone', this.phone);
-    // this.formData.append('postal_code', this.postal_code);
-    // this.formData.append('description', this.description);
-
-    // console.log(this.formData.get('merchant_name'));
-    
     this.editMerchantForm.patchValue({
       username: this.loginuser.userEntity.username
     });
     if(this.editMerchantForm.invalid){
       return;
     }
+    
+    // console.log(this.picByte);
+    
 
     console.log(this.editMerchantForm.value);
     console.log(this.editMerchantForm.get('city')?.value);
@@ -284,14 +271,18 @@ export class ProfileComponent implements OnInit {
     this.formData.set('phone', this.phone);
     this.formData.set('postal_code', this.postal_code);
     this.formData.set('description', this.description);
-    // this.formData.set('image_merchant', t)
-    // this.formData.set('merchant_name', this.editMerchantForm.get('merchant_name')?.value);
-    // this.formData.set('username', this.editMerchantForm.get('username')?.value);
-    // this.formData.set('address', this.editMerchantForm.get('address')?.value);
-    // this.formData.set('city', this.editMerchantForm.get('city')?.value);
-    // this.formData.set('phone', this.editMerchantForm.get('phone')?.value);
-    // this.formData.set('postal_code', this.editMerchantForm.get('postal_code')?.value);
-    // this.formData.append('image_merchant', this.editCustomerForm.get('description')?.value);
+
+    // if(!this.changeImage){
+    //   var myBlob = new Blob([this.picByte], {type : this.type});
+    //   console.log(myBlob);
+      
+  
+  
+    //   this.formData.append('image_merchant', myBlob, this.profile_img);
+    //   console.log(this.formData.get('image_merchant'));
+    // }
+    
+    
 
     console.log(this.formData.get('merchant_name'));
     
@@ -309,6 +300,8 @@ export class ProfileComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
+        console.log(error);
+        
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -318,8 +311,6 @@ export class ProfileComponent implements OnInit {
         });
       }
     );
-
-    // document.getElementById('edit-merchant-form')!.click();
   }
 
   inputMerchantName(){
@@ -342,6 +333,7 @@ export class ProfileComponent implements OnInit {
       console.log(selectedFile);
       
       this.formData.append('image_merchant', selectedFile, selectedFile.name);
+      this.changeImage = true;
       // console.log(this.formData.get('image_merchant'));
       
       // this.selectedFile = event.target.files[0];

@@ -43,6 +43,8 @@ import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
 import { ListCustomerComponent } from './admin/customer-list/list-customer/list-customer.component';
 import { OrderPipe } from './cart/order/order.pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -113,6 +115,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
       checkedLabel: 'ID',
       uncheckedLabel: 'EN'
     }),
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     AuthGuard,
