@@ -11,13 +11,18 @@
     <div class="card shadow mb-2" style="border: none;">
       <div class="card-body">
         <div class="d-flex justify-content-between">
-          <div class="d-flex flex-column justify-content-center">
-            <h5>{{ customer.name }}</h5>
+          <div class="d-flex gap-3">
+            <img *ngIf="customer.picByte != null" [src]="getImageUrl(customer.picByte)" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+            <img *ngIf="customer.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+            <div class="d-flex flex-column justify-content-center">
+              <h5>{{ customer.name }}</h5>
+              <p><i class="fas fa-map-marker-alt"></i> {{ customer.phone }}</p>
+            </div>
           </div>
   
           <div class="d-flex gap-2 align-items-center">
             <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#viewCustomer" (click)="onOpenModal(customer, 'view')"><i class="fas fa-eye"></i> Detail</button>
-            <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCustomer" (click)="onOpenModal(customer, 'delete')"><i class="fas fa-trash-alt"></i> Delete</button>
+            <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" (click)="onOpenModal(customer, 'delete')" data-bs-toggle="modal" data-bs-target="#deleteCustomer"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
         </div>
       </div>
@@ -34,18 +39,39 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Add Customer</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form [formGroup]="addCustomerForm" (ngSubmit)="onAddCustomer()">
+      <form [formGroup]="addCustomerForm">
         <div class="modal-body">
-          <label for="" class="form-label">Name</label>
-          <input type="text" class="form-control" name="name" formControlName="name">
-          <label for="" class="form-label">Username</label>
-          <input type="text" class="form-control" name="username" formControlName="username">
-          <label for="" class="form-label">Phone</label>
-          <input type="text" class="form-control" name="phone" formControlName="phone">
+          <div class="mb-1">
+            <label for="" class="form-label">Name</label>
+            <input type="text" #name name="name" class="form-control form-control-sm" formControlName="name" [ngClass]="{ 'is-invalid' : addCustomerForm.controls['name'].touched && addCustomerForm.controls['name'].errors}" id="name" placeholder="" autocomplete="off">
+            <div *ngIf="addCustomerForm.controls['name'].touched && addCustomerForm.controls['name'].errors" class="text-danger">
+              <div *ngIf="addCustomerForm.controls['name'].touched && addCustomerForm.controls['name'].errors['required']">
+                <small>Name must be filled</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1">
+            <label for="" class="form-label">Username</label>
+            <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" [ngClass]="{ 'is-invalid' : addCustomerForm.controls['username'].touched && addCustomerForm.controls['username'].errors}" id="username" placeholder="" autocomplete="off">
+            <div *ngIf="addCustomerForm.controls['username'].touched && addCustomerForm.controls['username'].errors" class="text-danger">
+              <div *ngIf="addCustomerForm.controls['username'].touched && addCustomerForm.controls['username'].errors['required']">
+                <small>Username must be filled</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1">
+            <label for="" class="form-label">Phone</label>
+            <input type="text" #phone name="phone" class="form-control form-control-sm" formControlName="phone" [ngClass]="{ 'is-invalid' : addCustomerForm.controls['phone'].touched && addCustomerForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
+            <div *ngIf="addCustomerForm.controls['phone'].touched && addCustomerForm.controls['phone'].errors" class="text-danger">
+              <div *ngIf="addCustomerForm.controls['phone'].touched && addCustomerForm.controls['phone'].errors['required']">
+                <small>Phone must be filled</small>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="add-customer-form"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Add</button>
+          <button type="submit" (click)="onAddCustomer()" [disabled]="addCustomerForm.invalid" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Add</button>
         </div>
     </form>
     </div>
@@ -61,10 +87,12 @@
       </div>
       <form [formGroup]="viewCustomerForm">
         <div class="modal-body">
+          <label for="" class="form-label">Username</label>
+          <input type="text" class="form-control form-control-sm" name="username" formControlName="username" readonly>
           <label for="" class="form-label">Name</label>
-          <input type="text" class="form-control" name="name" formControlName="name" readonly>
+          <input type="text" class="form-control form-control-sm" name="name" formControlName="name" readonly>
           <label for="" class="form-label">Phone</label>
-          <input type="text" class="form-control" name="phone" formControlName="phone" readonly>
+          <input type="text" class="form-control form-control-sm" name="phone" formControlName="phone" readonly>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="add-customer-form"><i class="fas fa-times"></i> Close</button>
@@ -111,7 +139,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-customer-form"><i class="fas fa-times"></i> Close</button>
-        <button (click)="onDeleteCustomer()" type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
+        <button (click)="onDeleteCustomer(deleteCustomer)" type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
       </div>
     </div>
   </div>

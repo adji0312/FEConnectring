@@ -19,7 +19,7 @@
             <h5 class="card-title mb-3">{{ pack.package_name }}</h5>
             <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> {{ pack.start_date | date: 'dd MMMM yyyy' }} - {{ pack.end_date | date: 'dd MMMM yyyy' }}</p>
             <p class="card-text" style="font-size: 14px;"><i class="fas fa-money-bill"></i> Rp {{ pack.total_price | number }} </p>
-            <a type="button" (click)="viewPackage(pack.package_header)" class="btn btn-sm" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> View Detail</a>
+            <a type="button" (click)="viewPackage(pack.package_header)" class="btn btn-sm" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> Detail</a>
           </div>
         </div>
       </div>
@@ -44,7 +44,10 @@
             <h5 class="card-title mb-3">{{ pack.package_name }}</h5>
             <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> {{ pack.start_date | date: 'dd MMMM yyyy' }} - {{ pack.end_date | date: 'dd MMMM yyyy' }}</p>
             <p class="card-text" style="font-size: 14px;"><i class="fas fa-money-bill"></i> Rp {{ pack.total_price | number }} </p>
-            <a type="button" (click)="viewPackage(pack.package_header)" class="btn btn-sm" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> View Detail</a>
+            <div class="d-flex justify-content-between gap-3">
+              <a type="button" (click)="viewPackage(pack.package_header)" class="btn btn-sm w-100" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> Detail</a>
+              <a type="button" class="btn btn-sm w-100" style="background-color: #D24545; color: white;" data-bs-toggle="modal" data-bs-target="#deletePackage"><i class="fas fa-trash-alt"></i> Delete</a>
+            </div>
           </div>
         </div>
       </div>
@@ -138,6 +141,24 @@
       <div class="modal-footer">
         <button #closeDeleteFoodBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
         <button type="submit" (click)="onDeleteFood()" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deletePackage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Package</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to delete this package?
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteFoodBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
       </div>
     </div>
   </div>

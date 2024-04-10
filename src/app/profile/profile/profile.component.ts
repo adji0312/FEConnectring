@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { Customer } from 'src/app/user/customer/customer.model';
 import { CustomerService } from 'src/app/user/customer/customer.service';
@@ -51,7 +52,8 @@ export class ProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private merchantService: MerchantService,
     private customerService: CustomerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router: Router,
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -262,6 +264,7 @@ export class ProfileComponent implements OnInit {
     );
 
     document.getElementById('edit-merchant-form')!.click();
+    // window.location.reload();
     // this.editMerchantForm.reset();
   }
   

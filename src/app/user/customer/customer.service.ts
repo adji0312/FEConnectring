@@ -48,8 +48,8 @@ export class CustomerService {
     return this.http.put(`${this.baseUrl}/update`, customer, {headers: headers});
   }
 
-  deleteCustomer(username: string, accessToken: any): Observable<void>{
+  deleteCustomer(username: string, accessToken: any): Observable<Customer>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.delete<void>(`${this.baseUrl}/delete/${username}`, {headers: headers});
+    return this.http.post<Customer>(`${this.baseUrl}/delete`, username, {headers: headers});
   }
 }

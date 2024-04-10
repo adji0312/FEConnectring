@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { Customer } from 'src/app/user/customer/customer.model';
 import { CustomerService } from 'src/app/user/customer/customer.service';
@@ -21,6 +22,7 @@ export class ListCustomerComponent implements OnInit {
   deleteCustomer: Customer = new Customer;
   addCustomerForm!: FormGroup;
   viewCustomerForm!: FormGroup;
+  addData = new FormData;
 
   private loadData(){
     this.getCustomers();
@@ -30,7 +32,8 @@ export class ListCustomerComponent implements OnInit {
     private customerService: CustomerService,
     private formBuilder : FormBuilder,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private sanitizer: DomSanitizer
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -43,12 +46,13 @@ export class ListCustomerComponent implements OnInit {
       username : ['', [Validators.required]],
       name : ['', [Validators.required]],
       phone : ['', [Validators.required]],
-      password : ['', [Validators.required]],
+      password : [''],
     });
 
     this.viewCustomerForm = this.formBuilder.group({
       name : [''],
-      phone : ['']
+      phone : [''],
+      username : ['']
     });
   }
 
@@ -61,27 +65,26 @@ export class ListCustomerComponent implements OnInit {
   }
 
   onOpenModal(customer: Customer, mode: string){
-    // console.log(customer);
-    // console.log(mode);
-
     if(mode == 'view'){
       this.viewCustomerForm.setValue({
         name : customer.name,
-        phone : customer.phone
+        phone : customer.phone,
+        username : customer.parent.username
       });
     }else if(mode === 'delete'){
       this.deleteCustomer = customer;
-      // console.log(this.deleteCustomer.parent.username);
+      console.log(this.deleteCustomer);
+      
       
     }
     
   }
 
-  onDeleteCustomer(){
-    console.log(this.deleteCustomer);
+  onDeleteCustomer(customer: Customer){
+    console.log(this.deleteCustomer.parent.username);
 
     this.customerService.deleteCustomer(this.deleteCustomer.parent.username, this.loginuser.accessToken).subscribe(
-      (response: void) => {
+      (response: Customer) => {
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -114,7 +117,12 @@ export class ListCustomerComponent implements OnInit {
       return;
     }
 
-    this.userService.regisUser(this.addCustomerForm.value).subscribe(
+    this.addData.append('name', this.addCustomerForm.get('name')?.value);
+    this.addData.append('phone', this.addCustomerForm.get('phone')?.value);
+    this.addData.append('username', this.addCustomerForm.get('username')?.value);
+    this.addData.append('password', this.addCustomerForm.get('password')?.value);
+
+    this.userService.regisUser(this.addData).subscribe(
       (response: User) => {
         console.log(response);
         
@@ -129,12 +137,24 @@ export class ListCustomerComponent implements OnInit {
       (error: HttpErrorResponse) => {
         console.log(error);
         
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Add Customer",
+          showConfirmButton: true,
+          timer: 1500
+        });
       }
     );
     
     document.getElementById('add-customer-form')?.click();
     this.addCustomerForm.reset();
     
+  }
+
+  getImageUrl(blob: Blob) {
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }

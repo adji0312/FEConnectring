@@ -7,13 +7,26 @@
           <div class="d-flex flex-column gap-2 align-items-end" style="width: 300px;">
             <button id="openModalButton" type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 50%;" data-bs-toggle="modal" data-bs-target="#newPackage"><i class="fas fa-plus"></i> New</button>
             <p style="font-size: 20px;">{{ packageList ? packageList[0].package_name : '-' }} (Rp {{ packageList ? (packageList[0].total_price | number)  : 0 }} )</p>
+            
+            <!-- HIDDEN THIS BUTTON WHEN PACKAGE IS ALREADY ACTIVATED -->
+            <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#activatePackage">Activate Package</button>
 
-            <!-- IF THIS ACTIVE FLAG ON, HIDDEN ON ACTIVE LIST -->
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                Active
-              </label>
+            <div class="modal fade" id="activatePackage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Active Package</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure want to activate this package?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-times"></i> Close</button>
+                    <button type="button" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+                  </div>
+                </div>
+              </div>
             </div>
             <!-- <div class="form-check" hidden>
               <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">

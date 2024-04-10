@@ -28,6 +28,7 @@ export class AdminDashboardComponent implements OnInit {
   foto: any;
   selectedFile!: File;
   formData = new FormData();
+  editData = new FormData();
   merchant_name!: string;
   username!: string;
   address!: string;
@@ -75,29 +76,16 @@ export class AdminDashboardComponent implements OnInit {
       phone : ['', [Validators.required]],
       postal_code : ['', [Validators.required]],
       merchant_name : ['', [Validators.required]],
+      description : [''],
     });
     
   }
 
   private getMerchants(){
-    // this.merchantService.getAllMerchant(this.loginuser.accessToken).subscribe(
-    //   (response) => {
-    //     console.log(response);
-        
-    //   }
-    // )
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
         this.merchants = data.sort();
-
-        // let objectURL = 'data:image/jpeg;base64,' + data[1].picByte;
-
-        //  this.foto = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-        //  console.log(this.foto);
-         
-        // console.log(this.merchants);
-        
     });
   }
 
@@ -143,6 +131,7 @@ export class AdminDashboardComponent implements OnInit {
         phone : this.editMerchant.phone,
         postal_code : this.editMerchant.postal_code,
         merchant_name : this.editMerchant.merchant_name,
+        description : this.editMerchant.description,
       });
     }else if(mode === 'delete'){
       this.deleteMerchant = merchant;
@@ -156,12 +145,20 @@ export class AdminDashboardComponent implements OnInit {
     if(this.editMerchantForm.invalid){
       return;
     }
+    this.editData.set('merchant_name', this.editMerchantForm.get('merchant_name')?.value);
+    this.editData.set('username', this.editMerchantForm.get('username')?.value);
+    this.editData.set('address', this.editMerchantForm.get('address')?.value);
+    this.editData.set('city', this.editMerchantForm.get('city')?.value);
+    this.editData.set('phone', this.editMerchantForm.get('phone')?.value);
+    this.editData.set('postal_code', this.editMerchantForm.get('postal_code')?.value);
 
     console.log(this.editMerchantForm.value);
     
 
-    this.merchantService.updateMerchant(this.editMerchantForm.value, this.loginuser.accessToken).subscribe(
+    this.merchantService.updateMerchant(this.editData, this.loginuser.accessToken).subscribe(
       (response: Merchant) => {
+        console.log(response);
+        
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -171,6 +168,8 @@ export class AdminDashboardComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
+        console.log(error);
+        
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -183,6 +182,7 @@ export class AdminDashboardComponent implements OnInit {
 
     document.getElementById('edit-merchant-form')!.click();
     this.editMerchantForm.reset();
+    this.editData.delete('profile_image');
   }
 
   onSubmit(){
@@ -219,14 +219,8 @@ export class AdminDashboardComponent implements OnInit {
         })
       }
     )
+    this.registMerchantForm.reset();
     this.closeAddMerchantModal();
-    
-    // this.http.post('http://localhost:8080/auth/register-merchant', this.formData)
-    // .subscribe(response => {
-    //   console.log('Registration successful:', response);
-    // }, error => {
-    //   console.error('Error registering merchant:', error);
-    // });
   }
 
   onFileChanged(event: any){
@@ -236,6 +230,7 @@ export class AdminDashboardComponent implements OnInit {
       console.log(selectedFile);
       
       this.formData.append('profile_image', selectedFile, selectedFile.name);
+      this.editData.append('profile_image', selectedFile, selectedFile.name);
     }
   }
 
@@ -243,6 +238,11 @@ export class AdminDashboardComponent implements OnInit {
     if(this.closeAddMerchant){
       this.closeAddMerchant.nativeElement.click();
     }
+  }
+
+  getImageUrl(blob: Blob) {
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }

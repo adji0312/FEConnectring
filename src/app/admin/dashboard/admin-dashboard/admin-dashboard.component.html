@@ -11,11 +11,14 @@
     <div class="card shadow mb-2" style="border: none;">
       <div class="card-body">
         <div class="d-flex justify-content-between">
-          <div class="d-flex flex-column justify-content-center">
-            <h5>{{ merch.merchant_name }}</h5>
-            <p><i class="fas fa-map-marker-alt"></i> {{ merch.address }}, {{ merch.city }}</p>
+          <div class="d-flex gap-3">
+            <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+            <img *ngIf="merch.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+            <div class="d-flex flex-column justify-content-center">
+              <h5>{{ merch.merchant_name }}</h5>
+              <p><i class="fas fa-map-marker-alt"></i> {{ merch.address }}, {{ merch.city }}</p>
+            </div>
           </div>
-  
           <div class="d-flex gap-2 align-items-center">
             <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(merch, 'edit')"><i class="fas fa-edit"></i> Edit</button>
             <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCatering" (click)="onOpenModal(merch, 'delete')"><i class="fas fa-trash-alt"></i> Delete</button>
@@ -99,37 +102,9 @@
 
         <div class="modal-footer">
           <button #closeAddMerchantBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="button" (click)="onSubmit()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+          <button type="button" [disabled]="registMerchantForm.invalid" (click)="onSubmit()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
         </div>
       </form>
-      <!-- <form (ngSubmit)="onSubmit()">
-        <div class="modal-body">
-          <label for="" class="form-label">Name</label>
-          <input type="text" name="merchant_name" class="form-control" id="merchant_name" [(ngModel)]="merchant_name">
-
-          <label for="" class="form-label">Username</label>
-          <input type="text" name="username" class="form-control" id="username" [(ngModel)]="username">
-
-          <label for="" class="form-label">Address</label>
-          <input type="text" name="address" class="form-control" id="address" [(ngModel)]="address">
-
-          <label for="" class="form-label">City</label>
-          <input type="text" name="city" class="form-control" id="city" [(ngModel)]="city">
-
-          <label for="" class="form-label">Postal Code</label>
-          <input type="text" name="postal_code" class="form-control" id="postal_code" [(ngModel)]="postal_code">
-
-          <label for="" class="form-label">Phone</label>
-          <input type="text" name="phone" class="form-control" id="phone" [(ngModel)]="phone">
-
-          <label for="" class="form-label">Photo</label>
-          <input type="file" class="form-control" value="select" (change)="onFileChanged($event)" name="image_merchant">
-        </div>
-        <div class="modal-footer">
-          <button #closeAddMerchantBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
-        </div>
-      </form> -->
     </div>
   </div>
 </div>
@@ -141,24 +116,65 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Catering</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form [formGroup]="editMerchantForm" (ngSubmit)="onUpdateMerchant()">
+      <form [formGroup]="editMerchantForm">
         <div class="modal-body">
-          <label for="" class="form-label">Name</label>
-          <input type="text" class="form-control" name="merchant_name" formControlName="merchant_name" #edit_merchant_name (input)="edit_merchant_name.value">
-          <label for="" class="form-label">Username</label>
-          <input type="text" class="form-control" name="username" formControlName="username" #edit_username (input)="edit_username.value">
-          <label for="" class="form-label">Address</label>
-          <input type="text" class="form-control" name="address" formControlName="address" #edit_address (input)="edit_address.value">
-          <label for="" class="form-label">City</label>
-          <input type="text" class="form-control" name="city" formControlName="city" #edit_city (input)="edit_city.value">
-          <label for="" class="form-label">Postal Code</label>
-          <input type="text" class="form-control" name="postal_code" formControlName="postal_code" #edit_postal_code (input)="edit_postal_code.value">
-          <label for="" class="form-label">Phone</label>
-          <input type="text" class="form-control" name="phone" formControlName="phone" #edit_phone (input)="edit_phone.value">
+          <div class="mb-1">
+            <label for="" class="form-label">Username</label>
+            <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" readonly>
+          </div>
+          <div class="mb-1">
+            <label for="" class="form-label">Merchant Name</label>
+            <input type="text" #merchant_name name="merchant_name" class="form-control form-control-sm" formControlName="merchant_name" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors}" id="merchant_name" placeholder="" autocomplete="off">
+            <div *ngIf="editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors" class="text-danger">
+              <div *ngIf="editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors['required']">
+                <small>Merchant Name must be filled</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1">
+            <label for="" class="form-label">Address</label>
+            <input type="text" #address name="address" class="form-control form-control-sm" formControlName="address" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['address'].touched && editMerchantForm.controls['address'].errors}" id="address" placeholder="" autocomplete="off">
+            <div *ngIf="editMerchantForm.controls['address'].touched && editMerchantForm.controls['address'].errors" class="text-danger">
+              <div *ngIf="editMerchantForm.controls['address'].touched && editMerchantForm.controls['address'].errors['required']">
+                <small>Address must be filled</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1">
+            <label for="" class="form-label">City</label>
+            <input type="text" #city name="city" class="form-control form-control-sm" formControlName="city" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['city'].touched && editMerchantForm.controls['city'].errors}" id="city" placeholder="" autocomplete="off">
+            <div *ngIf="editMerchantForm.controls['city'].touched && editMerchantForm.controls['city'].errors" class="text-danger">
+              <div *ngIf="editMerchantForm.controls['city'].touched && editMerchantForm.controls['city'].errors['required']">
+                <small>City must be filled</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1">
+            <label for="" class="form-label">Postal Code</label>
+            <input type="text" #postal_code name="postal_code" class="form-control form-control-sm" formControlName="postal_code" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['postal_code'].touched && editMerchantForm.controls['postal_code'].errors}" id="postal_code" placeholder="" autocomplete="off">
+            <div *ngIf="editMerchantForm.controls['postal_code'].touched && editMerchantForm.controls['postal_code'].errors" class="text-danger">
+              <div *ngIf="editMerchantForm.controls['postal_code'].touched && editMerchantForm.controls['postal_code'].errors['required']">
+                <small>Postal Code must be filled</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1">
+            <label for="" class="form-label">Phone</label>
+            <input type="text" #phone name="phone" class="form-control form-control-sm" formControlName="phone" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
+            <div *ngIf="editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors" class="text-danger">
+              <div *ngIf="editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors['required']">
+                <small>Phone must be filled</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1">
+            <label for="" class="form-label">Profile Image</label>
+            <input type="file" class="form-control form-control-sm" name="profile_image" (change)="onFileChanged($event)">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="edit-merchant-form"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Update</button>
+          <button type="submit" [disabled]="editMerchantForm.invalid" (click)="onUpdateMerchant()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Update</button>
         </div>
       </form>
     </div>
