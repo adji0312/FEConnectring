@@ -9,6 +9,8 @@ export class Package {
   end_date!: Date;
   price!: number;
   total_price!: number;
+  isActive!: boolean;
+  activateAll!: boolean;
   food_img!: Blob;
   packageItemDtoList!: PackageItem[];
 }

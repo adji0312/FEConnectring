@@ -29,9 +29,9 @@ export class CateringComponent implements OnInit {
   }
 
   constructor(
-    private router: Router, 
-    private authService: UserService, 
-    private formBuilder : FormBuilder, 
+    private router: Router,
+    private authService: UserService,
+    private formBuilder : FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
     private merchantService: MerchantService,
@@ -43,8 +43,8 @@ export class CateringComponent implements OnInit {
   ngOnInit(): void {
 
     this.loadData();
-    console.log(this.searchText.length);
-    
+    // console.log(this.searchText.length);
+
     // this.getCityMerchant();
   }
 
@@ -52,10 +52,10 @@ export class CateringComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
-        
+
         this.merchants = data.sort();
         // console.log(this.merchants);
-        
+
     });
   }
 
@@ -75,7 +75,7 @@ export class CateringComponent implements OnInit {
   //   this.merchantService.getCityMerchant(this.loginuser.accessToken).subscribe(
   //     (data) => {
   //       this.city = data;
-        
+
   //     }
   //   )
   // }
@@ -85,8 +85,8 @@ export class CateringComponent implements OnInit {
       item.city.toLowerCase().includes(this.searchText.toLowerCase())
     );
 
-    console.log(this.searchText.length);
-    
+    // console.log(this.searchText.length);
+
   }
 
 }

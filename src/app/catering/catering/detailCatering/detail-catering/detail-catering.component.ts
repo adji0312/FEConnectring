@@ -46,7 +46,7 @@ export class DetailCateringComponent implements OnInit {
   ngOnInit(): void {
 
     this.viewCatering = this.merchantService.viewCatering;
-    console.log(this.viewCatering);
+    // console.log(this.viewCatering);
 
     this.newChat = this.formBuilder.group({
       parent_id : [''],
@@ -59,7 +59,7 @@ export class DetailCateringComponent implements OnInit {
       merchantId : ['']
     });
 
-    console.log(this.loginuser.userEntity);
+    // console.log(this.loginuser.userEntity);
 
     this.getPackage();
     this.getCustomerId();
@@ -68,7 +68,7 @@ export class DetailCateringComponent implements OnInit {
 
   goOurPackage(){
     let i = document.getElementById('ourPackage');
-    console.log(i);
+    // console.log(i);
 
 
   }
@@ -83,12 +83,12 @@ export class DetailCateringComponent implements OnInit {
     this.findChat.controls['merchantId'].setValue(this.viewCatering.id);
     this.chatService.findChat(this.findChat.value, this.loginuser.accessToken).subscribe(
       (data: Chat) => {
-        console.log(data);
+        // console.log(data);
         if(data == null){
 
           this.newChat.controls['parent_id'].setValue(this.loginuser.userEntity.id);
           this.newChat.controls['merchant_id'].setValue(this.viewCatering.merchant_id);
-          console.log(this.newChat.value);
+          // console.log(this.newChat.value);
 
           this.chatService.addChat(this.newChat.value, this.loginuser.accessToken).subscribe(
             (response: Chat) => {
@@ -108,8 +108,8 @@ export class DetailCateringComponent implements OnInit {
   }
 
   onChat(viewCatering: any){
-    console.log(viewCatering);
-    console.log(this.loginuser);
+    // console.log(viewCatering);
+    // console.log(this.loginuser);
 
     // console.log(this.findChat.value);
     //find chat dlu klo ada return ke chat nya klo gk ada add chat
@@ -118,7 +118,8 @@ export class DetailCateringComponent implements OnInit {
 
   getPackage(){
     const initData = {
-      merchant_username: this.viewCatering.parent.username
+      merchant_username: this.viewCatering.parent.username,
+      isActive: true
     };
 
     this.realTimeDataSubscription$ = timer(0, 1000)
@@ -133,7 +134,7 @@ export class DetailCateringComponent implements OnInit {
     };
     this.customerService.findCustomerByUsername(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(data => {
       this.findChat.controls['customerId'].setValue(data.id);
-      console.log(data);
+      // console.log(data);
     });
 
     // this.getChat();
