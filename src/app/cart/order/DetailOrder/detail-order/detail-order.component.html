@@ -1,9 +1,10 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<!-- CUSTOMER -->
+<div class="m-4 mt-5" style="min-height: 100vh;" *ngIf="loginuser.userEntity.flag == 1">
     <div class="d-flex justify-content-between mb-3">
-        <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
+        <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20; cursor: pointer;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex align-items-center justify-content-center">
-            <p style="font-size: 20px;">Paket 1 Minggu (Rp 120,000)</p>
+            <p *ngIf="selectedOrder" style="font-size: 20px;">{{ selectedOrder.transactionDetailDtoList[0].package_id.package_name }} (Rp {{ selectedOrder.totalPrice | number }})</p>
         </div>
     </div>
 
@@ -21,14 +22,60 @@
                 </tr>
             </thead>
             <tbody>
-            <tr>
-                <th class="align-middle" scope="row">1</th>
-                <td class="align-middle">01 December 2024</td>
-                <td class="align-middle">Nasi, Ayam Goreng, Sambal Matah</td>
-                <td class="align-middle"><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
-                <td class="align-middle">Rp 20,000</td>
-                <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-sticky-note"></i> Take Notes</button></td>
-                <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#cancelOrder"><i class="fas fa-times-circle"></i> Cancel</button></td>
+            <tr *ngFor="let package of packageList, let i=index">
+                <th class="align-middle" scope="row">{{ i+1 }}</th>
+                <td class="align-middle">{{ package.package_id.value_date | date: 'dd MMMM yyyy' }}</td>
+                <td class="align-middle">{{ package.food_names }}</td>
+                <td class="align-middle"><img [src]="package.package_id.food_img" alt="" style="width: 300px; border-radius: 10px;"></td>
+                <td class="align-middle">Rp {{ package.package_id.price | number }}</td>
+                <td class="align-middle"><p *ngIf="package.notes != null">{{ package.notes }}</p><button *ngIf="checkStatus()" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-sticky-note"></i> Take Notes</button></td>
+                <td class="align-middle"><p *ngIf="package.flag_cancel">Canceled</p><button *ngIf="checkStatus() && package.flag_cancel == null" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#cancelOrder"><i class="fas fa-times-circle"></i> Cancel</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MERCHANT -->
+<div class="m-4 mt-5" style="min-height: 100vh;" *ngIf="loginuser.userEntity.flag == 2">
+    <div class="d-flex justify-content-between mb-3">
+      <div class="d-flex gap-5">
+        <h2><a (click)="goBack()" class="text-decoration-none" style="color: #482f20; cursor: pointer;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
+        <!-- <div class="align-middle d-flex justify-content-center flex-column text-center bg-primary"> -->
+        <h2 class="align-middle">{{ selectedGroup.group_name }}</h2>
+        <!-- </div> -->
+      </div>
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <h5 *ngIf="orderDetailList" class="align-middle d-flex flex-column justify-content-center">{{ orderDetailList[0].order_date | date: 'dd MMMM yyyy' }}</h5>
+        <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#filterDate"><i class="fas fa-calendar-alt"></i> Filter Date</button></td>
+        <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#checkAll"><i class="fas fa-check"></i> Check All</button></td>
+      </div>
+    </div>
+
+    <div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 5%;">No</th>
+                    <th scope="col" style="width: 15%;">Name</th>
+                    <th scope="col" style="width: 15%;">Package</th>
+                    <th scope="col">Menu</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Confirmation</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="!orderIsEmpty">
+            <tr *ngFor="let order of orderDetailList, let i=index">
+                <th class="align-middle" scope="row">{{ i+1 }}</th>
+                <td class="align-middle">{{ order.customer_name }}</td>
+                <td class="align-middle">{{ order.package_id.package_name }}</td>
+                <td class="align-middle">{{ order.food_names }}</td>
+                <td class="align-middle">{{ order.notes }}</td>
+                <td class="align-middle">
+                  <button type="button" (click)="updateOrderCheck(order.customer_username)" *ngIf="checkButton(order.flag_check)"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Check</button>
+                  <button type="button" *ngIf="!checkButton(order.flag_check)" class="btn btn-sm" style="background-color: #b3b3b3; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-check"></i> Checked</button>
+                </td>
+                <!-- <td class="align-middle"></td> -->
             </tr>
             </tbody>
         </table>
@@ -47,8 +94,8 @@
           Are you sure want to cancel this order?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Cancel</button>
+          <button type="button" #closeCancel class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" class="btn btn-sm" (click)="onUpdateOrderDetail('cancel')" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Cancel</button>
         </div>
       </div>
     </div>
@@ -62,12 +109,57 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel">Take Notes</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <form [formGroup]="detailOrderForm">
+          <div class="modal-body">
+            <input type="text" class="form-control" formControlName="notes" id="notes" placeholder="take a notes...">
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" #closeNotes class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" class="btn btn-sm" (click)="onUpdateOrderDetail('notes')" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- modal check all -->
+<div class="modal fade" id="checkAll" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation All Order</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
         <div class="modal-body">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="take a notes...">
+          Are you sure want to confirmation all order?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+          <button type="button" #closeCheckAll class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" (click)="updateAll()"  class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- modal filter date -->
+<div class="modal fade" id="filterDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Choose Date</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup] = "orderForm">
+            <div class="mb-3">
+              <label for="search_date" class="form-label">Date</label>
+              <input type="date" class="form-control" formControlName="order_date" id="search_date" aria-describedby="emailHelp">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" #closeFilterDate class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+          <button type="submit" (click)="searchDate()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Filter</button>
         </div>
       </div>
     </div>

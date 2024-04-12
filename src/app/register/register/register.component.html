@@ -1,94 +1,7 @@
-<!-- <div class="m-0 container d-flex justify-content-center align-items-center position-absolute h-100" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
-    <div class="row justify-content-center">
-      <main class="form-signin m-auto" style="width: 100%;">
-        <div class="text-center d-flex flex-column align-items-center" style="background-color: #79ac78; border-top-left-radius: 10px; border-top-right-radius: 10px;" >
-          <h1 class="text-white mt-3 mb-0"><strong>Connectring</strong></h1>
-          <img class="m-4 mt-0" src="https://cdn-icons-png.flaticon.com/512/2771/2771401.png" alt="" width="190">
-        </div>
-        <form #userForm="ngForm" [formGroup]="regisForm" class="bg-light p-4 shadow-sm" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-          <div class="form-group mb-2 mt-3">
-            <label for="">Name</label>
-            <div class="d-flex">
-              <input type="text" #name name="name" class="form-control" formControlName="name" [ngClass]="{ 'is-invalid' : regisForm.controls['name'].touched && regisForm.controls['name'].errors}" id="name" placeholder="" autocomplete="off">
-            </div>
-            <div *ngIf="regisForm.controls['name'].touched && regisForm.controls['name'].errors" class="text-danger">
-              <div *ngIf="regisForm.controls['name'].touched && regisForm.controls['name'].errors['required']">
-                  Insert Name
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group mb-2">
-            <label for="">Username</label>
-            <div class="d-flex">
-              <input type="text" #username name="username" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid' : regisForm.controls['username'].touched && regisForm.controls['username'].errors}" id="username" placeholder="" autocomplete="off">
-            </div>
-            <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors" class="text-danger">
-              <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors['required']">
-                  Insert Username
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group mb-2">
-            <label for="">Phone</label>
-            <div class="d-flex">
-              <input type="text" #phone name="phone" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid' : regisForm.controls['phone'].touched && regisForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
-            </div>
-            <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors" class="text-danger">
-              <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors['required']">
-                  Insert Phone
-              </div>
-            </div>
-          </div>
-  
-          <div class="form-group mb-2">
-            <label for="">Password</label>
-            <div class="d-flex">
-              <input type="password" name="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid' : regisForm.controls['password'].touched && regisForm.controls['password'].errors}" id="password" placeholder="" autocomplete="off">
-            </div>
-            <div *ngIf="regisForm.controls['password'].touched && regisForm.controls['password'].errors" class="text-danger">
-              <div *ngIf="regisForm.controls['password'].touched && regisForm.controls['password'].errors['required']">
-                Insert Password
-              </div>
-            </div>
-          </div>
-  
-        </form>
-        <div class="d-flex justify-content-center mt-4">
-          <div class="d-flex flex-column">
-            <button type="submit" (click)="register()" class="btn text-white" style="background-color: #79ac78; height: auto; width: 500px;"><strong>REGISTER</strong></button>
-            <small class="text-center mt-2">Have an account? <a href="/login" class="text-dark">Login</a></small>
-          </div>
-        </div>  
-      </main>
-    </div>
-  </div> -->
-
-  <!-- <div class="d-flex justify-content-md-center align-items-center vh-100">
-    <img src="assets/images/Makanan-Khas-Nusantara.jpg" class="bg-light shadow-lg" alt="" style="width: 38%; border-radius: 20px 0px 0px 20px; filter: blur(1px);">
-  <div class="bg-light shadow-lg" style="border-radius: 0px 20px 20px 0px; height: auto;">
-    <form class="p-5" #userForm="ngForm" [formGroup]="regisForm">
-      <h5 class="mb-4"><strong>LOGIN</strong></h5>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Username</label>
-        <input type="text" #username name="username" formControlName="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" #password name="password" formControlName="password" class="form-control" id="exampleInputPassword1">
-      </div>
-      <div class="d-flex gap-3">
-        <button type="submit" (click)="register" class="btn btn-outline-primary btn-sm">Login</button>
-        <a href="/register" class="text-decoration-none text-dark align-items-center d-flex"><small class="align-items-center d-flex" style="font-size: 12px;">Don't have an account? <small style="text-decoration: underline;"> &nbsp;Register</small></small></a>
-      </div>
-    </form>
-  </div>
-</div> -->
 <div class="vh-100 bg-image">
 </div>
 
-<div class="m-0 container d-flex flex-column justify-content-center align-items-center position-absolute h-100" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div class="m-0 container d-flex flex-column justify-content-center align-items-center position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
   <div style="width: 50%; border-radius: 15px;" class="p-5 shadow-lg bg-light">
     <div class="text-center d-flex align-items-center justify-content-center">
       <img src="assets/images/ConnectringLogo.png" alt="" style="width: 400px;">
@@ -101,35 +14,66 @@
           <div class="mb-2">
             <label for="" class="form-label">Name</label>
             <input type="text" #name name="name" class="form-control form-control-sm" formControlName="name" [ngClass]="{ 'is-invalid' : regisForm.controls['name'].touched && regisForm.controls['name'].errors}" id="name" placeholder="" autocomplete="off">
+            <div *ngIf="regisForm.controls['name'].touched && regisForm.controls['name'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['name'].touched && regisForm.controls['name'].errors['required']">
+                <small>Name must be filled</small>
+              </div>
+            </div>
           </div>
           <div class="mb-2">
             <label for="" class="form-label">Username</label>
             <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" [ngClass]="{ 'is-invalid' : regisForm.controls['username'].touched && regisForm.controls['username'].errors}" id="username" placeholder="" autocomplete="off">
+            <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors['required']">
+                <small>Username must be filled</small>
+              </div>
+            </div>
           </div>
           <div class="mb-2">
             <label for="" class="form-label">Phone</label>
-            <input type="text" #phone name="phone" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid' : regisForm.controls['phone'].touched && regisForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
+            <input type="text" #phone name="phone" class="form-control form-control-sm" formControlName="phone" [ngClass]="{ 'is-invalid' : regisForm.controls['phone'].touched && regisForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
+            <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors['required']">
+                <small>Phone must be filled</small>
+              </div>
+            </div>
           </div>
         </div>
-
         <div class="w-100">
           <div class="mb-2">
-            <label for="" class="form-label">Profile Image</label>
-            <input type="file" #profile_img name="profile_img" class="form-control form-control-sm" formControlName="profile_img" [ngClass]="{ 'is-invalid' : regisForm.controls['profile_img'].touched && regisForm.controls['profile_img'].errors}" id="profile_img" placeholder="" autocomplete="off">
+            <label for="" class="form-label">Photo Profile</label>
+            <input type="file" class="form-control form-control-sm" name="profile_image" (change)="onFileChanged($event)">
+            <!-- <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors['required']">
+                <small>Photo Profile must be filled</small>
+              </div>
+            </div> -->
           </div>
           <div class="mb-2">
             <label for="" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid' : regisForm.controls['password'].touched && regisForm.controls['password'].errors}" id="password" placeholder="" autocomplete="off">
+            <input type="password" name="password" class="form-control form-control-sm" formControlName="password" [ngClass]="{ 'is-invalid' : regisForm.controls['password'].touched && regisForm.controls['password'].errors}" id="password" placeholder="min 8 characters" autocomplete="off">
+            <div *ngIf="regisForm.controls['password'].touched && regisForm.controls['password'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['password'].touched && regisForm.controls['password'].errors['required']">
+                <small>Password must be filled</small>
+              </div>
+            </div>
           </div>
           <div class="mb-2">
             <label for="" class="form-label">Confirm Password</label>
-            <input type="password" name="confirmpassword" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid' : regisForm.controls['password'].touched && regisForm.controls['password'].errors}" id="password" placeholder="" autocomplete="off">
+            <input type="password" name="confirmpassword" class="form-control form-control-sm" formControlName="confirmpassword" [ngClass]="{ 'is-invalid' : regisForm.controls['confirmpassword'].touched && regisForm.controls['confirmpassword'].errors}" id="confirmpassword" placeholder="min 8 characters" autocomplete="off" >
+            <div *ngIf="regisForm.controls['confirmpassword'].touched && regisForm.controls['confirmpassword'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['confirmpassword'].touched && regisForm.controls['confirmpassword'].errors['required']">
+                <small>Confirm Password must be filled</small>
+              </div>
+              <div *ngIf="regisForm.get('confirmpassword')?.errors?.['mismatch'] && regisForm.get('confirmpassword')?.touched">
+                <small>Password and Confirm Password must be match</small>
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
       <div class="d-flex gap-3">
-        <button type="submit" class="btn btn-sm mt-3" style="background-color: #c5a375; color: white;"><i class="fas fa-sign-in-alt"></i> Register</button>
+        <button type="submit" [disabled]="regisForm.invalid" (click)="register()" class="btn btn-sm mt-3" style="background-color: #c5a375; color: white;"><i class="fas fa-sign-in-alt"></i> Register</button>
         <div class="d-flex align-items-end">
           <small class="text-center mt-2">Have an account? <a href="/login" class="text-dark">Login</a></small>
         </div>

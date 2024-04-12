@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
@@ -40,7 +40,10 @@ export class UserService {
     this.router.navigate(['/login']);
   }
 
-  public regisUser(user: any): Observable<any>{
+  public regisUser(user: FormData): Observable<any>{
+    console.log(user);
+    
+    
     const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
     return this.http.post(environment.baseUrl+"/auth/register-customer", user, {headers: headers});
   }
@@ -50,13 +53,21 @@ export class UserService {
   //   return this.http.post(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
   // }
   
-  regisMerchant(user: User, accessToken: any): Observable<User> {
+  regisMerchant(merchant: FormData, accessToken: any): Observable<any> {
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.post<User>(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
+    return this.http.post(environment.baseUrl+"/auth/register-merchant", merchant, {headers: headers});
   }
 
   public loginUser(user: any): Observable<any>{
     const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
     return this.http.post(environment.baseUrl+"/auth/login", user, {headers: headers});
+  }
+
+  changePassword(user: User, accessToken: any): Observable<User>{
+    // const body = {username, oldPassword, newPassword};
+    console.log(user);
+    
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.put<User>(environment.baseUrl+"/auth/change-password", user, {headers: headers});
   }
 }

@@ -17,13 +17,13 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.loginuser);
-    
+    // console.log(this.loginuser);
+
     // this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
     // console.log(this.loginuser);
   }
 
 
-  
-  
+
+
 }

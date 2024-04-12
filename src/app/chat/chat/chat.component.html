@@ -1,118 +1,70 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<div class="m-4 mt-5" style="min-height: 100vh;">
 
   <div class="d-flex justify-content-between">
     <div class="d-flex gap-3 mb-4">
         <h2>Chat</h2>
     </div>
     
-    <div class="mb-4">
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search Catering" aria-label="Search">
-            <button type="button" class="btn btn-sm" style="background-color: #c5a375; width: 140px; color: white;"><i class="fas fa-search"></i> Search</button>
-        </form>
+    <!-- CUSTOMER SEARCH -->
+    <!-- <div class="mb-4" *ngIf="loginuser.userEntity.flag == 1">
+      <input class="form-control me-2" type="search" placeholder="Search Catering" aria-label="Search" style="width: 300px;">
+    </div> -->
+
+    <!-- MERCHANT SEARCH -->
+    <div class="mb-4" *ngIf="loginuser.userEntity.flag == 2">
+      <input class="form-control me-2" [(ngModel)]="searchTerm" (keyup)="onSearch()" type="text" placeholder="Search Customer" aria-label="Search" style="width: 300px;">
     </div>
   </div>
 
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-          </div>
-        </a>
 
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteChat"><i class="fas fa-trash-alt"></i> Delete</button>
+  <!-- FOR MERCHANT -->
+  <div *ngIf="loginuser.userEntity.flag == 2">
+    <div *ngIf="showResults">
+      <div class="card shadow mb-2" style="border: none;" *ngFor="let customer of filteredItem">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <a href="/message" class="text-decoration-none text-dark">
+              <div class="d-flex flex-column">
+                <h5>{{ customer.name }}</h5>
+                <p style="font-size: 15px;">{{ customer.phone }}</p>
+              </div>
+            </a>
+    
+            <div class="d-flex gap-2 align-items-center">
+              <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: #ffffff; border-radius: 7px; width: 88px;" (click)="onChatMerchant(customer)"><i class="fas fa-comments"></i> Chat</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
+  
+  <div *ngIf="!showResults">
+    <div class="card shadow mb-2" style="border: none;" *ngFor="let chat of chatData">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <a class="text-decoration-none text-dark">
+            <div class="d-flex gap-3">
+              <img *ngIf="loginuser.userEntity.flag == 1" [src]="getImageUrl(chat.merchant.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+              <img *ngIf="loginuser.userEntity.flag == 2" [src]="getImageUrl(chat.customer.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+              <div class="d-flex flex-column justify-content-center">
+                <h5 *ngIf="loginuser.userEntity.flag == 1">{{ chat.merchant.merchant_name }}</h5>
+                <h5 *ngIf="loginuser.userEntity.flag == 2">{{ chat.customer.name }}</h5>
+                <p *ngIf="loginuser.userEntity.flag == 1" style="font-size: 15px;">{{ chat.merchant.phone }}</p>
+                <p *ngIf="loginuser.userEntity.flag == 2" style="font-size: 15px;">{{ chat.customer.phone }}</p>
+              </div>
+            </div>
+          </a>
+  
+          <div class="d-flex gap-2 align-items-center">
+            <button *ngIf="loginuser.userEntity.flag == 1" type="button" class="btn btn-sm" style="background-color: #c5a375; color: #ffffff; border-radius: 7px; width: 88px;" (click)="onChatCustomer(chat.merchant)"><i class="fas fa-comments"></i> Chat</button>
+            <button *ngIf="loginuser.userEntity.flag == 2" type="button" class="btn btn-sm" style="background-color: #c5a375; color: #ffffff; border-radius: 7px; width: 88px;" (click)="onChatMerchant(chat.customer)"><i class="fas fa-comments"></i> Chat</button>
           </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-          </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-          </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card shadow mb-2" style="border: none;">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <a href="/message" class="text-decoration-none text-dark">
-          <div class="d-flex flex-column">
-            <h5>Catering Ibuku</h5>
-            <p style="font-size: 15px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-          </div>
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-          <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteGroup"><i class="fas fa-trash-alt"></i> Delete</button>
         </div>
       </div>
     </div>
   </div>
 
-</div>
-
- <!-- modal delete chat -->
- <div class="modal fade" id="deleteChat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Chat</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure want to delete this chat?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
-      </div>
-    </div>
-  </div>
 </div>
 <app-footer></app-footer>

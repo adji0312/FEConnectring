@@ -18,7 +18,6 @@ import { HomeComponent } from './home/home/home.component';
 import { NavbarComponent } from './navbar/navbar/navbar.component';
 import { CateringComponent } from './catering/catering/catering.component';
 import { DetailCateringComponent } from './catering/catering/detailCatering/detail-catering/detail-catering.component';
-import { TransactionComponent } from './transaction/transaction/transaction.component';
 import { ChatComponent } from './chat/chat/chat.component';
 import { GroupComponent } from './group/group/group.component';
 import { OrderComponent } from './cart/order/order.component';
@@ -34,7 +33,16 @@ import { InvoiceComponent } from './invoice/invoice/invoice.component';
 import { FooterComponent } from './footer/footer/footer.component';
 import { DetailOrderComponent } from './cart/order/DetailOrder/detail-order/detail-order.component';
 import { AddPackageComponent } from './package/addPackage/add-package/add-package.component';
-import { ViewPackageComponent } from './package/viewPackage/view-package/view-package.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
+import { ListCustomerComponent } from './admin/customer-list/list-customer/list-customer.component';
+import { OrderPipe } from './cart/order/order.pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -44,7 +52,6 @@ import { ViewPackageComponent } from './package/viewPackage/view-package/view-pa
     NavbarComponent,
     CateringComponent,
     DetailCateringComponent,
-    TransactionComponent,
     ChatComponent,
     GroupComponent,
     OrderComponent,
@@ -60,7 +67,9 @@ import { ViewPackageComponent } from './package/viewPackage/view-package/view-pa
     FooterComponent,
     DetailOrderComponent,
     AddPackageComponent,
-    ViewPackageComponent,
+    DetailChatComponent,
+    ListCustomerComponent,
+    OrderPipe,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +78,17 @@ import { ViewPackageComponent } from './package/viewPackage/view-package/view-pa
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    Ng2SearchPipeModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyCqsl25tNFTb4uXkAtmA5ZedtgwsqwHR_8",
+      authDomain: "connectring-418e9.firebaseapp.com",
+      projectId: "connectring-418e9",
+      storageBucket: "connectring-418e9.appspot.com",
+      messagingSenderId: "5258632021",
+      appId: "1:5258632021:web:fea848aa85dfa9c19d6ddc"
+    }),
+    AngularFireStorageModule,
+    NgMultiSelectDropDownModule.forRoot(),
     TooltipModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -91,10 +111,15 @@ import { ViewPackageComponent } from './package/viewPackage/view-package/view-pa
       checkedLabel: 'ID',
       uncheckedLabel: 'EN'
     }),
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     AuthGuard,
     LoginAuthService
+  ],
+  schemas: [
+    NO_ERRORS_SCHEMA // Add NO_ERRORS_SCHEMA here
   ],
   bootstrap: [AppComponent]
 })

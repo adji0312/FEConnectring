@@ -1,132 +1,66 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<div class="m-4 mt-5" style="min-height: 100vh;">
     <div class="d-flex justify-content-between">
         <div class="d-flex gap-3 mb-4">
             <h2>All Catering</h2>
-            <div class="d-flex align-items-center">
+            <!-- <div class="d-flex align-items-center">
                 <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#filterLocation"><i class="fas fa-map-marker-alt"></i> Filter Location</button>
-            </div>
+            </div> -->
         </div>
         
         <div class="mb-4">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search Catering" aria-label="Search">
-                <button type="button" class="btn btn-sm" style="background-color: #c5a375; width: 140px; color: white;"><i class="fas fa-search"></i> Search</button>
-            </form>
+            <input class="form-control me-2" type="text" name="search" [(ngModel)]="searchText" (keyup)="onSearch()" autocomplete="off" placeholder="Search Catering and Location" aria-label="Search" style="width: 300px;">
         </div>
     </div>
 
 
-    <div class="">
-        <div class="row row-cols-3">
-            <div class="col mb-5">
+    <div class="" *ngIf="searchText.length != 0">
+        <div class="row row-cols-3" >
+            <div class="col mb-5" *ngFor="let merch of filteredItem">
                 <div class="d-flex justify-content-between flex-column gap-3">
                     <div>
-                    <a href="/detailCatering" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
+                    <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark" style="cursor: pointer;">
+                        <img [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
                     </a>
                     </div>
         
                     <div class="d-flex flex-column justify-content-start">
                     <div class="d-flex justify-content-between">
                         <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
+                        <p class="" style="font-size: 20px;">{{ merch.merchant_name }}</p>
                         </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
+                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merch.city }}</p>
                     </div>
-                    <small class="mt-0">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque, odio! Provident quidem fugit saepe nobis, doloremque, illum eveniet aliquam voluptatum ducimus non maiores aut perspiciatis quod quos ut error minus.</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="d-flex justify-content-between flex-column gap-3">
-                    <div>
-                    <a href="" class="text-decoration-none text-dark">
-                        <img src="assets/images/foodOfCatering.jpg" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px;">
-                    </a>
-                    </div>
-        
-                    <div class="d-flex flex-column justify-content-start">
-                    <div class="d-flex justify-content-between">
-                        <a href="" class="text-decoration-none text-dark">
-                        <p class="" style="font-size: 20px;">Joko Catering</p>
-                        </a>
-                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> BSD, Tangerang</p>
-                    </div>
-                    <small class="mt-0">Kami mengirimkan catering ke berbagai kantor</small>
+                    <small class="mt-0">{{ merch.description }}</small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- <div class="d-flex gap-4">
-        <div *ngFor="let merch of merchants" class="card" style="width: 18rem; background-color: #fbf6ee;">
-            <img src="https://www.rewardsnetwork.com/wp-content/uploads/2016/10/CateringMenu_2.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title mb-3"><strong>{{ merch.merchant_name }}</strong></h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a (click)="onOpenCatering(merch)" class="btn text-white w-100" style="background-color: #c5a375;">VISIT</a>
+    
+    <div class="" *ngIf="searchText.length == 0">
+        <div class="row row-cols-3" >
+            <div class="col mb-5" *ngFor="let merch of merchants">
+                <div class="d-flex justify-content-between flex-column gap-3">
+                    <div>
+                    <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark" style="cursor: pointer;">
+                        <img [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
+                    </a>
+                    </div>
+        
+                    <div class="d-flex flex-column justify-content-start">
+                    <div class="d-flex justify-content-between">
+                        <a href="" class="text-decoration-none text-dark">
+                        <p class="" style="font-size: 20px;">{{ merch.merchant_name }}</p>
+                        </a>
+                        <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merch.city }}</p>
+                    </div>
+                    <small class="mt-0">{{ merch.description }}</small>
+                    </div>
+                </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>
 
 
@@ -142,9 +76,7 @@
             <select class="form-select" aria-label="Default select example">
                 <option selected>Select Location</option>
                 <!-- Looping City Merchant -->
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="{{ cityMerch.city }}" *ngFor="let cityMerch of city, let i=index">{{ city[i] }}</option>
             </select>
         </div>
         <div class="modal-footer">

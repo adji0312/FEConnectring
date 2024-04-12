@@ -17,7 +17,8 @@ import { PackageComponent } from './package/package/package.component';
 import { InvoiceComponent } from './invoice/invoice/invoice.component';
 import { DetailOrderComponent } from './cart/order/DetailOrder/detail-order/detail-order.component';
 import { AddPackageComponent } from './package/addPackage/add-package/add-package.component';
-import { ViewPackageComponent } from './package/viewPackage/view-package/view-package.component';
+import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
+import { ListCustomerComponent } from './admin/customer-list/list-customer/list-customer.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -27,39 +28,18 @@ const routes: Routes = [
   {path: "detailCatering", component:DetailCateringComponent, canActivate: [AuthGuard]},
   {path: "invoice", component:InvoiceComponent, canActivate: [AuthGuard]},
   {path: "chat", component:ChatComponent, canActivate: [AuthGuard]},
+  {path: "detailChat", component:DetailChatComponent, canActivate: [AuthGuard]},
   {path: "group", component:GroupComponent, canActivate: [AuthGuard]},
   {path: "order", component:OrderComponent, canActivate: [AuthGuard]},
   {path: "profile", component:ProfileComponent, canActivate: [AuthGuard]},
   {path: "register", component:RegisterComponent},
   {path: "detailPackage", component:DetailPackageComponent, canActivate: [AuthGuard]},
   {path: "admin-dashboard", component:AdminDashboardComponent, canActivate: [AuthGuard]},
+  {path: "list-customers", component:ListCustomerComponent, canActivate: [AuthGuard]},
   {path: "merchant-dashboard", component:MerchantDashboardComponent, canActivate: [AuthGuard]},
   {path: "package", component:PackageComponent, canActivate: [AuthGuard]},
   {path: "orderDetail", component:DetailOrderComponent, canActivate: [AuthGuard]},
   {path: "addPackage", component:AddPackageComponent, canActivate: [AuthGuard]},
-  {path: "viewPackage", component:ViewPackageComponent, canActivate: [AuthGuard]},
-  // {path: "role", component:RoleListComponent, canActivate: [AuthGuard]},
-  // {path: "user", component:UserListComponent, canActivate: [AuthGuard]},
-  // {path: "dashboard", component:DashboardComponent, canActivate: [AuthGuard]},
-  // {path: "projectType", component:ProjectTypeComponent, canActivate: [AuthGuard]},
-  // {path: "project", component:ProjectListComponent, canActivate: [AuthGuard]},
-  // {path: "backlogDevelopment", component:BacklogDevelopmentComponent, canActivate: [AuthGuard]},
-  // {path: "backlogDevDetail", component:BacklogDevDetailComponent, canActivate: [AuthGuard]},
-  // {path: "backlogDevEdit", component:BacklogDevEditComponent, canActivate: [AuthGuard]},
-  // {path: "application", component:ApplicationComponent, canActivate: [AuthGuard]},
-  // {path: "applicationAdd", component:ApplicationAddComponent, canActivate: [AuthGuard]},
-  // {path: "applicationView", component:ApplicationViewComponent, canActivate: [AuthGuard]},
-  // {path: "applicationEdit", component:ApplicationEditComponent, canActivate: [AuthGuard]},
-  // {path: "sharingDevelopment", component:SharingDevelopmentComponent, canActivate: [AuthGuard]},
-  // {path: "sharingDevEdit", component:SharingDevelopmentEditComponent, canActivate: [AuthGuard]},
-  // {path: "sharingDevDetail", component:SharingDevelopmentDetailComponent, canActivate: [AuthGuard]},
-  // {path: "approvalSharingDevelopment", component:ApprovalSharingDevelopmentComponent, canActivate: [AuthGuard]},
-  // {path: "approvalSharingDevelopmentApprove", component:ApprovalSharingDevelopmentApproveComponent, canActivate: [AuthGuard]},
-  // {path: "approvalSharingDevelopmentView", component:ApprovalSharingDevelopmentViewComponent, canActivate: [AuthGuard]},
-  // {path: "backlogSQI", component:BacklogSqiComponent, canActivate: [AuthGuard]},
-  // {path: "backlogSQIEdit", component:BacklogSqiEditComponent, canActivate: [AuthGuard]},
-  // {path: "backlogSQIView", component:BacklogSqiViewComponent, canActivate: [AuthGuard]},
-  // {path: "sqiStatus", component:SqiStatusComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

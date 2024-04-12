@@ -1,58 +1,186 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<div class="m-4 mt-5" style="min-height: 100vh;">
 
   <div class="d-flex justify-content-between mb-4">
     <h2>Invoice</h2>
-  </div> 
-
-  <div *ngIf="x == 0" class="d-flex justify-content-between gap-2 mb-3">
-    <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickUnpaid()">
-      <div class="card-body text-center">
-        Unpaid
-      </div>
-    </div>
-    <div class="card w-100" style="cursor: pointer;" (click)="clickPaid()">
-      <div class="card-body text-center">
-        Paid
-      </div>
-    </div>
   </div>
 
-  <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
-    <div class="card w-100" style="cursor: pointer;" (click)="clickUnpaid()">
-      <div class="card-body text-center">
-        Unpaid
+  <!-- CUSTOMER -->
+  <div *ngIf="loginuser.userEntity.flag == 1">
+    <div *ngIf="x == 0" class="d-flex justify-content-between gap-2 mb-3">
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickUnpaid()">
+        <div class="card-body text-center">
+          Unpaid
+        </div>
+      </div>
+      <div class="card w-100" style="cursor: pointer;" (click)="clickPaid()">
+        <div class="card-body text-center">
+          Paid
+        </div>
       </div>
     </div>
-    <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickPaid()">
-      <div class="card-body text-center">
-        Paid
+
+    <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickUnpaid()">
+        <div class="card-body text-center">
+          Unpaid
+        </div>
+      </div>
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickPaid()">
+        <div class="card-body text-center">
+          Paid
+        </div>
       </div>
     </div>
-  </div>
 
-
-  <!-- TABLE ORDER LOOP HERE -->
-  <div class="card mb-2">
-    <div class="card-body">
-      <div class="d-flex justify-content-between">
-        <div class="d-flex align-items-center">
-          <div class="d-flex flex-column">
-            <div style="font-size: 20px;">
-              Paket Katering  (Rp 200,000)
+    <!-- TABLE ORDER LOOP HERE UNPAID CUSTOMER -->
+    <div *ngIf="x == 0">
+      <div *ngFor="let inv of customerInvoice" class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <div style="font-size: 20px;">
+                  {{ inv.package_header }}
+                </div>
+                <div>
+                  Rp {{ inv.totalPrice | number }}
+                </div>
+                <div>
+                  <!-- <small>01 Januari 2024</small> -->
+                </div>
+              </div>
             </div>
-            <div>
-              01 Januari 2024
+            <div class="d-flex flex-column align-items-center gap-2">
+              <span *ngIf="inv.payment_status == 'UNPAID' " class="badge text-bg-warning">Need Payment</span>
+              <span *ngIf="inv.payment_status == 'PND' " class="badge text-bg-success">Waiting Confirm</span>
+              <div class="d-flex gap-2">
+                <!-- <a type="button" (click)="orderDetailPage(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-eye"></i> View</a> -->
+                <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#openInvoice"><i class="fas fa-eye"></i> View</a>
+                <a type="button" (click)="selectPackage(inv)" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#paidInvoice"><i class="fas fa-money-bill"></i> Pay</a>
+              </div>
             </div>
           </div>
         </div>
-        <div class="d-flex align-items-center gap-2">
-          <a href="/orderDetail" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-eye"></i> View</a>
-          <a type="button" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#paidInvoice"><i class="fas fa-money-bill"></i> Paid</a>
+      </div>
+    </div>
+
+    <!-- TABLE ORDER LOOP HERE PAID CUSTOMER -->
+    <div *ngIf="x == 1">
+      <div *ngFor="let inv of customerInvoice" class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <div style="font-size: 20px;">
+                  {{ inv.package_header }}
+                </div>
+                <div>
+                  Rp {{ inv.totalPrice | number }}
+                </div>
+                <div>
+                  <!-- <small>01 Januari 2024</small> -->
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <div class="d-flex gap-2">
+                <a  data-bs-toggle="modal" data-bs-target="#openPaymentEvidence" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 180px; color: white;"><i class="fas fa-eye"></i> Payment Evidence</a>
+                <a (click)="selectTransactionImage(inv)" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptPayment"><i class="fas fa-eye"></i> View</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+
+  <!-- MERCHANT -->
+  <div *ngIf="loginuser.userEntity.flag == 2">
+    <div *ngIf="x == 0" class="d-flex justify-content-between gap-2 mb-3">
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickUnpaidCatering()">
+        <div class="card-body text-center">
+          Unpaid
+        </div>
+      </div>
+      <div class="card w-100" style="cursor: pointer;" (click)="clickPaidCatering()">
+        <div class="card-body text-center">
+          Paid
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
+      <div class="card w-100" style="cursor: pointer;" (click)="clickUnpaidCatering()">
+        <div class="card-body text-center">
+          Unpaid
+        </div>
+      </div>
+      <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickPaidCatering()">
+        <div class="card-body text-center">
+          Paid
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE ORDER LOOP HERE UNPAID MERCHANT -->
+    <div *ngIf="x == 0">
+      <div *ngFor="let inv of cateringInvoice" class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <div  class="d-flex flex-column">
+                <div style="font-size: 20px;">
+                  {{ inv.customer_username }}
+                </div>
+                <div>
+                  Rp {{ inv.totalPrice | number }}
+                </div>
+                <div>
+                  <!-- <small>01 Januari 2024</small> -->
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <div class="d-flex gap-2">
+                <a type="button" (click)="selectTransactionImage(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptPayment"><i class="fas fa-eye"></i> Detail</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE ORDER LOOP HERE PAID MERCHANT -->
+    <div *ngIf="x == 1">
+      <div *ngFor="let inv of cateringInvoice" class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <div  class="d-flex flex-column">
+                <div style="font-size: 20px;">
+                  {{ inv.customer_username }}
+                </div>
+                <div>
+                  Rp {{ inv.totalPrice | number }}
+                </div>
+                <div>
+                  <!-- <small>01 Januari 2024</small> -->
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <div class="d-flex gap-2">
+                <a type="button" (click)="selectTransactionImage(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptPayment"><i class="fas fa-eye"></i> Detail</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>
 
@@ -61,15 +189,141 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Paid Invoice</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Payment</h1>
+        <button type="button" (click)="resetSelectedFile()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <input #fileInput type="file" (change)="onFileSelected($event)" class="form-control" id="exampleFormControlInput1">
+          <div class="text-center m-2">
+            <!-- image show when user is uploaded -->
+            <img src="https://www.bca.co.id/-/media/Feature/News/Edukatips/2023/04/20230412-cara-baru-bayar-pakai-qris-di-bca-mobile-6" alt="" width="100%">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="resetSelectedFile()" #closePayInvoice class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" (click)="uploadPaymentImage()" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-money-bill"></i> Pay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal openPaymentEvidence -->
+<div class="modal fade" id="openPaymentEvidence" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Payment</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <input type="file" class="form-control" id="exampleFormControlInput1" placeholder="take a notes...">
+          <div class="text-center m-2">
+            <!-- image show when user is uploaded -->
+            <img src="https://www.bca.co.id/-/media/Feature/News/Edukatips/2023/04/20230412-cara-baru-bayar-pakai-qris-di-bca-mobile-6" alt="" width="100%">
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-money-bill"></i> Paid</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal detail screenshot and acc Invoice -->
+<div class="modal fade" id="acceptPayment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Invoice</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img [src]="loadImage()" alt="" style="width: 100%; height: 100%;">
+      </div>
+      <div class="modal-footer">
+        <button #closeAcceptPayment type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
+        <button *ngIf="x == 0" (click)="acceptPayment()" type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal open Invoice -->
+<div class="modal fade" id="openInvoice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Invoice</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="overflow-y: auto; height: 300px;">
+        <div class="d-flex justify-content-between">
+          <p class="mb-3 fs-6">Catering Kuy <small>(Paket Hemat)</small></p> 
+          <p class="fs-6">Total : Rp 200,000</p>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Date</th>
+              <th scope="col" style="width: 30%;">Menu</th>
+              <th scope="col">Price</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" class="align-middle">1</th>
+              <td class="align-middle">03/04/2024</td>
+              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
+              <td class="align-middle">Rp 20,000</td>
+              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
+              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">1</th>
+              <td class="align-middle">03/04/2024</td>
+              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
+              <td class="align-middle">Rp 20,000</td>
+              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
+              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">1</th>
+              <td class="align-middle">03/04/2024</td>
+              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
+              <td class="align-middle">Rp 20,000</td>
+              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
+              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">1</th>
+              <td class="align-middle">03/04/2024</td>
+              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
+              <td class="align-middle">Rp 20,000</td>
+              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
+              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">1</th>
+              <td class="align-middle">03/04/2024</td>
+              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
+              <td class="align-middle">Rp 20,000</td>
+              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
+              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">1</th>
+              <td class="align-middle">03/04/2024</td>
+              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
+              <td class="align-middle">Rp 20,000</td>
+              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
+              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
       </div>
     </div>
   </div>

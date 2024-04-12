@@ -1,10 +1,10 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<div class="m-4 mt-5" style="min-height: 100vh;">
     <div class="d-flex justify-content-between mb-3">
         <h2><a href="/detailCatering" class="text-decoration-none" style="color: #482f20;"><i class="fas fa-arrow-circle-left" style="color: #482f20;"></i> Back</a></h2>
         <div class="d-flex flex-column gap-2 align-items-end">
-            <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 50%;" data-bs-toggle="modal" data-bs-target="#addToOrder"><i class="fas fa-shopping-cart"></i> Add to order</button>
-            <p style="font-size: 20px;">Paket 1 Minggu (Rp 120,000)</p>
+            <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white; width: 200px;" data-bs-toggle="modal" data-bs-target="#addToOrder"><i class="fas fa-shopping-cart"></i> Add to order</button>
+            <p *ngIf="packageList" style="font-size: 20px;">{{ packageList[0].package_name }} (Rp {{ packageList[0].total_price | number }})</p>
         </div>
     </div>
 
@@ -20,26 +20,12 @@
                 </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>01 Januari 2024</td>
-                <td>Nasi, Ayam Goreng, Sambal Matah</td>
-                <td><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
-                <td>Rp 100,000</td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>01 Januari 2024</td>
-                <td>Nasi, Ayam Goreng, Sambal Matah</td>
-                <td><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
-                <td>Rp 100,000</td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>01 Januari 2024</td>
-                <td>Nasi, Ayam Goreng, Sambal Matah</td>
-                <td><img src="assets/images/foodOfCatering.jpg" alt="" style="width: 300px; border-radius: 10px;"></td>
-                <td>Rp 100,000</td>
+            <tr *ngFor="let pack of packageList, let i=index">
+                <th scope="row">{{ i+1 }}</th>
+                <td>{{ pack.value_date | date: 'dd MMMM yyyy' }}</td>
+                <td>{{ getFoodNames(pack) }}</td>
+                <td><img [src]="pack.food_img" alt="" style="width: 300px; border-radius: 10px;"></td>
+                <td>Rp {{ pack.price | number }}</td>
             </tr>
             </tbody>
         </table>
@@ -57,8 +43,8 @@
             <p style="font-size: 17px;">Are you sure you want to place an order?</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-times"></i> Close</button>
-          <button type="button" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-shopping-cart"></i> Yes</button>
+          <button type="button" #closeOrder class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-times"></i> Close</button>
+          <button type="button" (click)="createOrder()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-shopping-cart"></i> Yes</button>
         </div>
       </div>
     </div>

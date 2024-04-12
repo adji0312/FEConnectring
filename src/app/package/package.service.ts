@@ -3,20 +3,43 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Food } from './food.model';
 import { Observable } from 'rxjs';
+import { Package } from './package.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PackageService {
 
+  public package_header!: string;
+
   constructor(private http: HttpClient) {
     this.http = http;
   }
 
-  private baseUrl = `${environment.baseUrl}/food`;
+  private baseUrl = `${environment.baseUrl}/package`;
 
-  addFood(food: Food, accessToken: any):Observable<Food>{
-    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.post<Food>(`${this.baseUrl}/add/`, food, {headers: headers});
+  getPackageByMerchant(pack: any, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any>(`${this.baseUrl}/getByMerchant`, pack, {headers: headers});
+  }
+
+  addPackage(pack: Package, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any>(`${this.baseUrl}/add`, pack, {headers: headers});
+  }
+
+  getPackageByPackageHeader(pack: Package, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any>(`${this.baseUrl}/getByPackageHeader`, pack, {headers: headers});
+  }
+
+  updatePackage(formData: FormData, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.put<any>(`${this.baseUrl}/update`, formData, {headers: headers});
+  }
+
+  deletePackage(package_header: string, accessToken: any): Observable<void>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.delete<void>(`${this.baseUrl}/delete/${package_header}`, {headers: headers});
   }
 }

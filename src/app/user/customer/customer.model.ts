@@ -1,4 +1,5 @@
 import { Group } from "src/app/group/group.model";
+import { User } from "../user.model";
 
 export class Customer {
 
@@ -13,4 +14,7 @@ export class Customer {
     username!: string;
     group_id!: number;
     group: Group = new Group;
+    parent!: User;
+    picByte!: Blob;
+    image_customer!: File;
 }

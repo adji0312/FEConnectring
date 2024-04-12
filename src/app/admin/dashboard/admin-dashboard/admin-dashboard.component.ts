@@ -1,6 +1,7 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, switchMap, timer } from 'rxjs';
@@ -17,12 +18,23 @@ declare var $: any;
 })
 export class AdminDashboardComponent implements OnInit {
 
+  @ViewChild('closeAddMerchantBtn') closeAddMerchant: ElementRef | undefined;
   registMerchantForm!: FormGroup;
   editMerchantForm!: FormGroup;
   public loginuser: any = {};
   merchants!: Merchant[];
   editMerchant: Merchant = new Merchant;
   deleteMerchant: Merchant = new Merchant;
+  foto: any;
+  selectedFile!: File;
+  formData = new FormData();
+  editData = new FormData();
+  merchant_name!: string;
+  username!: string;
+  address!: string;
+  phone!: string;
+  city!: string;
+  postal_code!: string;
 
   realTimeDataSubscription$!: Subscription;
   
@@ -35,13 +47,14 @@ export class AdminDashboardComponent implements OnInit {
     private formBuilder : FormBuilder, 
     private toastr: ToastrService,
     private http: HttpClient,
-    private merchantService: MerchantService) {
+    private merchantService: MerchantService,
+    private sanitizer: DomSanitizer) {
       this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
     }
 
   ngOnInit(): void {
 
-    console.log(this.loginuser);
+    // console.log(this.loginuser);
     
 
     this.loadData();
@@ -53,6 +66,7 @@ export class AdminDashboardComponent implements OnInit {
       phone : ['', [Validators.required]],
       postal_code : ['', [Validators.required]],
       merchant_name : ['', [Validators.required]],
+      // image_merchant : ['',],
     });
 
     this.editMerchantForm = this.formBuilder.group({
@@ -62,23 +76,8 @@ export class AdminDashboardComponent implements OnInit {
       phone : ['', [Validators.required]],
       postal_code : ['', [Validators.required]],
       merchant_name : ['', [Validators.required]],
+      description : [''],
     });
-    
-  }
-
-  registMerchant(){
-    this.authService.regisMerchant(this.registMerchantForm.value, this.loginuser.accessToken).subscribe((response) => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Success Add Merchant',
-        showConfirmButton: true,
-        timer: 1500
-      })
-    }
-    )
-    document.getElementById('add-merchant-form')!.click();
-    this.registMerchantForm.reset();
     
   }
 
@@ -86,7 +85,6 @@ export class AdminDashboardComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
-        
         this.merchants = data.sort();
     });
   }
@@ -133,6 +131,7 @@ export class AdminDashboardComponent implements OnInit {
         phone : this.editMerchant.phone,
         postal_code : this.editMerchant.postal_code,
         merchant_name : this.editMerchant.merchant_name,
+        description : this.editMerchant.description,
       });
     }else if(mode === 'delete'){
       this.deleteMerchant = merchant;
@@ -146,9 +145,20 @@ export class AdminDashboardComponent implements OnInit {
     if(this.editMerchantForm.invalid){
       return;
     }
+    this.editData.set('merchant_name', this.editMerchantForm.get('merchant_name')?.value);
+    this.editData.set('username', this.editMerchantForm.get('username')?.value);
+    this.editData.set('address', this.editMerchantForm.get('address')?.value);
+    this.editData.set('city', this.editMerchantForm.get('city')?.value);
+    this.editData.set('phone', this.editMerchantForm.get('phone')?.value);
+    this.editData.set('postal_code', this.editMerchantForm.get('postal_code')?.value);
 
-    this.merchantService.updateMerchant(this.editMerchantForm.value, this.editMerchant.id, this.loginuser.accessToken).subscribe(
+    console.log(this.editMerchantForm.value);
+    
+
+    this.merchantService.updateMerchant(this.editData, this.loginuser.accessToken).subscribe(
       (response: Merchant) => {
+        console.log(response);
+        
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -158,6 +168,8 @@ export class AdminDashboardComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
+        console.log(error);
+        
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -170,6 +182,67 @@ export class AdminDashboardComponent implements OnInit {
 
     document.getElementById('edit-merchant-form')!.click();
     this.editMerchantForm.reset();
+    this.editData.delete('profile_image');
+  }
+
+  onSubmit(){
+
+    console.log(this.registMerchantForm.value);
+    
+    this.formData.append('merchant_name', this.registMerchantForm.get('merchant_name')?.value);
+    this.formData.append('username', this.registMerchantForm.get('username')?.value);
+    this.formData.append('address', this.registMerchantForm.get('address')?.value);
+    this.formData.append('city', this.registMerchantForm.get('city')?.value);
+    this.formData.append('phone', this.registMerchantForm.get('phone')?.value);
+    this.formData.append('postal_code', this.registMerchantForm.get('postal_code')?.value);
+
+    this.authService.regisMerchant(this.formData, this.loginuser.accessToken).subscribe(
+      (response: Merchant) => {
+        console.log(response);
+        
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Register Merchant",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: error.error,
+          showConfirmButton: true,
+          timer: 1500
+        })
+      }
+    )
+    this.registMerchantForm.reset();
+    this.closeAddMerchantModal();
+  }
+
+  onFileChanged(event: any){
+    
+    if(event.target.files){
+      const selectedFile = event.target.files[0];
+      console.log(selectedFile);
+      
+      this.formData.append('profile_image', selectedFile, selectedFile.name);
+      this.editData.append('profile_image', selectedFile, selectedFile.name);
+    }
+  }
+
+  closeAddMerchantModal(){
+    if(this.closeAddMerchant){
+      this.closeAddMerchant.nativeElement.click();
+    }
+  }
+
+  getImageUrl(blob: Blob) {
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }

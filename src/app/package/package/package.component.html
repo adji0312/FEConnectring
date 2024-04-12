@@ -1,22 +1,53 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<div class="m-4 mt-5" style="min-height: 100vh;">
+
+  <!-- PACKAGE ACTIVE -->
   <div class="d-flex gap-3 mb-4">
-    <h2>Pakcage</h2>
-    <div class="d-flex align-items-center">
+    <h2>Package Active</h2>
+    <!-- <div class="d-flex align-items-center">
       <a href="/addPackage" type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" ><i class="fas fa-plus"></i> Add Package</a>
-    </div>
-  </div>  
+    </div> -->
+  </div>
 
   <div class="">
     <div class="row row-cols-4">
-      <div class="col mb-5">
+      <div class="col mb-5" *ngFor="let pack of packagesActive">
         <div class="card shadow" style="width: 18rem; border: none;">
-          <img src="assets/images/foodOfCatering.jpg" class="card-img-top" alt="...">
+          <!-- <img src="assets/images/foodOfCatering.jpg" class="card-img-top" alt="..."> -->
+          <img [src]="loadImage(pack.food_img)" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title mb-3">Paket 1 Minggu</h5>
-            <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> 01 Januari 2024 - 05 Januari 2024</p>
-            <p class="card-text" style="font-size: 14px;"><i class="fas fa-money-bill"></i> Rp 120,000 </p>
-            <a href="/viewPackage" class="btn btn-sm" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> View Detail</a>
+            <h5 class="card-title mb-3">{{ pack.package_name }}</h5>
+            <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> {{ pack.start_date | date: 'dd MMMM yyyy' }} - {{ pack.end_date | date: 'dd MMMM yyyy' }}</p>
+            <p class="card-text" style="font-size: 14px;"><i class="fas fa-money-bill"></i> Rp {{ pack.total_price | number }} </p>
+            <a type="button" (click)="viewPackage(pack.package_header)" class="btn btn-sm" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> Detail</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKAGE NON ACTIVE -->
+  <div class="d-flex gap-3 mb-4">
+    <h2>Package Non Active</h2>
+    <div class="d-flex align-items-center">
+      <a href="/addPackage" type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" ><i class="fas fa-plus"></i> Add Package</a>
+    </div>
+  </div>
+
+  <div class="">
+    <div class="row row-cols-4">
+      <div class="col mb-5" *ngFor="let pack of packagesInActive">
+        <div class="card shadow" style="width: 18rem; border: none;">
+          <!-- <img src="assets/images/foodOfCatering.jpg" class="card-img-top" alt="..."> -->
+          <img [src]="loadImage(pack.food_img)" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title mb-3">{{ pack.package_name }}</h5>
+            <p class="card-text" style="font-size: 14px;"><i class="fas fa-calendar"></i> {{ pack.start_date | date: 'dd MMMM yyyy' }} - {{ pack.end_date | date: 'dd MMMM yyyy' }}</p>
+            <p class="card-text" style="font-size: 14px;"><i class="fas fa-money-bill"></i> Rp {{ pack.total_price | number }} </p>
+            <div class="d-flex justify-content-between gap-3">
+              <a type="button" (click)="viewPackage(pack.package_header)" class="btn btn-sm w-100" style="background-color: #c5a375; color: white;"><i class="fas fa-eye"></i> Detail</a>
+              <a type="button" (click)="deletePackage(pack.package_header)" class="btn btn-sm w-100" style="background-color: #D24545; color: white;" data-bs-toggle="modal" data-bs-target="#deletePackage"><i class="fas fa-trash-alt"></i> Delete</a>
+            </div>
           </div>
         </div>
       </div>
@@ -30,14 +61,14 @@
     </div>
   </div>
 
-  <div>
+  <div *ngFor="let food of foods, let i = index">
     <div class="card shadow mb-2" style="border: none;">
       <div class="card-body">
         <div class="d-flex justify-content-between">
-          This is some text within a card body.
+          {{ food.food_name }}
           <div class="d-flex gap-2 align-items-center">
-            <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editFood"><i class="fas fa-edit"></i> Edit</button>
-            <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteFood"><i class="fas fa-trash-alt"></i> Delete</button>
+            <button type="button" (click)="updateFood(i)" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editFood"><i class="fas fa-edit"></i> Edit</button>
+            <button type="button" (click)="deleteFood(i)"  class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteFood"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
         </div>
       </div>
@@ -56,11 +87,16 @@
         <form #foodForm="ngForm" [formGroup]="addFoodForm">
           <label for="" class="form-label">Food Name</label>
           <input type="text" #food_name name="food_name" class="form-control" formControlName="food_name" [ngClass]="{ 'is-invalid' : addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors}" id="food_name" placeholder="" autocomplete="off">
+          <div *ngIf="addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors" class="text-danger">
+            <div *ngIf="addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors['required']">
+              Food name must be filled
+            </div>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" (click)="addFood()" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+        <button #closeAddFoodBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button [disabled]="addFoodForm.invalid" type="submit" (click)="addFood()" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
       </div>
     </div>
   </div>
@@ -74,14 +110,19 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #foodForm="ngForm" [formGroup]="addFoodForm">
+        <form #foodForm="ngForm" [formGroup]="editFoodForm">
           <label for="" class="form-label">Food Name</label>
-          <input type="text" #food_name name="food_name" class="form-control" formControlName="food_name" [ngClass]="{ 'is-invalid' : addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors}" id="food_name" placeholder="" autocomplete="off">
+          <input type="text" #food_name name="food_name" class="form-control" formControlName="food_name" [ngClass]="{ 'is-invalid' : editFoodForm.controls['food_name'].touched && editFoodForm.controls['food_name'].errors}" id="food_name" placeholder="" autocomplete="off">
+          <div *ngIf="editFoodForm.controls['food_name'].touched && editFoodForm.controls['food_name'].errors" class="text-danger">
+            <div *ngIf="editFoodForm.controls['food_name'].touched && editFoodForm.controls['food_name'].errors['required']">
+              Food name must be filled
+            </div>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" (click)="addFood()" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+        <button #closeUpdateFoodBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" [disabled]="editFoodForm.invalid" (click)="onUpdateFood()" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
       </div>
     </div>
   </div>
@@ -98,8 +139,26 @@
         Are you sure want to delete this food?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
+        <button #closeDeleteFoodBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" (click)="onDeleteFood()" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deletePackage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Package</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to delete this package?
+      </div>
+      <div class="modal-footer">
+        <button #closeDeletePackageBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" (click)="onDeletePackage()" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
       </div>
     </div>
   </div>
