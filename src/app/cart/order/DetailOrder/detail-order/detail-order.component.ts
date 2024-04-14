@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Package } from 'src/app/package/package.model';
 import { Group } from 'src/app/group/group.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detail-order',
@@ -40,7 +41,8 @@ export class DetailOrderComponent implements OnInit {
     private _location: Location,
     private orderService: OrderService,
     private formBuilder: FormBuilder,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private sanitizer: DomSanitizer
     ) { }
 
   ngOnInit(): void {
@@ -59,7 +61,8 @@ export class DetailOrderComponent implements OnInit {
     this.orderForm = this.formBuilder.group({
       order_date: [''],
       group_id: [''],
-      customer_username: ['']
+      customer_username: [''],
+      transaction_id: ['']
     })
 
     if(this.loginuser.userEntity.flag == 1){
@@ -74,7 +77,7 @@ export class DetailOrderComponent implements OnInit {
       });
 
       this.realTimeDataSubscription$ = timer(0, 1000)
-      .pipe(switchMap(_ => this.transactionService.getCustomerOrder(this.detailOrderForm.value, this.loginuser.accessToken))).subscribe(data => {
+      .pipe(switchMap(_ => this.transactionService.getCustomerOrderByTransaction(this.detailOrderForm.value, this.loginuser.accessToken))).subscribe(data => {
 
         this.selectedOrder = data[0];
         this.packageList = data[0].transactionDetailDtoList;
@@ -132,6 +135,12 @@ export class DetailOrderComponent implements OnInit {
     });
 
     console.log(this.detailOrderForm);
+  }
+
+  getImageUrl(blob: Blob) {
+    // console.log(blob);
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
   onUpdateOrderDetail(mode: string){
@@ -194,10 +203,11 @@ export class DetailOrderComponent implements OnInit {
     return false;
   }
 
-  updateOrderCheck(username: string){
+  updateOrderCheck(order: TransactionDetail){
 
     this.orderForm.patchValue({
-      customer_username: username
+      customer_username: order.customer_username,
+      transaction_id: order.transaction_id
     });
 
 
@@ -207,6 +217,9 @@ export class DetailOrderComponent implements OnInit {
   }
 
   updateAll(){
+
+    // console.log(this.orderForm.value);
+
     this.transactionService.updateOrderCheck(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.initData();
       this.closeCheckAllModal();

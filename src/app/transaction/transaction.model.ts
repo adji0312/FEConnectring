@@ -9,11 +9,13 @@ export class Transaction{
   merchant_id!: string;
   package_header!: string;
   group_id!: string;
+  merchant_name!: string;
   payment_img!: Blob;
   transactionDetailDtoList!: TransactionDetail[];
 }
 
 export class TransactionDetail{
+  transaction_id!: string;
   package_id!: Package;
   notes!: string;
   flag_cancel!: boolean;

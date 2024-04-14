@@ -24,7 +24,7 @@
                 <th scope="row">{{ i+1 }}</th>
                 <td>{{ pack.value_date | date: 'dd MMMM yyyy' }}</td>
                 <td>{{ getFoodNames(pack) }}</td>
-                <td><img [src]="pack.food_img" alt="" style="width: 300px; border-radius: 10px;"></td>
+                <td><img [src]="getImageUrl(pack.food_img)" alt="" style="width: 300px; border-radius: 10px;"></td>
                 <td>Rp {{ pack.price | number }}</td>
             </tr>
             </tbody>

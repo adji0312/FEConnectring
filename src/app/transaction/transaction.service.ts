@@ -25,6 +25,11 @@ export class TransactionService {
     return this.http.post<Transaction[]>(`${this.baseUrl}/getCustomerOrder`, transaction, {headers: headers});
   }
 
+  getCustomerOrderByTransaction(transaction: Transaction, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<Transaction[]>(`${this.baseUrl}/getCustomerOrderByTransaction`, transaction, {headers: headers});
+  }
+
   getCateringOrder(transaction: Transaction, accessToken: any){
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any[]>(`${this.baseUrl}/getCateringOrder`, transaction, {headers: headers});
