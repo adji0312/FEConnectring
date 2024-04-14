@@ -3,8 +3,8 @@
 <div class="m-4 mt-5" style="min-height: 100vh;">
 
   <div class="d-flex justify-content-between mb-4">
-    <h2>List Merchant</h2>
-    <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Merchant</button>
+    <h2>List Catering</h2>
+    <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Catering</button>
   </div>
 
   <div *ngFor="let merch of merchants; index as i">
@@ -42,11 +42,11 @@
       <form #merchantForm="ngForm" [formGroup]="registMerchantForm">
         <div class="modal-body">
           <div class="mb-1">
-            <label for="" class="form-label">Merchant Name</label>
+            <label for="" class="form-label">Catering Name</label>
             <input type="text" #merchant_name name="merchant_name" class="form-control form-control-sm" formControlName="merchant_name" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors}" id="merchant_name" placeholder="" autocomplete="off">
             <div *ngIf="registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors" class="text-danger">
               <div *ngIf="registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors['required']">
-                <small>Merchant Name must be filled</small>
+                <small>Catering Name must be filled</small>
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@
             </div>
           </div>
           <div class="mb-1">
-            <label for="" class="form-label">Profile Image</label>
+            <label for="" class="form-label">Profile Image (Optional)</label>
             <input type="file" class="form-control form-control-sm" name="profile_image" (change)="onFileChanged($event)">
           </div>
         </div>
@@ -134,11 +134,11 @@
             <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" readonly>
           </div>
           <div class="mb-1">
-            <label for="" class="form-label">Merchant Name</label>
+            <label for="" class="form-label">Catering Name</label>
             <input type="text" #merchant_name name="merchant_name" class="form-control form-control-sm" formControlName="merchant_name" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors}" id="merchant_name" placeholder="" autocomplete="off">
             <div *ngIf="editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors" class="text-danger">
               <div *ngIf="editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors['required']">
-                <small>Merchant Name must be filled</small>
+                <small>Catering Name must be filled</small>
               </div>
             </div>
           </div>
@@ -189,7 +189,7 @@
             </div>
           </div>
           <div class="mb-1">
-            <label for="" class="form-label">Profile Image</label>
+            <label for="" class="form-label">Profile Image (Optional)</label>
             <input type="file" class="form-control form-control-sm" name="profile_image" (change)="onFileChanged($event)">
           </div>
         </div>
