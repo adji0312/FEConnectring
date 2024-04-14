@@ -105,7 +105,7 @@ export class DetailOrderComponent implements OnInit {
     this.transactionService.getCateringOrderDetail(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.orderDetailList = data;
 
-      // console.log(data);
+      console.log(data);
 
       if(this.orderDetailList[0].customer_username == null){
         this.orderIsEmpty = true;

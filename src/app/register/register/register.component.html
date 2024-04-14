@@ -22,10 +22,15 @@
           </div>
           <div class="mb-2">
             <label for="" class="form-label">Username</label>
-            <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" [ngClass]="{ 'is-invalid' : regisForm.controls['username'].touched && regisForm.controls['username'].errors}" id="username" placeholder="" autocomplete="off">
+            <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" [ngClass]="{ 'is-invalid' : regisForm.controls['username'].touched && regisForm.controls['username'].errors}" id="username" placeholder="alpha & numeric" autocomplete="off">
             <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors" class="text-danger">
               <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors['required']">
                 <small>Username must be filled</small>
+              </div>
+            </div>
+            <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors['pattern']">
+                <small>Username must be alphanumeric</small>
               </div>
             </div>
           </div>
@@ -35,6 +40,11 @@
             <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors" class="text-danger">
               <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors['required']">
                 <small>Phone must be filled</small>
+              </div>
+            </div>
+            <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['phone'].touched && regisForm.controls['phone'].errors['pattern']">
+                <small>Phone must be numeric</small>
               </div>
             </div>
           </div>

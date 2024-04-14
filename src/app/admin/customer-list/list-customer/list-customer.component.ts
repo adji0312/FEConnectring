@@ -23,6 +23,9 @@ export class ListCustomerComponent implements OnInit {
   addCustomerForm!: FormGroup;
   viewCustomerForm!: FormGroup;
   addData = new FormData;
+  resetPasswordCustomer: Customer = new Customer;
+  resetForm!: FormGroup;
+
 
   private loadData(){
     this.getCustomers();
@@ -33,7 +36,8 @@ export class ListCustomerComponent implements OnInit {
     private formBuilder : FormBuilder,
     private http: HttpClient,
     private userService: UserService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: UserService
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -45,7 +49,7 @@ export class ListCustomerComponent implements OnInit {
     this.addCustomerForm = this.formBuilder.group({
       username : ['', [Validators.required]],
       name : ['', [Validators.required]],
-      phone : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       password : [''],
     });
 
@@ -54,6 +58,10 @@ export class ListCustomerComponent implements OnInit {
       phone : [''],
       username : ['']
     });
+
+    this.resetForm = this.formBuilder.group({
+      username: ['']
+    })
   }
 
   private getCustomers(){
@@ -75,6 +83,10 @@ export class ListCustomerComponent implements OnInit {
       this.deleteCustomer = customer;
       console.log(this.deleteCustomer);
       
+      
+    }else if(mode === 'reset'){
+      this.resetPasswordCustomer = customer;
+      console.log(this.resetPasswordCustomer);
       
     }
     
@@ -147,14 +159,52 @@ export class ListCustomerComponent implements OnInit {
       }
     );
     
-    document.getElementById('add-customer-form')?.click();
+    this.addData.delete('name');
+    this.addData.delete('phone');
+    this.addData.delete('username');
+    this.addData.delete('password');
     this.addCustomerForm.reset();
+    document.getElementById('add-customer-form')?.click();
     
   }
 
   getImageUrl(blob: Blob) {
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
+
+  resetPassword(){
+
+    this.resetForm.patchValue({
+      username: this.resetPasswordCustomer.parent.username
+    });
+    this.authService.resetPassword(this.resetForm.value, this.loginuser.accessToken).subscribe(
+      (response: User) => {
+        console.log(response);
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Reset Customer's Password",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Reset Customer's Password",
+          showConfirmButton: true,
+          timer: 1500
+        });
+        
+      }
+    )
+
+    document.getElementById('reset-merchant-form')!.click();
+    this.resetForm.reset();
   }
 
 }

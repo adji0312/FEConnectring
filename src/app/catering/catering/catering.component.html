@@ -20,7 +20,8 @@
                 <div class="d-flex justify-content-between flex-column gap-3">
                     <div>
                     <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark" style="cursor: pointer;">
-                        <img [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
+                        <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
+                        <img *ngIf="merch.picByte == null" src="/assets/images/imageno.png" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
                     </a>
                     </div>
         
@@ -44,7 +45,8 @@
                 <div class="d-flex justify-content-between flex-column gap-3">
                     <div>
                     <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark" style="cursor: pointer;">
-                        <img [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
+                        <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
+                        <img *ngIf="merch.picByte == null" src="/assets/images/imageno.png" alt="" class="mt-0 mb-0" style="width: 395px; border-radius: 10px; height: 250px;">
                     </a>
                     </div>
         

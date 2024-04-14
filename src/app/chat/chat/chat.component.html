@@ -7,27 +7,57 @@
     </div>
     
     <!-- CUSTOMER SEARCH -->
-    <!-- <div class="mb-4" *ngIf="loginuser.userEntity.flag == 1">
-      <input class="form-control me-2" type="search" placeholder="Search Catering" aria-label="Search" style="width: 300px;">
-    </div> -->
+    <div class="mb-4" *ngIf="loginuser.userEntity.flag == 1">
+      <input class="form-control me-2" [(ngModel)]="searchTerm" (keyup)="onSearchMerchant()" type="text" placeholder="Search Catering" aria-label="Search" style="width: 300px;">
+    </div>
 
     <!-- MERCHANT SEARCH -->
     <div class="mb-4" *ngIf="loginuser.userEntity.flag == 2">
-      <input class="form-control me-2" [(ngModel)]="searchTerm" (keyup)="onSearch()" type="text" placeholder="Search Customer" aria-label="Search" style="width: 300px;">
+      <input class="form-control me-2" [(ngModel)]="searchTerm" (keyup)="onSearchCustomer()" type="text" placeholder="Search Customer" aria-label="Search" style="width: 300px;">
     </div>
   </div>
 
 
-  <!-- FOR MERCHANT -->
-  <div *ngIf="loginuser.userEntity.flag == 2">
+  <!-- FOR CUSTOMER -->
+  <div *ngIf="loginuser.userEntity.flag == 1">
     <div *ngIf="showResults">
-      <div class="card shadow mb-2" style="border: none;" *ngFor="let customer of filteredItem">
+      <div class="card shadow mb-2" style="border: none;" *ngFor="let merchant of filteredItemMerchant">
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <a href="/message" class="text-decoration-none text-dark">
-              <div class="d-flex flex-column">
-                <h5>{{ customer.name }}</h5>
-                <p style="font-size: 15px;">{{ customer.phone }}</p>
+              <div class="d-flex gap-3">
+                <img *ngIf="loginuser.userEntity.flag == 1 && merchant.picByte != null" [src]="getImageUrl(merchant.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+                <img *ngIf="loginuser.userEntity.flag == 1 && merchant.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+                <div class="d-flex flex-column justify-content-center">
+                  <h5>{{ merchant.merchant_name }}</h5>
+                  <p style="font-size: 15px;">{{ merchant.phone }} ({{ merchant.address }})</p>
+                </div>
+              </div>
+            </a>
+    
+            <div class="d-flex gap-2 align-items-center">
+              <button type="button" (click)="onChatCustomer(merchant)" class="btn btn-sm" style="background-color: #c5a375; color: #ffffff; border-radius: 7px; width: 88px;"><i class="fas fa-comments"></i> Chat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- FOR MERCHANT -->
+  <div *ngIf="loginuser.userEntity.flag == 2">
+    <div *ngIf="showResults">
+      <div class="card shadow mb-2" style="border: none;" *ngFor="let customer of filteredItemCustomer">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <a href="/message" class="text-decoration-none text-dark">
+              <div class="d-flex gap-3">
+                <img *ngIf="loginuser.userEntity.flag == 2 && customer.picByte != null" [src]="getImageUrl(customer.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+                <img *ngIf="loginuser.userEntity.flag == 2 && customer.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+                <div class="d-flex flex-column justify-content-center">
+                  <h5>{{ customer.name }}</h5>
+                  <p style="font-size: 15px;">{{ customer.phone }}</p>
+                </div>
               </div>
             </a>
     
@@ -46,12 +76,16 @@
         <div class="d-flex justify-content-between">
           <a class="text-decoration-none text-dark">
             <div class="d-flex gap-3">
-              <img *ngIf="loginuser.userEntity.flag == 1" [src]="getImageUrl(chat.merchant.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
-              <img *ngIf="loginuser.userEntity.flag == 2" [src]="getImageUrl(chat.customer.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+              <img *ngIf="loginuser.userEntity.flag == 1 && chat.merchant.picByte != null" [src]="getImageUrl(chat.merchant.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+              <img *ngIf="loginuser.userEntity.flag == 1 && chat.merchant.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+
+              <img *ngIf="loginuser.userEntity.flag == 2 && chat.customer.picByte != null" [src]="getImageUrl(chat.customer.picByte)" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+              <img *ngIf="loginuser.userEntity.flag == 2 && chat.customer.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 80px; height: 80px;" alt="">
+              
               <div class="d-flex flex-column justify-content-center">
                 <h5 *ngIf="loginuser.userEntity.flag == 1">{{ chat.merchant.merchant_name }}</h5>
                 <h5 *ngIf="loginuser.userEntity.flag == 2">{{ chat.customer.name }}</h5>
-                <p *ngIf="loginuser.userEntity.flag == 1" style="font-size: 15px;">{{ chat.merchant.phone }}</p>
+                <p *ngIf="loginuser.userEntity.flag == 1" style="font-size: 15px;">{{ chat.merchant.phone }} ({{ chat.merchant.address }})</p>
                 <p *ngIf="loginuser.userEntity.flag == 2" style="font-size: 15px;">{{ chat.customer.phone }}</p>
               </div>
             </div>

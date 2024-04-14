@@ -20,10 +20,12 @@ export class ChatComponent implements OnInit {
   public loginuser: any = {};
   searchText: any;
   customers!: Customer[];
+  merchants!: Merchant[];
   realTimeDataSubscription$!: Subscription;
   showResults = false;
   searchTerm = '';
-  filteredItem: Customer[] = [];
+  filteredItemCustomer: Customer[] = [];
+  filteredItemMerchant: Merchant[] = [];
   chatData!: Chat[];
   checkChat!: FormGroup;
   getChat!: FormGroup;
@@ -43,6 +45,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCustomers();
+    this.getAllMerchant();
 
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
     this.checkChat = this.formBuilder.group({
@@ -82,12 +85,30 @@ export class ChatComponent implements OnInit {
         
       });
       // console.log(this.customers);
+  
+    }
+  getAllMerchant(){
+    this.realTimeDataSubscription$ = timer(0, 1000)
+      .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
+      .subscribe(data => {  
+        // console.log(data);
+              
+        this.merchants = data.sort();
+        
+      });
   }
 
-  onSearch(){
-    this.filteredItem = this.customers.filter(item =>
+  onSearchCustomer(){
+    this.filteredItemCustomer = this.customers.filter(item =>
       item.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       item.phone.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    this.showResults = this.searchTerm.length > 0; // Show only if search term exists
+  }
+
+  onSearchMerchant(){
+    this.filteredItemMerchant = this.merchants.filter(item =>
+      item.merchant_name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     this.showResults = this.searchTerm.length > 0; // Show only if search term exists
   }
@@ -109,6 +130,23 @@ export class ChatComponent implements OnInit {
           this.merchantService.viewCatering = merchant;
           // this.customerService.customer = customer;
           this.router.navigate(['/detailChat']);
+        }
+        else{
+          this.addChat.controls['parent_id'].setValue(this.loginuser.userEntity.id);
+          this.addChat.controls['merchant_id'].setValue(merchant.merchant_id);
+
+          console.log(this.addChat.value);
+
+          this.chatService.addChat(this.addChat.value, this.loginuser.accessToken).subscribe(
+            (response: Chat) => {
+              console.log(response);
+              this.chatService.viewChat = response;
+              this.merchantService.viewCatering = merchant;
+              this.router.navigate(['/detailChat']);
+            }
+          )
+          
+
         }
       }
     )

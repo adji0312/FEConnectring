@@ -63,11 +63,19 @@ export class UserService {
     return this.http.post(environment.baseUrl+"/auth/login", user, {headers: headers});
   }
 
-  changePassword(user: User, accessToken: any): Observable<User>{
+  changePassword(user: User, accessToken: any): Observable<any>{
     // const body = {username, oldPassword, newPassword};
     console.log(user);
     
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.put<User>(environment.baseUrl+"/auth/change-password", user, {headers: headers});
+    return this.http.post(environment.baseUrl+"/auth/change-password", user, {headers: headers});
+  }
+
+  resetPassword(user: User, accessToken: any): Observable<any>{
+    // const body = {username, oldPassword, newPassword};
+    console.log(user);
+    
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.post(environment.baseUrl+"/auth/reset-password", user, {headers: headers});
   }
 }

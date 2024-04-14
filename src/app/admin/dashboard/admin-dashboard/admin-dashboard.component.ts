@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { Merchant } from 'src/app/user/merchant/merchant.model';
 import { MerchantService } from 'src/app/user/merchant/merchant.service';
+import { User } from 'src/app/user/user.model';
 import { UserService } from 'src/app/user/user.service';
 import Swal from 'sweetalert2';
 declare var $: any; 
@@ -21,10 +22,12 @@ export class AdminDashboardComponent implements OnInit {
   @ViewChild('closeAddMerchantBtn') closeAddMerchant: ElementRef | undefined;
   registMerchantForm!: FormGroup;
   editMerchantForm!: FormGroup;
+  resetMerchantForm!: FormGroup;
   public loginuser: any = {};
   merchants!: Merchant[];
   editMerchant: Merchant = new Merchant;
   deleteMerchant: Merchant = new Merchant;
+  resetPasswordMerchant: Merchant = new Merchant;
   foto: any;
   selectedFile!: File;
   formData = new FormData();
@@ -63,8 +66,8 @@ export class AdminDashboardComponent implements OnInit {
       username : ['', [Validators.required]],
       address : ['', [Validators.required]],
       city : ['', [Validators.required]],
-      phone : ['', [Validators.required]],
-      postal_code : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      postal_code : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       merchant_name : ['', [Validators.required]],
       // image_merchant : ['',],
     });
@@ -73,10 +76,14 @@ export class AdminDashboardComponent implements OnInit {
       username : ['', [Validators.required]],
       address : ['', [Validators.required]],
       city : ['', [Validators.required]],
-      phone : ['', [Validators.required]],
-      postal_code : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      postal_code : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       merchant_name : ['', [Validators.required]],
       description : [''],
+    });
+
+    this.resetMerchantForm = this.formBuilder.group({
+      username : ['']
     });
     
   }
@@ -136,9 +143,46 @@ export class AdminDashboardComponent implements OnInit {
     }else if(mode === 'delete'){
       this.deleteMerchant = merchant;
       console.log(this.deleteMerchant.parent.username);
+    }else if(mode === 'reset'){
+      this.resetPasswordMerchant = merchant;
+      console.log(this.resetPasswordMerchant);
       
     }
     
+  }
+
+  resetPassword(){
+
+    this.resetMerchantForm.patchValue({
+      username: this.resetPasswordMerchant.parent.username
+    });
+    this.authService.resetPassword(this.resetMerchantForm.value, this.loginuser.accessToken).subscribe(
+      (response: User) => {
+        console.log(response);
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Reset Merchant's Password",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Reset Merchant's Password",
+          showConfirmButton: true,
+          timer: 1500
+        });
+        
+      }
+    )
+
+    document.getElementById('reset-merchant-form')!.click();
+    this.resetMerchantForm.reset();
   }
 
   onUpdateMerchant(){
@@ -183,6 +227,14 @@ export class AdminDashboardComponent implements OnInit {
     document.getElementById('edit-merchant-form')!.click();
     this.editMerchantForm.reset();
     this.editData.delete('profile_image');
+
+    this.editData.delete('merchant_name');
+    this.editData.delete('username');
+    this.editData.delete('address');
+    this.editData.delete('city');
+    this.editData.delete('phone');
+    this.editData.delete('postal_code');
+    this.editData.delete('profile_image');
   }
 
   onSubmit(){
@@ -219,6 +271,14 @@ export class AdminDashboardComponent implements OnInit {
         })
       }
     )
+
+    this.formData.delete('merchant_name');
+    this.formData.delete('username');
+    this.formData.delete('address');
+    this.formData.delete('city');
+    this.formData.delete('phone');
+    this.formData.delete('postal_code');
+    this.formData.delete('profile_image');
     this.registMerchantForm.reset();
     this.closeAddMerchantModal();
   }
