@@ -7,6 +7,8 @@ import { TransactionService } from 'src/app/transaction/transaction.service';
 import { Transaction } from 'src/app/transaction/transaction.model';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detail-package',
@@ -26,7 +28,9 @@ export class DetailPackageComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private packageService: PackageService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private sanitizer: DomSanitizer,
+    private router: Router
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -76,6 +80,12 @@ export class DetailPackageComponent implements OnInit {
     return pack.packageItemDtoList.map(packageItem => packageItem.food_name).join(', ');
   }
 
+  getImageUrl(blob: Blob) {
+    // console.log(blob);
+    let objectURL = 'data:image/jpeg;base64,' + blob;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
+
   createOrder(){
 
     this.orderForm.patchValue({
@@ -106,6 +116,7 @@ export class DetailPackageComponent implements OnInit {
       }
     );
 
+    this.router.navigate(["order"]);
     this.closeOrderModal();
   }
 
