@@ -20,17 +20,20 @@ export class PackageComponent implements OnInit {
   @ViewChild('closeAddFoodBtn') closeAddFood: ElementRef | undefined;
   @ViewChild('closeUpdateFoodBtn') closeUpdateFood: ElementRef | undefined;
   @ViewChild('closeDeleteFoodBtn') closeDeleteFood: ElementRef | undefined;
+  @ViewChild('closeDeletePackageBtn') closeDeletePackage: ElementRef | undefined;
 
   public loginuser: any = {};
   addFoodForm!: FormGroup;
   editFoodForm!: FormGroup;
   public foods!: Food[];
-  public packages!: Package[];
+  public packagesActive!: Package[];
+  public packagesInActive!: Package[];
   filteredItem: Food[] = [];
   page: number = 1;
   tableSize: number = 5;
 
   deletedFood!: Food;
+  deletedPackage!: string;
 
   realTimeDataSubscription$!: Subscription;
 
@@ -82,13 +85,24 @@ export class PackageComponent implements OnInit {
 
 
   getPackage(){
-    const initData = {
-      merchant_username: this.loginuser.userEntity.username
+    const initDataActive = {
+      merchant_username: this.loginuser.userEntity.username,
+      isActive: true
     };
 
     this.realTimeDataSubscription$ = timer(0, 1000)
-    .pipe(switchMap(_ => this.packageService.getPackageByMerchant(initData, this.loginuser.accessToken))).subscribe(data =>{
-      this.packages = data;
+    .pipe(switchMap(_ => this.packageService.getPackageByMerchant(initDataActive, this.loginuser.accessToken))).subscribe(data =>{
+      this.packagesActive = data;
+    });
+
+    const initDataInActive = {
+      merchant_username: this.loginuser.userEntity.username,
+      isActive: false
+    };
+
+    this.realTimeDataSubscription$ = timer(0, 1000)
+    .pipe(switchMap(_ => this.packageService.getPackageByMerchant(initDataInActive, this.loginuser.accessToken))).subscribe(data =>{
+      this.packagesInActive = data;
     });
   }
 
@@ -127,10 +141,12 @@ export class PackageComponent implements OnInit {
     this.closeAddFoodModal();
   }
 
-  updateFood(i: number){
+  updateFood(food: Food){
+    console.log(food);
+    
     this.editFoodForm.patchValue({
-      food_name: this.foods[i].food_name,
-      food_id: this.foods[i].food_id
+      food_name: food.food_name,
+      food_id: food.food_id
     });
   }
 
@@ -199,6 +215,35 @@ export class PackageComponent implements OnInit {
     this.router.navigate(['/addPackage'], { queryParams: { edit: true }});
   }
 
+  deletePackage(package_header: string){
+    this.deletedPackage = package_header;
+  }
+
+  onDeletePackage(){
+
+    this.packageService.deletePackage(this.deletedPackage, this.loginuser.accessToken).subscribe(
+      (response: void) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Delete Package",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Delete Package",
+          showConfirmButton: true,
+          timer: 1500
+        })
+    });
+
+    this.closeDeletePackageModal();
+  }
+
 
   closeAddFoodModal(){
     if(this.closeAddFood){
@@ -228,4 +273,10 @@ export class PackageComponent implements OnInit {
     this.page = event;
     // this.getFood();
   }
+  closeDeletePackageModal(){
+    if(this.closeDeletePackage){
+      this.closeDeletePackage.nativeElement.click();
+    }
+  }
+
 }

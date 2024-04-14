@@ -37,4 +37,9 @@ export class PackageService {
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.put<any>(`${this.baseUrl}/update`, formData, {headers: headers});
   }
+
+  deletePackage(package_header: string, accessToken: any): Observable<void>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.delete<void>(`${this.baseUrl}/delete/${package_header}`, {headers: headers});
+  }
 }

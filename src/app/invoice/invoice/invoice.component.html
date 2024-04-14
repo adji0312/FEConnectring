@@ -56,7 +56,7 @@
               <span *ngIf="inv.payment_status == 'PND' " class="badge text-bg-success">Waiting Confirm</span>
               <div class="d-flex gap-2">
                 <!-- <a type="button" (click)="orderDetailPage(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-eye"></i> View</a> -->
-                <a type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#openInvoice"><i class="fas fa-eye"></i> View</a>
+                <a type="button" (click)="viewInvoice(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#openInvoice"><i class="fas fa-eye"></i> View</a>
                 <a type="button" (click)="selectPackage(inv)" class="btn btn-sm" style="background-color: #9dbc98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#paidInvoice"><i class="fas fa-money-bill"></i> Pay</a>
               </div>
             </div>
@@ -85,7 +85,7 @@
             </div>
             <div class="d-flex align-items-center gap-2">
               <div class="d-flex gap-2">
-                <a  data-bs-toggle="modal" data-bs-target="#openPaymentEvidence" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 180px; color: white;"><i class="fas fa-eye"></i> Payment Evidence</a>
+                <!-- <a  data-bs-toggle="modal" data-bs-target="#openPaymentEvidence" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 180px; color: white;"><i class="fas fa-eye"></i> Payment Evidence</a> -->
                 <a (click)="selectTransactionImage(inv)" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptPayment"><i class="fas fa-eye"></i> View</a>
               </div>
             </div>
@@ -142,7 +142,8 @@
                 </div>
               </div>
             </div>
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex flex-column align-items-center gap-2">
+              <span class="badge text-bg-warning">Waiting</span>
               <div class="d-flex gap-2">
                 <a type="button" (click)="selectTransactionImage(inv)" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptPayment"><i class="fas fa-eye"></i> Detail</a>
               </div>
@@ -196,7 +197,8 @@
           <input #fileInput type="file" (change)="onFileSelected($event)" class="form-control form-control-sm" id="exampleFormControlInput1">
           <div class="text-center m-2">
             <!-- image show when user is uploaded -->
-            <img src="https://www.bca.co.id/-/media/Feature/News/Edukatips/2023/04/20230412-cara-baru-bayar-pakai-qris-di-bca-mobile-6" alt="" width="100%">
+            <!-- <img src="https://www.bca.co.id/-/media/Feature/News/Edukatips/2023/04/20230412-cara-baru-bayar-pakai-qris-di-bca-mobile-6" alt="" width="100%"> -->
+            <img [src]="loadImage()" alt="" width="100%">
           </div>
       </div>
       <div class="modal-footer">
@@ -241,7 +243,7 @@
       </div>
       <div class="modal-footer">
         <button #closeAcceptPayment type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-        <button *ngIf="x == 0" (click)="acceptPayment()" type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</button>
+        <button [disabled]="checkTransactionImage()" *ngIf="x == 0" (click)="acceptPayment()" type="submit" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</button>
       </div>
     </div>
   </div>
@@ -257,8 +259,8 @@
       </div>
       <div class="modal-body" style="overflow-y: auto; height: 300px;">
         <div class="d-flex justify-content-between">
-          <p class="mb-3 fs-6">Catering Kuy <small>(Paket Hemat)</small></p> 
-          <p class="fs-6">Total : Rp 200,000</p>
+          <p class="mb-3 fs-6" *ngIf="selectedInvoice?.merchant_name">{{ selectedInvoice.merchant_name }} <small>({{ invoiceDetail[0].package_id.package_name }})</small></p>
+          <p class="fs-6" *ngIf="selectedInvoice?.totalPrice">Total : Rp {{ selectedInvoice.totalPrice | number }}</p>
         </div>
         <table class="table">
           <thead>
@@ -271,53 +273,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row" class="align-middle">1</th>
-              <td class="align-middle">03/04/2024</td>
-              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
-              <td class="align-middle">Rp 20,000</td>
-              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
-              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
-            </tr>
-            <tr>
-              <th scope="row" class="align-middle">1</th>
-              <td class="align-middle">03/04/2024</td>
-              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
-              <td class="align-middle">Rp 20,000</td>
-              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
-              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
-            </tr>
-            <tr>
-              <th scope="row" class="align-middle">1</th>
-              <td class="align-middle">03/04/2024</td>
-              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
-              <td class="align-middle">Rp 20,000</td>
-              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
-              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
-            </tr>
-            <tr>
-              <th scope="row" class="align-middle">1</th>
-              <td class="align-middle">03/04/2024</td>
-              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
-              <td class="align-middle">Rp 20,000</td>
-              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
-              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
-            </tr>
-            <tr>
-              <th scope="row" class="align-middle">1</th>
-              <td class="align-middle">03/04/2024</td>
-              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
-              <td class="align-middle">Rp 20,000</td>
-              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
-              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
-            </tr>
-            <tr>
-              <th scope="row" class="align-middle">1</th>
-              <td class="align-middle">03/04/2024</td>
-              <td class="align-middle">Nasi Goreng, Ayam Bakar...</td>
-              <td class="align-middle">Rp 20,000</td>
-              <!-- <td class="align-middle"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>  this for not cancel order -->
-              <td class="align-middle"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
+            <tr *ngFor="let inv of invoiceDetail, let i=index">
+              <th scope="row" class="align-middle">{{ i+1 }}</th>
+              <td class="align-middle">{{ inv.package_id.value_date | date: 'dd/MM/yy' }}</td>
+              <td class="align-middle">{{ inv.food_names }}</td>
+              <td class="align-middle">Rp {{ inv.package_id.price | number }}</td>
+              <td class="align-middle" *ngIf="inv.flag_cancel == null"><i class="fas fa-check-square" style="color: #9dbc98;"></i></td>
+              <td class="align-middle" *ngIf="inv.flag_cancel"><i class="fas fa-window-close" style="color: #D24545;"></i></td> <!-- this for cancel order -->
             </tr>
           </tbody>
         </table>

@@ -4,7 +4,7 @@ import { PackageService } from '../../package.service';
 import { Package } from '../../package.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, finalize, switchMap, timer } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Food } from '../../food.model';
@@ -22,6 +22,7 @@ export class AddPackageComponent implements OnInit {
 
   @ViewChild('closeAddPackage') closeAddPackage!: ElementRef;
   @ViewChild('closeEditPackage') closeEditPackage!: ElementRef;
+  @ViewChild('closeActivatePackage') closeActivatePackage!: ElementRef;
 
   public loginuser: any = {};
   addPackageForm!: FormGroup;
@@ -49,6 +50,7 @@ export class AddPackageComponent implements OnInit {
     private elementRef: ElementRef,
     private route: ActivatedRoute,
     // private af: AngularFireStorage,
+    private router: Router,
     private sanitizer: DomSanitizer
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
@@ -67,6 +69,8 @@ export class AddPackageComponent implements OnInit {
       merchant_username: [''],
       package_id: [''],
       packageItemList: ['', Validators.required],
+      activateAll: [''],
+      package_header: [''],
     });
 
     this.combinedForm = this.formBuilder.group({
@@ -252,6 +256,9 @@ export class AddPackageComponent implements OnInit {
 
 
   editPackage(pack: Package){
+
+    console.log(pack.isActive == false);
+
     this.selectedPackage = pack;
 
     this.addPackageForm.patchValue({
@@ -280,6 +287,7 @@ export class AddPackageComponent implements OnInit {
     this.addPackageForm.patchValue({
       packageItemList: packageItemDto,
       package_id: this.selectedPackage.package_id,
+      activateAll: false,
     });
 
     if(this.package_image){
@@ -292,7 +300,7 @@ export class AddPackageComponent implements OnInit {
 
     this.formData.append("packageDto", JSON.stringify(this.addPackageForm.value));
 
-    console.log(this.addPackageForm.value);
+    // console.log(this.addPackageForm.value);
 
 
     this.packageService.updatePackage(this.formData, this.loginuser.accessToken).subscribe(
@@ -327,6 +335,56 @@ export class AddPackageComponent implements OnInit {
 
   onFileSelected(event: any): void {
     this.package_image = event.target.files[0];
+  }
+
+  checkPackageActive(){
+    if(this.packageList != null && this.packageList[0].isActive){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  activatePackage(){
+
+    this.addPackageForm.patchValue({
+      package_header: this.packageList[0].package_header,
+      activateAll: true,
+    });
+
+    console.log(this.addPackageForm.value);
+
+    this.formData.append("packageDto", JSON.stringify(this.addPackageForm.value));
+
+
+    this.packageService.updatePackage(this.formData, this.loginuser.accessToken).subscribe(
+      (response: Package) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Activate Package",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Activate Package",
+          showConfirmButton: true,
+          timer: 1500
+        })
+    });
+
+    this.router.navigate(["/package"]);
+    this.closeActivatePackageModal();
+  }
+
+  closeActivatePackageModal(){
+    if(this.closeActivatePackage){
+      this.closeActivatePackage.nativeElement.click();
+    }
   }
 
   // readFile(file: File): void {

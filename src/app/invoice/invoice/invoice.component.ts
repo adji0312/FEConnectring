@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { OrderService } from 'src/app/cart/order/order.service';
-import { Transaction } from 'src/app/transaction/transaction.model';
+import { Transaction, TransactionDetail } from 'src/app/transaction/transaction.model';
 import { TransactionService } from 'src/app/transaction/transaction.service';
 import Swal from 'sweetalert2';
 
@@ -26,8 +26,10 @@ export class InvoiceComponent implements OnInit {
 
   cateringInvoice!: Transaction[];
   customerInvoice!: Transaction[];
+  invoiceDetail!: TransactionDetail[];
 
   selectedTransaction!: Transaction;
+  selectedInvoice!: Transaction;
 
   image_url!: any;
 
@@ -98,6 +100,19 @@ export class InvoiceComponent implements OnInit {
 
   selectPackage(txn: Transaction){
     this.selectedTransaction = txn;
+    this.image_url = 'data:image/jpeg;base64,' + txn.payment_img;
+  }
+
+  viewInvoice(txn: Transaction){
+
+    this.invoiceForm.patchValue({
+      transaction_id: txn.transaction_id
+    });
+
+    this.transactionService.getCustomerOrderByTransaction(this.invoiceForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.selectedInvoice = data[0];
+      this.invoiceDetail = data[0].transactionDetailDtoList;
+    });
   }
 
   onFileSelected(event: any) {
@@ -150,6 +165,15 @@ export class InvoiceComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(this.image_url);
   }
 
+  checkTransactionImage(){
+    // console.log(this.image_url.substring(23,27));
+
+    if(this.image_url && this.image_url.substring(23,27) == "null"){
+      return true;
+    }
+
+    return false;
+  }
 
 
   clickUnpaidCatering(){
