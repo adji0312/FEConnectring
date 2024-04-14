@@ -33,13 +33,11 @@ export class RegisterComponent implements OnInit {
     private http: HttpClient) {
 
     this.authService.isLoggedIn();
-  }
 
-  ngOnInit(): void {
     this.regisForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      username: ['', [Validators.required]],
-      phone: ['', [Validators.required]],
+      username: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
+      phone: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmpassword: ['', [Validators.required, Validators.minLength(8)]],
     },
@@ -47,6 +45,10 @@ export class RegisterComponent implements OnInit {
       validators: this.passwordMatchValidator, 
     }
     )
+  }
+
+  ngOnInit(): void {
+    
   }
 
   passwordMatchValidator(control: AbstractControl){
@@ -88,6 +90,12 @@ export class RegisterComponent implements OnInit {
         })
       }
     );
+
+    this.formRegis.delete('name');
+    this.formRegis.delete('username');
+    this.formRegis.delete('phone');
+    this.formRegis.delete('password');
+    this.formRegis.delete('profile_image');
   }
 
   onFileChanged(event: any){

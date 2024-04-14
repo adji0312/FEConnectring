@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PackageService } from '../package.service';
-import { Food } from '../food.model';
+import { Food, SearchModelFood } from '../food.model';
 import Swal from 'sweetalert2';
 import { FoodService } from '../food.service';
 import { Subscription, switchMap, timer } from 'rxjs';
@@ -26,10 +26,15 @@ export class PackageComponent implements OnInit {
   editFoodForm!: FormGroup;
   public foods!: Food[];
   public packages!: Package[];
+  filteredItem: Food[] = [];
+  page: number = 1;
+  tableSize: number = 5;
 
   deletedFood!: Food;
 
   realTimeDataSubscription$!: Subscription;
+
+  model: SearchModelFood = new SearchModelFood();
 
   constructor(
     private formBuilder : FormBuilder,
@@ -57,6 +62,10 @@ export class PackageComponent implements OnInit {
   ngOnInit(): void {
     this.getFood();
     this.getPackage();
+  }
+
+  searchSetting(){
+    this.page = 1;
   }
 
   getFood(){
@@ -209,4 +218,14 @@ export class PackageComponent implements OnInit {
     }
   }
 
+  // onSearch(){
+  //   this.filteredItem = this.foods.filter(item =>
+  //     item.food_name.toLowerCase().includes(this.searchText.toLowerCase())
+  //   );
+  // }
+
+  onTableDataChange(event: any){
+    this.page = event;
+    // this.getFood();
+  }
 }

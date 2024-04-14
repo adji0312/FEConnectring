@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription, switchMap, timer } from 'rxjs';
@@ -56,6 +56,12 @@ export class ProfileComponent implements OnInit {
     private router: Router,
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
+
+    this.editCustomerForm = this.formBuilder.group({
+      name : ['', Validators.required],
+      phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      username : [''],
+    });
   }
 
   ngOnInit(): void {
@@ -67,25 +73,25 @@ export class ProfileComponent implements OnInit {
     this.changePasswordForm = this.formBuilder.group({
       username: [''],
       oldPassword: ['', Validators.required],
-      newPassword: ['', Validators.required, Validators.minLength(8)],
-      confirmPassword: ['', Validators.required, Validators.minLength(8)],
-    });
+      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+    },
+    {
+      validators: this.passwordMatchValidator, 
+    }
+    );
 
     this.editMerchantForm = this.formBuilder.group({
       address : ['', Validators.required],
       city : ['', Validators.required],
-      phone : ['', Validators.required],
-      postal_code : ['', Validators.required],
+      phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      postal_code : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       merchant_name : ['', Validators.required],
       description : [''],
       username : ['']
     });
 
-    this.editCustomerForm = this.formBuilder.group({
-      name : ['', Validators.required],
-      phone : ['', Validators.required],
-      username : [''],
-    });
+    
 
     this.getDetailCustomerMerchant();
 
@@ -142,30 +148,44 @@ export class ProfileComponent implements OnInit {
     this.changePasswordForm.patchValue({
       username: this.loginuser.userEntity.username
     });
+
+    console.log(this.changePasswordForm.value);
+    
     
     this.authService.changePassword(this.changePasswordForm.value, this.loginuser.accessToken).subscribe(
       (response: any) => {
         console.log(response);
         
-        // Swal.fire({
-        //   position: 'center',
-        //   icon: 'success',
-        //   title: "Success Change Password",
-        //   showConfirmButton: true,
-        //   timer: 1500
-        // })
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Change Password",
+          showConfirmButton: true,
+          timer: 1500
+        })
         
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
+        console.log(error.status);
         
-        // Swal.fire({
-        //   position: 'center',
-        //   icon: 'error',
-        //   title: "Failed Change Password",
-        //   showConfirmButton: true,
-        //   timer: 1500
-        // })
+        if(error.status == 401){
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Wrong Old Password",
+            showConfirmButton: true,
+            timer: 1500
+          })
+        }else{
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Failed Change Password",
+            showConfirmButton: true,
+            timer: 1500
+          })
+
+        }
         
       }
     )
@@ -263,6 +283,11 @@ export class ProfileComponent implements OnInit {
       }
     );
 
+    this.customerData.delete('name');
+    this.customerData.delete('phone');
+    this.customerData.delete('username');
+    this.customerData.delete('profile_image');
+
     document.getElementById('edit-merchant-form')!.click();
     // window.location.reload();
     // this.editMerchantForm.reset();
@@ -311,6 +336,16 @@ export class ProfileComponent implements OnInit {
         })
       }
     )
+
+    this.merchantData.delete('merchant_name');
+    this.merchantData.delete('username');
+    this.merchantData.delete('address');
+    this.merchantData.delete('city');
+    this.merchantData.delete('phone');
+    this.merchantData.delete('postal_code');
+    this.merchantData.delete('desctiption');
+    this.merchantData.delete('profile_image');
+    document.getElementById('edit-merchant-form')!.click();
   }
 
   getImageUrl(blob: Blob) {
@@ -331,5 +366,19 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
+
+  passwordMatchValidator(control: AbstractControl){
+    return control.get('newPassword')?.value ===
+      control.get('confirmPassword')?.value
+      ? null
+      : { mismatch: true };
+  }
+
+  // passwordMatchValidator(control: AbstractControl){
+  //   return control.get('newPassword')?.value ===
+  //     control.get('confirmPassword')?.value
+  //     ? null
+  //     : { mismatch: true };
+  // }
 
 }

@@ -43,6 +43,7 @@ import { OrderPipe } from './cart/order/order.pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { SearchFoodPipe } from './package/search-food.pipe';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     DetailChatComponent,
     ListCustomerComponent,
     OrderPipe,
+    SearchFoodPipe,
   ],
   imports: [
     BrowserModule,
