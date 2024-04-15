@@ -141,10 +141,12 @@ export class PackageComponent implements OnInit {
     this.closeAddFoodModal();
   }
 
-  updateFood(i: number){
+  updateFood(food: Food){
+    console.log(food);
+
     this.editFoodForm.patchValue({
-      food_name: this.foods[i].food_name,
-      food_id: this.foods[i].food_id
+      food_name: food.food_name,
+      food_id: food.food_id
     });
   }
 

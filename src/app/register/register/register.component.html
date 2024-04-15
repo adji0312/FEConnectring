@@ -67,6 +67,11 @@
                 <small>Password must be filled</small>
               </div>
             </div>
+            <div *ngIf="regisForm.controls['password'].touched && regisForm.controls['password'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['password'].touched && regisForm.controls['password'].errors?.['minlength']">
+                <small>Password min 8 characters</small>
+              </div>
+            </div>
           </div>
           <div class="mb-2">
             <label for="" class="form-label">Confirm Password</label>
@@ -75,7 +80,9 @@
               <div *ngIf="regisForm.controls['confirmpassword'].touched && regisForm.controls['confirmpassword'].errors['required']">
                 <small>Confirm Password must be filled</small>
               </div>
-              <div *ngIf="regisForm.get('confirmpassword')?.errors?.['mismatch'] && regisForm.get('confirmpassword')?.touched">
+            </div>
+            <div *ngIf="regisForm.controls['confirmpassword'].touched && regisForm.controls['confirmpassword'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['confirmpassword'].touched && regisForm.controls['confirmpassword'].errors['mismatch']">
                 <small>Password and Confirm Password must be match</small>
               </div>
             </div>

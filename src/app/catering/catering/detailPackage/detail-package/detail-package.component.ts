@@ -95,6 +95,9 @@ export class DetailPackageComponent implements OnInit {
       package_header: this.packageService.package_header
     });
 
+    console.log(this.orderForm.value);
+    
+
     this.transactionService.createTransaction(this.orderForm.value, this.loginuser.accessToken).subscribe(
       (response: Transaction) => {
         Swal.fire({

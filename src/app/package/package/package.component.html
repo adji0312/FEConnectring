@@ -70,7 +70,7 @@
           <div class="d-flex justify-content-between">
             {{ food.food_name }}
             <div class="d-flex gap-2 align-items-center">
-              <button type="button" (click)="updateFood(i)" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editFood"><i class="fas fa-edit"></i> Edit</button>
+              <button type="button" (click)="updateFood(food)" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editFood"><i class="fas fa-edit"></i> Edit</button>
               <button type="button" (click)="deleteFood(i)"  class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteFood"><i class="fas fa-trash-alt"></i> Delete</button>
             </div>
           </div>
