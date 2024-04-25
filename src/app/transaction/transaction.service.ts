@@ -74,4 +74,9 @@ export class TransactionService {
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.put<any>(`${this.baseUrl}/acceptPayment`, transaction, {headers: headers});
   }
+
+  getMerchantReportByMonth(transaction: Transaction, accessToken: any){
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.post<any[]>(`${this.baseUrl}/statsByMonth`, transaction, {headers: headers});
+  }
 }

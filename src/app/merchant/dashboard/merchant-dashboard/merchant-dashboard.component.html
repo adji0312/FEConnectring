@@ -3,7 +3,7 @@
   <div class="d-flex gap-3 mb-4">
     <h2>Report</h2>
     <div class="d-flex align-items-center gap-2">
-      <a href="/addPackage" type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#filtermonthyear"><i class="fas fa-filter"></i> Filter Month & Year</a>
+      <a type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#filtermonthyear"><i class="fas fa-filter"></i> Filter Year</a>
     </div>
   </div>
 
@@ -19,11 +19,11 @@
             </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>May 2024</td>
-            <td>20 Packages</td>
-            <td>Rp 1,000,000</td>
+          <tr *ngFor="let rpt of transactionRpt, let i=index ">
+            <td>{{ i+1 }}</td>
+            <td>{{ rpt.month | date: 'MMM yyyy' }}</td>
+            <td>{{ rpt.transactionCount }} Packages</td>
+            <td>Rp {{ rpt.totalPrice | number }}</td>
           </tr>
         </tbody>
     </table>
@@ -39,7 +39,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body d-flex gap-3">
-        <div class="mb-3 w-100">
+        <!-- <div class="mb-3 w-100">
           <label for="exampleInputEmail1" class="form-label">Month</label>
           <select class="form-select" aria-label="Default select example">
             <option selected>Select Month</option>
@@ -56,7 +56,7 @@
             <option value="11">November</option>
             <option value="12">December</option>
           </select>
-        </div>
+        </div> -->
         <div class="mb-3 w-100">
           <label for="exampleInputEmail1" class="form-label">Year</label>
           <select class="form-select" aria-label="Default select example">

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {MatDatepicker} from '@angular/material/datepicker';
+import { TransactionReport } from 'src/app/transaction/transaction.model';
+import { TransactionService } from 'src/app/transaction/transaction.service';
 
 @Component({
   selector: 'app-merchant-dashboard',
@@ -9,39 +11,30 @@ import {MatDatepicker} from '@angular/material/datepicker';
 })
 export class MerchantDashboardComponent implements OnInit {
 
+  public loginuser: any = {};
 
-  constructor() { }
+  reportForm!: FormGroup;
+
+  transactionRpt!: TransactionReport[];
+
+  constructor(
+    private transactionService: TransactionService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
-    // const ctx = document.getElementById('myChart');
-    // if (ctx instanceof HTMLCanvasElement) {
-    //   const myChart = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: this.data,
-    //     options: {
-    //       scales: {
-    //         yAxes: [{
-    //           ticks: {
-    //             beginAtZero: true
-    //           }
-    //         }]
-    //       }
-    //     }
-    //   });
-    // }
+
+    this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
+
+    this.reportForm = this.formBuilder.group({
+      merchant_name: this.loginuser.userEntity.username
+    });
+
+    this.transactionService.getMerchantReportByMonth(this.reportForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.transactionRpt = data;
+    });
   }
 
-  data: any = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-      {
-        label: 'Visitors',
-        data: [100, 50, 0, 30, 60, 70, 80],
-        backgroundColor: ['#2980b9', '#f39c12', '#9b59b6', '#2ecc71', '#e74c3c', '#3498db', '#95a5a6'],
-        borderColor: ['#2980b9', '#f39c12', '#9b59b6', '#2ecc71', '#e74c3c', '#3498db', '#95a5a6'],
-        borderWidth: 1
-      }
-    ]
-  };
+
 
 }

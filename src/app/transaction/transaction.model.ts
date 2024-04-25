@@ -25,3 +25,9 @@ export class TransactionDetail{
   customer_name!: string;
   order_date!: Date;
 }
+
+export class TransactionReport{
+  month!: Date;
+  totalPrice!: number;
+  transactionCount!: number;
+}

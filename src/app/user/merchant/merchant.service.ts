@@ -22,9 +22,14 @@ export class MerchantService {
     return this.http.get(`${this.baseUrl}/all`, {headers: headers});
   }
 
+  getRandomMerchant(accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.get(`${this.baseUrl}/random`, {headers: headers});
+  }
+
   updateMerchant(merchant: FormData, accessToken: any):Observable<any>{
     console.log(merchant);
-    
+
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.put(`${this.baseUrl}/update`, merchant, {headers: headers});
   }
@@ -32,13 +37,13 @@ export class MerchantService {
   deleteMerchant(username: string, accessToken: any): Observable<Merchant>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     console.log(username);
-    
+
     return this.http.post<Merchant>(`${this.baseUrl}/delete`, username, {headers: headers});
   }
 
   getMerchant(username: string, accessToken: any): Observable<any>{
     const body = {username};
-    
+
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post(`${this.baseUrl}/getMerchant`, body, {headers: headers});
   }
