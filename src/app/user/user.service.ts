@@ -53,8 +53,9 @@ export class UserService {
   //   return this.http.post(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
   // }
   
-  regisMerchant(merchant: FormData, accessToken: any): Observable<any> {
-    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+  regisMerchant(merchant: FormData): Observable<any> {
+    const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
+    // const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.post(environment.baseUrl+"/auth/register-merchant", merchant, {headers: headers});
   }
 
@@ -77,5 +78,11 @@ export class UserService {
     
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.post(environment.baseUrl+"/auth/reset-password", user, {headers: headers});
+  }
+  
+  allUsers(accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.get(environment.baseUrl+"/auth/all-users", {headers: headers});
+
   }
 }

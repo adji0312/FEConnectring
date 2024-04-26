@@ -38,9 +38,9 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Filter Year</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body d-flex gap-3">
+      <div class="modal-body">
         <form [formGroup]="reportForm">
-          <div class="mb-3 w-100">
+          <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Year</label>
             <select class="form-select" aria-label="Default select example" formControlName="order_date">
               <option *ngFor="let year of yearList" [value]="year">

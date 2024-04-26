@@ -3,36 +3,89 @@
 <div class="m-4 mt-5" style="min-height: 100vh;">
 
   <div class="d-flex justify-content-between mb-4">
-    <h2>List Catering</h2>
-    <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Catering</button>
+    <h2>List Request User</h2>
+    <!-- <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Catering</button> -->
   </div>
 
-  <div *ngFor="let merch of merchants; index as i">
-    <div *ngIf="merch.is_active == 0 && merch.is_delete == 1" class="card shadow mb-2" style="border: none;">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex gap-3">
-            <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
-            <img *ngIf="merch.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
-            <div class="d-flex flex-column justify-content-center">
-              <h5>{{ merch.merchant_name }}</h5>
-              <p><i class="fas fa-map-marker-alt"></i> {{ merch.address }}, {{ merch.city }}</p>
+  <div *ngIf="x == 0" class="d-flex justify-content-between gap-2 mb-3">
+    <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickCatering()">
+      <div class="card-body text-center">
+        Request Catering
+      </div>
+    </div>
+    <div class="card w-100" style="cursor: pointer;" (click)="clickCustomer()">
+      <div class="card-body text-center">
+        Request Reset Password
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
+    <div class="card w-100" style="cursor: pointer;" (click)="clickCatering()">
+      <div class="card-body text-center">
+        Request Catering
+      </div>
+    </div>
+    <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickCustomer()">
+      <div class="card-body text-center">
+        Request Reset Password
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="x == 0">
+    <div *ngFor="let merch of merchants; index as i">
+      <div *ngIf="merch.is_active == 1" class="card shadow mb-2" style="border: none;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex gap-3">
+              <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+              <img *ngIf="merch.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+              <div class="d-flex flex-column justify-content-center">
+                <h5>{{ merch.merchant_name }}</h5>
+                <p><i class="fas fa-map-marker-alt"></i> {{ merch.address }}, {{ merch.city }}</p>
+              </div>
             </div>
-          </div>
-          <div class="d-flex gap-2 align-items-center">
-            <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(merch, 'edit')"><i class="fas fa-edit"></i> Edit</button>
-            <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 145px; color: white;" data-bs-toggle="modal" data-bs-target="#resetPassword" (click)="onOpenModal(merch, 'reset')"><i class="fas fa-unlock-alt"></i> Reset Password</button>
-            <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCatering" (click)="onOpenModal(merch, 'delete')"><i class="fas fa-trash-alt"></i> Delete</button>
+            <div class="d-flex gap-2 align-items-center">
+              <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(merch, 'view')"><i class="fas fa-eye"></i> Detail</button>
+              <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(merch, 'edit')"><i class="fas fa-check"></i> Accept</button>
+              <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCatering" (click)="onOpenModal(merch, 'delete')"><i class="fas fa-times"></i> Reject</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div *ngIf="x == 1">
+    <div *ngFor="let user of users; index as i">
+        <div *ngIf="user.flag != 0 && user.is_request == 0" class="card shadow mb-2" style="border: none;">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex gap-3">
+                <!-- <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" style="border-radius: 50%; width: 100px; height: 100px;" alt=""> -->
+                <img src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+                <div class="d-flex flex-column justify-content-center">
+                  <h5>{{ user.username }}</h5>
+                  <p *ngIf="user.flag == 1">Customer</p>
+                  <p *ngIf="user.flag == 2">Catering</p>
+                </div>
+              </div>
+              <div class="d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering"><i class="fas fa-eye"></i> Detail</button>
+                <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering"><i class="fas fa-check"></i> Accept</button>
+                <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCatering"><i class="fas fa-times"></i> Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
   
 </div>
 <app-footer></app-footer>
 
-<div class="modal fade" id="registCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="registCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -118,9 +171,9 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
-<div class="modal fade" id="editCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="editCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -236,4 +289,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

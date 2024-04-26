@@ -12,4 +12,5 @@ export class User {
 
     oldPassword!: string;
     newPassword!: string;
+    is_request!: number;
 }

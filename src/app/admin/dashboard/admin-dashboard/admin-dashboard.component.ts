@@ -92,6 +92,7 @@ export class AdminDashboardComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
+        console.log(data);
         this.merchants = data.sort();
     });
   }
@@ -248,7 +249,7 @@ export class AdminDashboardComponent implements OnInit {
     this.formData.append('phone', this.registMerchantForm.get('phone')?.value);
     this.formData.append('postal_code', this.registMerchantForm.get('postal_code')?.value);
 
-    this.authService.regisMerchant(this.formData, this.loginuser.accessToken).subscribe(
+    this.authService.regisMerchant(this.formData).subscribe(
       (response: Merchant) => {
         console.log(response);
         

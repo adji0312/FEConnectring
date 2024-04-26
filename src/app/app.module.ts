@@ -44,6 +44,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SearchFoodPipe } from './package/search-food.pipe';
+import { ListRequestComponent } from './admin/list-request/list-request.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { SearchFoodPipe } from './package/search-food.pipe';
     ListCustomerComponent,
     OrderPipe,
     SearchFoodPipe,
+    ListRequestComponent,
   ],
   imports: [
     BrowserModule,
