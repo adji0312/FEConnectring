@@ -92,15 +92,16 @@ export class AdminDashboardComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
-        console.log(data);
+        // console.log(data);
         this.merchants = data.sort();
     });
   }
 
-  btnDeleteMerchant(merchant: Merchant){
+  btnDeleteMerchant(){
     console.log(this.deleteMerchant);
+    console.log(this.editMerchantForm.value);
     
-    this.merchantService.deleteMerchant(this.deleteMerchant.parent.username, this.loginuser.accessToken).subscribe(
+    this.merchantService.deleteMerchant(this.editMerchantForm.value, this.loginuser.accessToken).subscribe(
       (response: Merchant) => {
         Swal.fire({
           position: 'center',
@@ -144,6 +145,15 @@ export class AdminDashboardComponent implements OnInit {
     }else if(mode === 'delete'){
       this.deleteMerchant = merchant;
       console.log(this.deleteMerchant.parent.username);
+      this.editMerchantForm.setValue({
+        username : merchant.parent.username,
+        address : merchant.address,
+        city : merchant.city,
+        phone : merchant.phone,
+        postal_code : merchant.postal_code,
+        merchant_name : merchant.merchant_name,
+        description : merchant.description,
+      });
     }else if(mode === 'reset'){
       this.resetPasswordMerchant = merchant;
       console.log(this.resetPasswordMerchant);

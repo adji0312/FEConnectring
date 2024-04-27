@@ -106,6 +106,34 @@
             </div>
           </div>
           <div class="mb-1">
+            <label for="" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control form-control-sm" formControlName="password" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['password'].touched && registMerchantForm.controls['password'].errors}" id="password" placeholder="min 8 characters" autocomplete="off">
+            <div *ngIf="registMerchantForm.controls['password'].touched && registMerchantForm.controls['password'].errors" class="text-danger">
+              <div *ngIf="registMerchantForm.controls['password'].touched && registMerchantForm.controls['password'].errors['required']">
+                <small>Password must be filled</small>
+              </div>
+            </div>
+            <div *ngIf="registMerchantForm.controls['password'].touched && registMerchantForm.controls['password'].errors" class="text-danger">
+              <div *ngIf="registMerchantForm.controls['password'].touched && registMerchantForm.controls['password'].errors?.['minlength']">
+                <small>Password min 8 characters</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-2">
+            <label for="" class="form-label">Confirm Password</label>
+            <input type="password" name="confirmpassword" class="form-control form-control-sm" formControlName="confirmpassword" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['confirmpassword'].touched && registMerchantForm.controls['confirmpassword'].errors}" id="confirmpassword" placeholder="min 8 characters" autocomplete="off" >
+            <div *ngIf="registMerchantForm.controls['confirmpassword'].touched && registMerchantForm.controls['confirmpassword'].errors" class="text-danger">
+              <div *ngIf="registMerchantForm.controls['confirmpassword'].touched && registMerchantForm.controls['confirmpassword'].errors['required']">
+                <small>Confirm Password must be filled</small>
+              </div>
+            </div>
+            <div *ngIf="registMerchantForm.controls['confirmpassword'].touched && registMerchantForm.controls['confirmpassword'].errors" class="text-danger">
+              <div *ngIf="registMerchantForm.controls['confirmpassword'].touched && registMerchantForm.controls['confirmpassword'].errors['mismatch']">
+                <small>Password and Confirm Password must be match</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1">
             <label for="" class="form-label">Profile Image (Optional)</label>
             <input type="file" class="form-control form-control-sm" name="profile_image" (change)="onFileChanged($event)">
           </div>
@@ -128,21 +156,21 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form #userForm="ngForm" [formGroup]="userForgotPasswordForm" action="">
+        <form #userForm="ngForm" [formGroup]="forgotPasswordForm" action="">
           <div class="mb-1">
             <label for="" class="form-label">Username</label>
             <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" id="username" placeholder="" autocomplete="off">
-            <!-- <div *ngIf="registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors" class="text-danger">
-              <div *ngIf="registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors['required']">
-                <small>Catering Name must be filled</small>
+            <div *ngIf="forgotPasswordForm.controls['username'].touched && forgotPasswordForm.controls['username'].errors" class="text-danger">
+              <div *ngIf="forgotPasswordForm.controls['username'].touched && forgotPasswordForm.controls['username'].errors['required']">
+                <small>Username must be filled</small>
               </div>
-            </div> -->
+            </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button #closeAddMerchantBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-        <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 95px; color: white;"><i class="fas fa-paper-plane"></i> Request</button>
+        <button #closeAddMerchantBtn type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="forgot-form"><i class="fas fa-times"></i> Close</button>
+        <button type="button" [disabled]="forgotPasswordForm.invalid" (click)="onForgotButton()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 95px; color: white;"><i class="fas fa-paper-plane"></i> Request</button>
       </div>
     </div>
   </div>

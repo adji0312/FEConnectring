@@ -23,13 +23,12 @@
       <div class="p-0">
         <h2 class="m-5 mx-3 mb-4 mt-4">Popular Catering</h2>
         <div class="d-flex gap-3">
-
-          <!-- Get First Index of List Merchant -->
-
+          <!-- first index -->
           <div class="d-flex justify-content-between flex-column m-5 mx-3 mt-0">
             <div>
               <a href="" class="text-decoration-none text-dark">
-                <img [src]="getImageUrl(merchantList[0].picByte)" alt="" class="mt-0 mb-0" style="width: 600px; border-radius: 10px;">
+                <img *ngIf="merchantList[0].picByte != null" [src]="getImageUrl(merchantList[0].picByte)" alt="" class="mt-0 mb-0" style="width: 600px; border-radius: 10px;">
+                <img *ngIf="merchantList[0].picByte == null" src="/assets/images/imageno.png" alt="" class="mt-0 mb-0" style="width: 600px; border-radius: 10px;">
               </a>
             </div>
             <div class="d-flex justify-content-between mt-2">
@@ -44,8 +43,7 @@
           </div>
 
           <div>
-            <!-- Get 3 Catering and Looping Here -->
-            <div class="d-flex justify-content-between gap-3 mb-3">
+            <!-- <div class="d-flex justify-content-between gap-3 mb-3">
               <div>
                 <a href="" class="text-decoration-none text-dark">
                   <img [src]="getImageUrl(merchantList[1].picByte)" alt="" class="mt-0 mb-0" style="width: 250px; border-radius: 10px;">
@@ -97,9 +95,7 @@
                 </div>
                 <p class="mt-2" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merchantList[3].address }}, {{ merchantList[3].city }}</p>
               </div>
-            </div>
-
-
+            </div> -->
           </div>
 
 

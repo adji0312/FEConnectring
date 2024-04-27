@@ -83,6 +83,28 @@ export class UserService {
   allUsers(accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.get(environment.baseUrl+"/auth/all-users", {headers: headers});
+  }
+  
+  checkUsername(user: User): Observable<any>{
+    const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
+    return this.http.post<any>(environment.baseUrl+"/auth/check-username", user, {headers: headers});
+  }
+  
+  sendRequest(user: User): Observable<any>{
+    console.log(user);
+    
+    const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
+    return this.http.post<any>(environment.baseUrl+"/auth/send-request", user, {headers: headers});
 
+  }
+
+  acceptRequest(user: User, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.post<any>(environment.baseUrl+"/auth/accept-request", user, {headers: headers});
+  }
+
+  rejectRequest(user: User, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.post<any>(environment.baseUrl+"/auth/reject-request", user, {headers: headers});
   }
 }

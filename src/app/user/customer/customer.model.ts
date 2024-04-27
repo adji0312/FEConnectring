@@ -17,4 +17,6 @@ export class Customer {
     parent!: User;
     picByte!: Blob;
     image_customer!: File;
+
+    is_delete!: number;
 }

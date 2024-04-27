@@ -82,7 +82,11 @@ export class ListCustomerComponent implements OnInit {
     }else if(mode === 'delete'){
       this.deleteCustomer = customer;
       console.log(this.deleteCustomer);
-      
+      this.viewCustomerForm.setValue({
+        name : customer.name,
+        phone : customer.phone,
+        username : customer.parent.username
+      });
       
     }else if(mode === 'reset'){
       this.resetPasswordCustomer = customer;
@@ -92,10 +96,10 @@ export class ListCustomerComponent implements OnInit {
     
   }
 
-  onDeleteCustomer(customer: Customer){
+  onDeleteCustomer(){
     console.log(this.deleteCustomer.parent.username);
 
-    this.customerService.deleteCustomer(this.deleteCustomer.parent.username, this.loginuser.accessToken).subscribe(
+    this.customerService.deleteCustomer(this.viewCustomerForm.value, this.loginuser.accessToken).subscribe(
       (response: Customer) => {
         Swal.fire({
           position: 'center',

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Chat } from 'src/app/chat/chat.model';
 import { environment } from 'src/environments/environment';
 import { Customer } from './customer.model';
+import { User } from '../user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,8 +49,17 @@ export class CustomerService {
     return this.http.put(`${this.baseUrl}/update`, customer, {headers: headers});
   }
 
-  deleteCustomer(username: string, accessToken: any): Observable<Customer>{
+  deleteCustomer(username: string, accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    return this.http.post<Customer>(`${this.baseUrl}/delete`, username, {headers: headers});
+    return this.http.post<any>(`${this.baseUrl}/deleteCustomer`, username, {headers: headers});
   }
+
+  findCustomerWithoutToken(user: User): Observable<any>{
+    // console.log(user);
+    // console.log(accessToken);
+    
+    const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
+    return this.http.post(`${this.baseUrl}/findCustomerWithoutToken`, user, {headers:headers});
+  }
+
 }
