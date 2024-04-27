@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoginAuthService } from 'src/app/auth/login-auth.service';
+import { UsernamecheckService } from 'src/app/auth/usernamecheck.service';
 import { User } from 'src/app/user/user.model';
 import { UserService } from 'src/app/user/user.service';
 import Swal from 'sweetalert2';
@@ -30,13 +31,14 @@ export class RegisterComponent implements OnInit {
     private authService: UserService, 
     private formBuilder : FormBuilder, 
     private toastr: ToastrService,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private usernameValidator: UsernamecheckService) {
 
     this.authService.isLoggedIn();
 
     this.regisForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      username: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
+      username: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")], this.usernameValidator.validateUsernameNotTaken.bind(this.usernameValidator)],
       phone: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmpassword: ['', [Validators.required, Validators.minLength(8)]],

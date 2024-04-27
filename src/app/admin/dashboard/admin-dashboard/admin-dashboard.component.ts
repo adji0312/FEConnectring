@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, switchMap, timer } from 'rxjs';
+import { UsernamecheckService } from 'src/app/auth/usernamecheck.service';
 import { Merchant } from 'src/app/user/merchant/merchant.model';
 import { MerchantService } from 'src/app/user/merchant/merchant.service';
 import { User } from 'src/app/user/user.model';
@@ -51,7 +52,8 @@ export class AdminDashboardComponent implements OnInit {
     private toastr: ToastrService,
     private http: HttpClient,
     private merchantService: MerchantService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private usernameValidator: UsernamecheckService) {
       this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
     }
 
@@ -63,7 +65,7 @@ export class AdminDashboardComponent implements OnInit {
     this.loadData();
 
     this.registMerchantForm = this.formBuilder.group({
-      username : ['', [Validators.required]],
+      username : ['', [Validators.required,  Validators.pattern("^[a-zA-Z0-9]*$")], this.usernameValidator.validateUsernameNotTaken.bind(this.usernameValidator)],
       address : ['', [Validators.required]],
       city : ['', [Validators.required]],
       phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],

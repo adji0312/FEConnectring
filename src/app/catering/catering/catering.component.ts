@@ -52,8 +52,11 @@ export class CateringComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
-
-        this.merchants = data.sort();
+        console.log(data);
+        
+        // if(data.is_delete == 1 && data.is_active == 0){
+          this.merchants = data.sort();
+        // }
         // console.log(this.merchants);
 
     });

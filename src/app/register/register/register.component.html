@@ -29,6 +29,11 @@
               </div>
             </div>
             <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors" class="text-danger">
+              <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors['usernameTaken']">
+                <small>Username has already taken</small>
+              </div>
+            </div>
+            <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors" class="text-danger">
               <div *ngIf="regisForm.controls['username'].touched && regisForm.controls['username'].errors['pattern']">
                 <small>Username must be alphanumeric</small>
               </div>

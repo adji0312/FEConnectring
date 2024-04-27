@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription, switchMap, timer } from 'rxjs';
+import { UsernamecheckService } from 'src/app/auth/usernamecheck.service';
 import { Customer } from 'src/app/user/customer/customer.model';
 import { CustomerService } from 'src/app/user/customer/customer.service';
 import { User } from 'src/app/user/user.model';
@@ -37,7 +38,8 @@ export class ListCustomerComponent implements OnInit {
     private http: HttpClient,
     private userService: UserService,
     private sanitizer: DomSanitizer,
-    private authService: UserService
+    private authService: UserService,
+    private usernameValidator: UsernamecheckService
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -47,7 +49,7 @@ export class ListCustomerComponent implements OnInit {
     this.loadData();
 
     this.addCustomerForm = this.formBuilder.group({
-      username : ['', [Validators.required]],
+      username : ['', [Validators.required,  Validators.pattern("^[a-zA-Z0-9]*$")], this.usernameValidator.validateUsernameNotTaken.bind(this.usernameValidator)],
       name : ['', [Validators.required]],
       phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       password : [''],

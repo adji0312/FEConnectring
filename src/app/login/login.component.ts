@@ -10,6 +10,7 @@ import { Merchant } from '../user/merchant/merchant.model';
 import Swal from 'sweetalert2';
 import { CustomerService } from '../user/customer/customer.service';
 import { MerchantService } from '../user/merchant/merchant.service';
+import { UsernamecheckService } from '../auth/usernamecheck.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -38,7 +39,8 @@ export class LoginComponent implements OnInit {
     private toastr: ToastrService,
     private http: HttpClient,
     private customerService: CustomerService,
-    private merchantService: MerchantService) {
+    private merchantService: MerchantService,
+    private usernameValidator: UsernamecheckService) {
 
     this.authService.isLoggedIn();
    }
@@ -50,7 +52,7 @@ export class LoginComponent implements OnInit {
     });
 
     this.registMerchantForm = this.formBuilder.group({
-      username : ['', [Validators.required]],
+      username : ['', [Validators.required,  Validators.pattern("^[a-zA-Z0-9]*$")], this.usernameValidator.validateUsernameNotTaken.bind(this.usernameValidator)],
       address : ['', [Validators.required]],
       city : ['', [Validators.required]],
       phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],

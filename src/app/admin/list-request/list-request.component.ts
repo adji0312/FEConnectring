@@ -62,7 +62,7 @@ export class ListRequestComponent implements OnInit {
 
   private getMerchants(){
     this.realTimeDataSubscription$ = timer(0, 1000)
-      .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
+      .pipe(switchMap(_ => this.merchantService.getAllMerchantRequest(this.loginuser.accessToken)))
       .subscribe(data => {
         // console.log(data);
         // if(data.is_active == 1){

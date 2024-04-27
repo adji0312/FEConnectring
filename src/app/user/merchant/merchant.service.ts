@@ -22,6 +22,11 @@ export class MerchantService {
     return this.http.get(`${this.baseUrl}/all`, {headers: headers});
   }
 
+   getAllMerchantRequest(accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
+    return this.http.get(`${this.baseUrl}/allMerchantRequest`, {headers: headers});
+  }
+
   getRandomMerchant(accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.get(`${this.baseUrl}/random`, {headers: headers});

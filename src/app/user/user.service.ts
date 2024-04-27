@@ -86,6 +86,8 @@ export class UserService {
   }
   
   checkUsername(user: User): Observable<any>{
+    // console.log(user);
+    
     const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
     return this.http.post<any>(environment.baseUrl+"/auth/check-username", user, {headers: headers});
   }
