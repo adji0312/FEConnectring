@@ -7,7 +7,7 @@
     <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Catering</button>
   </div>
 
-  <div *ngFor="let merch of merchants; index as i">
+  <div *ngFor="let merch of merchants | paginate:{itemsPerPage: tableSize, currentPage: page}, let i = index">
     <div *ngIf="merch.is_delete == 1 && merch.is_active == 0" class="card shadow mb-2" style="border: none;">
       <div class="card-body">
         <div class="d-flex justify-content-between">
@@ -21,12 +21,15 @@
           </div>
           <div class="d-flex gap-2 align-items-center">
             <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editCatering" (click)="onOpenModal(merch, 'edit')"><i class="fas fa-edit"></i> Edit</button>
-            <!-- <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 145px; color: white;" data-bs-toggle="modal" data-bs-target="#resetPassword" (click)="onOpenModal(merch, 'reset')"><i class="fas fa-unlock-alt"></i> Reset Password</button> -->
             <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteCatering" (click)="onOpenModal(merch, 'delete')"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="d-flex justify-content-end mt-3">
+    <pagination-controls previousLabel="Prev" nextLabel="Next"
+      (pageChange)="onTableDataChange($event)"></pagination-controls>
   </div>
   
 </div>

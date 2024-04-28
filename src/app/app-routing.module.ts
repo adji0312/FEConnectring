@@ -20,6 +20,7 @@ import { AddPackageComponent } from './package/addPackage/add-package/add-packag
 import { DetailChatComponent } from './chat/detail-chat/detail-chat.component';
 import { ListCustomerComponent } from './admin/customer-list/list-customer/list-customer.component';
 import { ListRequestComponent } from './admin/list-request/list-request.component';
+import { ListChatComponent } from './admin/list-chat/list-chat.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -38,6 +39,7 @@ const routes: Routes = [
   {path: "admin-dashboard", component:AdminDashboardComponent, canActivate: [AuthGuard]},
   {path: "list-customers", component:ListCustomerComponent, canActivate: [AuthGuard]},
   {path: "list-request", component:ListRequestComponent, canActivate: [AuthGuard]},
+  {path: "list-chat", component:ListChatComponent, canActivate: [AuthGuard]},
   {path: "merchant-dashboard", component:MerchantDashboardComponent, canActivate: [AuthGuard]},
   {path: "package", component:PackageComponent, canActivate: [AuthGuard]},
   {path: "orderDetail", component:DetailOrderComponent, canActivate: [AuthGuard]},

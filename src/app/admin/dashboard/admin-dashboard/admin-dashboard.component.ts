@@ -39,6 +39,8 @@ export class AdminDashboardComponent implements OnInit {
   phone!: string;
   city!: string;
   postal_code!: string;
+  page: number = 1;
+  tableSize: number = 10;
 
   realTimeDataSubscription$!: Subscription;
   
@@ -223,6 +225,7 @@ export class AdminDashboardComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         })
+        window.location.reload();
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -234,6 +237,7 @@ export class AdminDashboardComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         });
+        window.location.reload();
       }
     );
 
@@ -272,6 +276,7 @@ export class AdminDashboardComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         })
+        window.location.reload();
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -282,6 +287,7 @@ export class AdminDashboardComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         })
+        window.location.reload();
       }
     )
 
@@ -316,6 +322,11 @@ export class AdminDashboardComponent implements OnInit {
   getImageUrl(blob: Blob) {
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
+
+  onTableDataChange(event: any){
+    this.page = event;
+    // this.getFood();
   }
 
 }

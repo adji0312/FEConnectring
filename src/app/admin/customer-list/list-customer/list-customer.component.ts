@@ -26,7 +26,8 @@ export class ListCustomerComponent implements OnInit {
   addData = new FormData;
   resetPasswordCustomer: Customer = new Customer;
   resetForm!: FormGroup;
-
+  page: number = 1;
+  tableSize: number = 10;
 
   private loadData(){
     this.getCustomers();
@@ -211,6 +212,11 @@ export class ListCustomerComponent implements OnInit {
 
     document.getElementById('reset-merchant-form')!.click();
     this.resetForm.reset();
+  }
+
+  onTableDataChange(event: any){
+    this.page = event;
+    // this.getFood();
   }
 
 }

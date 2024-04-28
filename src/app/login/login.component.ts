@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
   onForgotButton(){
     console.log(this.forgotPasswordForm.value);
     
-    this.authService.checkUsername(this.forgotPasswordForm.value).subscribe(
+    this.authService.checkUsername(this.forgotPasswordForm.controls['username'].value).subscribe(
       (response) => {
         if(response != null){
 
@@ -226,6 +226,7 @@ export class LoginComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         })
+        window.location.reload();
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -236,6 +237,7 @@ export class LoginComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         })
+        window.location.reload();
       }
     )
 
@@ -247,8 +249,10 @@ export class LoginComponent implements OnInit {
     this.formData.delete('postal_code');
     this.formData.delete('password');
     this.formData.delete('profile_image');
+    this.registMerchantForm.get('profile_image')?.setValue(null);
     this.registMerchantForm.reset();
     this.closeAddMerchantModal();
+    
   }
 
   closeAddMerchantModal(){

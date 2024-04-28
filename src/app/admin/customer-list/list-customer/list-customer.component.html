@@ -7,8 +7,8 @@
     <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCustomer"><i class="fas fa-plus"></i> Register Customer</button>
   </div>
 
-  <div *ngFor="let customer of customers; index as i">
-    <div *ngIf="customer.is_delete == 1" class="card shadow mb-2" style="border: none;">
+  <div *ngFor="let customer of customers | paginate:{itemsPerPage: tableSize, currentPage: page}, let i = index">
+    <div class="card shadow mb-2" style="border: none;">
       <div class="card-body">
         <div class="d-flex justify-content-between">
           <div class="d-flex gap-3">
@@ -28,6 +28,10 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="d-flex justify-content-end mt-3">
+    <pagination-controls previousLabel="Prev" nextLabel="Next"
+      (pageChange)="onTableDataChange($event)"></pagination-controls>
   </div>
   
 </div>

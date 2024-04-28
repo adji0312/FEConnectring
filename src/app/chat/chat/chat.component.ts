@@ -9,6 +9,8 @@ import { Chat } from '../chat.model';
 import { Router } from '@angular/router';
 import { Merchant } from 'src/app/user/merchant/merchant.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AdminChatService } from 'src/app/admin/admin-chat.service';
+import { ChatMessage } from '../chat-message.model';
 
 @Component({
   selector: 'app-chat',
@@ -31,6 +33,11 @@ export class ChatComponent implements OnInit {
   getChat!: FormGroup;
   addChat!: FormGroup;
   chatExists!: boolean;
+  chatAdminForm!: FormGroup;
+  checkChatAdminForm!: FormGroup;
+  getAdminChat!: FormGroup;
+  messageForm!: FormGroup;
+  messages!: ChatMessage[];
   // viewCatering: Merchant = new Merchant;
 
   constructor(
@@ -39,7 +46,8 @@ export class ChatComponent implements OnInit {
     private merchantService: MerchantService,
     private chatService: ChatService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private chatAdmin: AdminChatService
   ) {
   }
 
@@ -59,6 +67,21 @@ export class ChatComponent implements OnInit {
     this.addChat = this.formBuilder.group({
       parent_id: [''],
       merchant_id: [''],
+    });
+    this.chatAdminForm = this.formBuilder.group({
+      parent_id: [''],
+      username: [''],
+    });
+    this.checkChatAdminForm = this.formBuilder.group({
+      user_id: ['']
+    });
+    this.getAdminChat = this.formBuilder.group({
+      chat_id: ['']
+    });
+    this.messageForm = this.formBuilder.group({
+      sender_id : [''],
+      message : [''],
+      user_id : ['']
     });
 
 
@@ -272,6 +295,97 @@ export class ChatComponent implements OnInit {
     // console.log(blob);
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
+
+  onChatAdmin(){
+
+    // customer
+    if(this.loginuser.userEntity.flag == 1){
+      this.checkChatAdminForm.controls['user_id'].setValue(this.loginuser.userEntity.id);
+
+      this.chatService.findChatAdminCustomer(this.checkChatAdminForm.value, this.loginuser.accessToken).subscribe(
+        (response) => {
+          if(!response){
+            this.chatAdminForm.controls['parent_id'].setValue(this.loginuser.userEntity.id);
+            this.chatService.addAdminChatCustomer(this.chatAdminForm.value, this.loginuser.accessToken).subscribe(
+              (res: Chat) => {
+                console.log(res);
+                
+              }
+            )
+          }else{
+            this.getAdminChat.patchValue({
+              chat_id : response.id
+            })
+            console.log(response);
+            this.realTimeDataSubscription$ = timer(0, 1000)
+              .pipe(switchMap(_ => this.chatService.getMessage(this.getAdminChat.value, this.loginuser.accessToken)))
+              .subscribe(data => {
+                
+                this.messages = data;
+                
+                
+            });
+          }
+          
+        }
+      )
+      this.chatAdminForm.reset();
+      this.checkChatAdminForm.reset();
+    }else if(this.loginuser.userEntity.flag == 2){
+      this.checkChatAdminForm.controls['user_id'].setValue(this.loginuser.userEntity.id);
+
+      this.chatService.findChatAdminMerchant(this.checkChatAdminForm.value, this.loginuser.accessToken).subscribe(
+        (response) => {
+          console.log(response);
+          
+          if(!response){
+            this.chatAdminForm.controls['username'].setValue(this.loginuser.userEntity.username);
+            this.chatService.addAdminChatMerchant(this.chatAdminForm.value, this.loginuser.accessToken).subscribe(
+              (res: Chat) => {
+                console.log(res);
+                
+              }
+            )
+          }else{
+            this.getAdminChat.patchValue({
+              chat_id : response.id
+            })
+            console.log(response);
+            this.realTimeDataSubscription$ = timer(0, 1000)
+              .pipe(switchMap(_ => this.chatService.getMessage(this.getAdminChat.value, this.loginuser.accessToken)))
+              .subscribe(data => {
+                
+                this.messages = data;
+                
+                
+            });
+          }
+          
+        }
+      )
+      this.chatAdminForm.reset();
+      this.checkChatAdminForm.reset();
+    }
+  }
+
+  onSubmitMessage(){
+    this.messageForm.patchValue({
+      sender_id : this.loginuser.userEntity.id,
+      user_id : this.loginuser.userEntity.id
+    });
+    console.log(this.messageForm.value);
+    this.chatService.addMessageAdmin(this.messageForm.value, this.loginuser.accessToken).subscribe(
+      (data) => {
+        console.log(data);
+        
+      }
+    )
+
+    this.messageForm.patchValue({
+      message: null
+    })
+    
   }
 
 }
