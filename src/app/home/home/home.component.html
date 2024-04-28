@@ -22,84 +22,30 @@
     <div class="d-flex flex-column justify-content-between">
       <div class="p-0">
         <h2 class="m-5 mx-3 mb-4 mt-4">Popular Catering</h2>
-        <div class="d-flex gap-3">
-          <!-- first index -->
-          <div class="d-flex justify-content-between flex-column m-5 mx-3 mt-0">
-            <div>
-              <a href="" class="text-decoration-none text-dark">
-                <img *ngIf="merchantList[0].picByte != null" [src]="getImageUrl(merchantList[0].picByte)" alt="" class="mt-0 mb-0" style="width: 600px; border-radius: 10px;">
-                <img *ngIf="merchantList[0].picByte == null" src="/assets/images/imageno.png" alt="" class="mt-0 mb-0" style="width: 600px; border-radius: 10px;">
-              </a>
-            </div>
-            <div class="d-flex justify-content-between mt-2">
-              <div class="d-flex flex-column">
-                <a href="" class="text-decoration-none text-dark">
-                  <p class="mt-2 mb-2" style="font-size: 25px;">{{ merchantList[0].merchant_name }}</p>
-                </a>
-                <small class="mt-0" style="font-size: 15px;">{{ merchantList[0].description }}</small>
+
+        <div class="row row-cols-3 mx-2">
+          <div class="col mb-5" *ngFor="let merch of merchantList">
+              <div class="d-flex justify-content-between flex-column gap-3">
+                  <div class="">
+                      <a (click)="onOpenCatering(merch)" class="text-decoration-none text-dark" style="cursor: pointer;">
+                          <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" alt="" class="mt-0 mb-0" style="width: 100%; border-radius: 10px; height: 250px;">
+                          <img *ngIf="merch.picByte == null" src="/assets/images/imageno.png" alt="" class="mt-0 mb-0" style="width: 100%; border-radius: 10px; height: 250px;">
+                      </a>
+                  </div>
+      
+                  <div class="">
+                      <div class="d-flex justify-content-between">
+                          <a href="" class="text-decoration-none text-dark">
+                          <p class="" style="font-size: 20px;">{{ merch.merchant_name }}</p>
+                          </a>
+                          <p class="" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merch.city }}</p>
+                      </div>
+                      <!-- <small class="mt-0">{{ merch.description }}</small> -->
+                  </div>
               </div>
-              <p class="mt-2" style="font-size: 22px;"><i class="fas fa-map-marker-alt"></i> {{ merchantList[0].address }}, {{ merchantList[0].city }}</p>
-            </div>
           </div>
-
-          <div>
-            <!-- <div class="d-flex justify-content-between gap-3 mb-3">
-              <div>
-                <a href="" class="text-decoration-none text-dark">
-                  <img [src]="getImageUrl(merchantList[1].picByte)" alt="" class="mt-0 mb-0" style="width: 250px; border-radius: 10px;">
-                </a>
-              </div>
-
-              <div class="d-flex flex-column justify-content-between">
-                <div>
-                  <a href="" class="text-decoration-none text-dark">
-                    <p class="mb-2" style="font-size: 20px;">{{ merchantList[1].merchant_name }}</p>
-                  </a>
-                  <small class="mt-0">{{ merchantList[1].description }}</small>
-                </div>
-                <p class="mt-2" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merchantList[1].address }}, {{ merchantList[1].city }}</p>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-between gap-3 mb-3">
-              <div>
-                <a href="" class="text-decoration-none text-dark">
-                  <img [src]="getImageUrl(merchantList[2].picByte)" alt="" class="mt-0 mb-0" style="width: 250px; border-radius: 10px;">
-                </a>
-              </div>
-
-              <div class="d-flex flex-column justify-content-between">
-                <div class="">
-                  <a href="" class="text-decoration-none text-dark">
-                    <p class="mb-2" style="font-size: 20px;">{{ merchantList[2].merchant_name }}</p>
-                  </a>
-                  <small class="mt-0">{{ merchantList[2].description }}</small>
-                </div>
-                <p class="mt-2" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merchantList[2].address }}, {{ merchantList[2].city }}</p>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-between gap-3 mb-3">
-              <div class="">
-                <a href="" class="text-decoration-none text-dark">
-                  <img [src]="getImageUrl(merchantList[3].picByte)" alt="" class="mt-0 mb-0" style="width: 250px; border-radius: 10px;">
-                </a>
-              </div>
-
-              <div class="d-flex flex-column justify-content-between">
-                <div>
-                  <a href="" class="text-decoration-none text-dark">
-                    <p class="mb-2" style="font-size: 20px;">{{ merchantList[3].merchant_name }}</p>
-                  </a>
-                  <small class="mt-0">{{ merchantList[3].description }}</small>
-                </div>
-                <p class="mt-2" style="font-size: 18px;"><i class="fas fa-map-marker-alt"></i> {{ merchantList[3].address }}, {{ merchantList[3].city }}</p>
-              </div>
-            </div> -->
-          </div>
-
-
         </div>
+
       </div>
     </div>
   </div>
