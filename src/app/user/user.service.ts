@@ -34,16 +34,16 @@ export class UserService {
   getStatus(): Observable<any>{
     return this.subject.asObservable();
   }
-  
+
   logout(){
     localStorage.removeItem('currentUser');
     this.router.navigate(['/login']);
   }
 
   public regisUser(user: FormData): Observable<any>{
-    console.log(user);
-    
-    
+    // console.log(user);
+
+
     const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
     return this.http.post(environment.baseUrl+"/auth/register-customer", user, {headers: headers});
   }
@@ -52,9 +52,10 @@ export class UserService {
   //   const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
   //   return this.http.post(environment.baseUrl+"/auth/register-merchant", user, {headers: headers});
   // }
-  
-  regisMerchant(merchant: FormData, accessToken: any): Observable<any> {
-    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+
+  regisMerchant(merchant: FormData): Observable<any> {
+    const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
+    // const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.post(environment.baseUrl+"/auth/register-merchant", merchant, {headers: headers});
   }
 
@@ -63,11 +64,49 @@ export class UserService {
     return this.http.post(environment.baseUrl+"/auth/login", user, {headers: headers});
   }
 
-  changePassword(user: User, accessToken: any): Observable<User>{
+  changePassword(user: User, accessToken: any): Observable<any>{
     // const body = {username, oldPassword, newPassword};
-    console.log(user);
-    
+    // console.log(user);
+
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
-    return this.http.put<User>(environment.baseUrl+"/auth/change-password", user, {headers: headers});
+    return this.http.post(environment.baseUrl+"/auth/change-password", user, {headers: headers});
+  }
+
+  resetPassword(user: User, accessToken: any): Observable<any>{
+    // const body = {username, oldPassword, newPassword};
+    // console.log(user);
+
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.post(environment.baseUrl+"/auth/reset-password", user, {headers: headers});
+  }
+
+  allUsers(accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.get(environment.baseUrl+"/auth/all-users", {headers: headers});
+  }
+
+  checkUsername(username: string): Observable<any>{
+    // console.log(user);
+
+    const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
+    return this.http.post<any>(environment.baseUrl+"/auth/check-username", username, {headers: headers});
+  }
+
+  sendRequest(user: User): Observable<any>{
+    // console.log(user);
+
+    const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
+    return this.http.post<any>(environment.baseUrl+"/auth/send-request", user, {headers: headers});
+
+  }
+
+  acceptRequest(user: User, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.post<any>(environment.baseUrl+"/auth/accept-request", user, {headers: headers});
+  }
+
+  rejectRequest(user: User, accessToken: any): Observable<any>{
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
+    return this.http.post<any>(environment.baseUrl+"/auth/reject-request", user, {headers: headers});
   }
 }

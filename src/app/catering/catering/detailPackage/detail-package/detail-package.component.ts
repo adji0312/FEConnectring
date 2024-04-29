@@ -9,6 +9,8 @@ import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { MerchantService } from 'src/app/user/merchant/merchant.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-detail-package',
@@ -30,7 +32,9 @@ export class DetailPackageComponent implements OnInit {
     private packageService: PackageService,
     private transactionService: TransactionService,
     private sanitizer: DomSanitizer,
-    private router: Router
+    private router: Router,
+    private merchantService: MerchantService,
+    private location: Location
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -57,6 +61,10 @@ export class DetailPackageComponent implements OnInit {
     });
 
 
+  }
+
+  goBack(){
+    this.location.back();
   }
 
   createPackageFormGroup(): FormGroup {
@@ -95,6 +103,9 @@ export class DetailPackageComponent implements OnInit {
       package_header: this.packageService.package_header
     });
 
+    // console.log(this.orderForm.value);
+
+
     this.transactionService.createTransaction(this.orderForm.value, this.loginuser.accessToken).subscribe(
       (response: Transaction) => {
         Swal.fire({
@@ -124,6 +135,11 @@ export class DetailPackageComponent implements OnInit {
     if(this.closeOrder){
       this.closeOrder.nativeElement.click();
     }
+  }
+
+  backtocatering(){
+    // this.merchantService.viewCatering = merchant;
+    this.router.navigate(['/detailCatering']);
   }
 
 }

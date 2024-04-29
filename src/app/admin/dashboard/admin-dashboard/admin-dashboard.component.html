@@ -3,12 +3,12 @@
 <div class="m-4 mt-5" style="min-height: 100vh;">
 
   <div class="d-flex justify-content-between mb-4">
-    <h2>List Merchant</h2>
-    <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Merchant</button>
+    <h2>List Catering</h2>
+    <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Catering</button>
   </div>
 
-  <div *ngFor="let merch of merchants; index as i">
-    <div class="card shadow mb-2" style="border: none;">
+  <div *ngFor="let merch of merchants | paginate:{itemsPerPage: tableSize, currentPage: page}, let i = index">
+    <div *ngIf="merch.is_delete == 1 && merch.is_active == 0" class="card shadow mb-2" style="border: none;">
       <div class="card-body">
         <div class="d-flex justify-content-between">
           <div class="d-flex gap-3">
@@ -27,6 +27,10 @@
       </div>
     </div>
   </div>
+  <div class="d-flex justify-content-end mt-3">
+    <pagination-controls previousLabel="Prev" nextLabel="Next"
+      (pageChange)="onTableDataChange($event)"></pagination-controls>
+  </div>
   
 </div>
 <app-footer></app-footer>
@@ -41,20 +45,30 @@
       <form #merchantForm="ngForm" [formGroup]="registMerchantForm">
         <div class="modal-body">
           <div class="mb-1">
-            <label for="" class="form-label">Merchant Name</label>
+            <label for="" class="form-label">Catering Name</label>
             <input type="text" #merchant_name name="merchant_name" class="form-control form-control-sm" formControlName="merchant_name" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors}" id="merchant_name" placeholder="" autocomplete="off">
             <div *ngIf="registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors" class="text-danger">
               <div *ngIf="registMerchantForm.controls['merchant_name'].touched && registMerchantForm.controls['merchant_name'].errors['required']">
-                <small>Merchant Name must be filled</small>
+                <small>Catering Name must be filled</small>
               </div>
             </div>
           </div>
           <div class="mb-1">
             <label for="" class="form-label">Username</label>
-            <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors}" id="username" placeholder="" autocomplete="off">
+            <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" [ngClass]="{ 'is-invalid' : registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors}" id="username" placeholder="alpha & numeric" autocomplete="off">
             <div *ngIf="registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors" class="text-danger">
               <div *ngIf="registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors['required']">
                 <small>Username must be filled</small>
+              </div>
+            </div>
+            <div *ngIf="registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors" class="text-danger">
+              <div *ngIf="registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors['usernameTaken']">
+                <small>Username has already taken</small>
+              </div>
+            </div>
+            <div *ngIf="registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors" class="text-danger">
+              <div *ngIf="registMerchantForm.controls['username'].touched && registMerchantForm.controls['username'].errors['pattern']">
+                <small>Username must be alphanumeric</small>
               </div>
             </div>
           </div>
@@ -84,6 +98,11 @@
                 <small>Postal Code must be filled</small>
               </div>
             </div>
+            <div *ngIf="registMerchantForm.controls['postal_code'].touched && registMerchantForm.controls['postal_code'].errors" class="text-danger">
+              <div *ngIf="registMerchantForm.controls['postal_code'].touched && registMerchantForm.controls['postal_code'].errors['pattern']">
+                <small>Postal Code must be numeric</small>
+              </div>
+            </div>
           </div>
           <div class="mb-1">
             <label for="" class="form-label">Phone</label>
@@ -93,9 +112,14 @@
                 <small>Phone must be filled</small>
               </div>
             </div>
+            <div *ngIf="registMerchantForm.controls['phone'].touched && registMerchantForm.controls['phone'].errors" class="text-danger">
+              <div *ngIf="registMerchantForm.controls['phone'].touched && registMerchantForm.controls['phone'].errors['pattern']">
+                <small>Phone must be numeric</small>
+              </div>
+            </div>
           </div>
           <div class="mb-1">
-            <label for="" class="form-label">Profile Image</label>
+            <label for="" class="form-label">Profile Image (Optional)</label>
             <input type="file" class="form-control form-control-sm" name="profile_image" (change)="onFileChanged($event)">
           </div>
         </div>
@@ -123,11 +147,11 @@
             <input type="text" #username name="username" class="form-control form-control-sm" formControlName="username" readonly>
           </div>
           <div class="mb-1">
-            <label for="" class="form-label">Merchant Name</label>
+            <label for="" class="form-label">Catering Name</label>
             <input type="text" #merchant_name name="merchant_name" class="form-control form-control-sm" formControlName="merchant_name" [ngClass]="{ 'is-invalid' : editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors}" id="merchant_name" placeholder="" autocomplete="off">
             <div *ngIf="editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors" class="text-danger">
               <div *ngIf="editMerchantForm.controls['merchant_name'].touched && editMerchantForm.controls['merchant_name'].errors['required']">
-                <small>Merchant Name must be filled</small>
+                <small>Catering Name must be filled</small>
               </div>
             </div>
           </div>
@@ -157,6 +181,11 @@
                 <small>Postal Code must be filled</small>
               </div>
             </div>
+            <div *ngIf="editMerchantForm.controls['postal_code'].touched && editMerchantForm.controls['postal_code'].errors" class="text-danger">
+              <div *ngIf="editMerchantForm.controls['postal_code'].touched && editMerchantForm.controls['postal_code'].errors['pattern']">
+                <small>Postal Code must be numeric</small>
+              </div>
+            </div>
           </div>
           <div class="mb-1">
             <label for="" class="form-label">Phone</label>
@@ -166,9 +195,14 @@
                 <small>Phone must be filled</small>
               </div>
             </div>
+            <div *ngIf="editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors" class="text-danger">
+              <div *ngIf="editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors['pattern']">
+                <small>Phone must be numeric</small>
+              </div>
+            </div>
           </div>
           <div class="mb-1">
-            <label for="" class="form-label">Profile Image</label>
+            <label for="" class="form-label">Profile Image (Optional)</label>
             <input type="file" class="form-control form-control-sm" name="profile_image" (change)="onFileChanged($event)">
           </div>
         </div>
@@ -193,7 +227,25 @@
       </div>
       <div class="modal-footer">
         <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" (click)="btnDeleteMerchant(deleteMerchant)" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
+        <button type="submit" (click)="btnDeleteMerchant()" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="resetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Reset Password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to reset this Catering's Password?
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="reset-merchant-form"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" (click)="resetPassword()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-unlock-alt"></i> Reset</button>
       </div>
     </div>
   </div>

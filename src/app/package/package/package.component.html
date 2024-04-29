@@ -54,24 +54,32 @@
     </div>
   </div>
 
-  <div class="d-flex gap-3 mb-4">
-    <h2>Food</h2>
-    <div class="d-flex align-items-center">
-      <a type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#addFood"><i class="fas fa-plus"></i> Add Food</a>
+  <div class="d-flex justify-content-between mb-4">
+    <div class="d-flex gap-3">
+      <h2>Food</h2>
+        <div class="d-flex align-items-center justify-content-between">
+          <a type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#addFood"><i class="fas fa-plus"></i> Add Food</a>
+      </div>
     </div>
+    <input class="form-control me-2 float-end" type="text" name="search" autocomplete="off" placeholder="Search Food" aria-label="Search" style="width: 300px;" [(ngModel)]="model.food_name" (input)="searchSetting()">
   </div>
-
-  <div *ngFor="let food of foods, let i = index">
-    <div class="card shadow mb-2" style="border: none;">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          {{ food.food_name }}
-          <div class="d-flex gap-2 align-items-center">
-            <button type="button" (click)="updateFood(i)" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editFood"><i class="fas fa-edit"></i> Edit</button>
-            <button type="button" (click)="deleteFood(i)"  class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteFood"><i class="fas fa-trash-alt"></i> Delete</button>
+  <div>
+    <div *ngFor="let food of foods | searchFood: model | paginate:{itemsPerPage: tableSize, currentPage: page}, let i = index">
+      <div class="card shadow mb-2" style="border: none;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            {{ food.food_name }}
+            <div class="d-flex gap-2 align-items-center">
+              <button type="button" (click)="updateFood(food)" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#editFood"><i class="fas fa-edit"></i> Edit</button>
+              <button type="button" (click)="deleteFood(i)"  class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#deleteFood"><i class="fas fa-trash-alt"></i> Delete</button>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+      <pagination-controls previousLabel="Prev" nextLabel="Next"
+        (pageChange)="onTableDataChange($event)"></pagination-controls>
     </div>
   </div>
 </div>
@@ -86,7 +94,7 @@
       <div class="modal-body">
         <form #foodForm="ngForm" [formGroup]="addFoodForm">
           <label for="" class="form-label">Food Name</label>
-          <input type="text" #food_name name="food_name" class="form-control" formControlName="food_name" [ngClass]="{ 'is-invalid' : addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors}" id="food_name" placeholder="" autocomplete="off">
+          <input type="text" #food_name name="food_name" class="form-control form-control-sm" formControlName="food_name" [ngClass]="{ 'is-invalid' : addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors}" id="food_name" placeholder="" autocomplete="off">
           <div *ngIf="addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors" class="text-danger">
             <div *ngIf="addFoodForm.controls['food_name'].touched && addFoodForm.controls['food_name'].errors['required']">
               Food name must be filled
@@ -112,7 +120,7 @@
       <div class="modal-body">
         <form #foodForm="ngForm" [formGroup]="editFoodForm">
           <label for="" class="form-label">Food Name</label>
-          <input type="text" #food_name name="food_name" class="form-control" formControlName="food_name" [ngClass]="{ 'is-invalid' : editFoodForm.controls['food_name'].touched && editFoodForm.controls['food_name'].errors}" id="food_name" placeholder="" autocomplete="off">
+          <input type="text" #food_name name="food_name" class="form-control form-control-sm" formControlName="food_name" [ngClass]="{ 'is-invalid' : editFoodForm.controls['food_name'].touched && editFoodForm.controls['food_name'].errors}" id="food_name" placeholder="" autocomplete="off">
           <div *ngIf="editFoodForm.controls['food_name'].touched && editFoodForm.controls['food_name'].errors" class="text-danger">
             <div *ngIf="editFoodForm.controls['food_name'].touched && editFoodForm.controls['food_name'].errors['required']">
               Food name must be filled

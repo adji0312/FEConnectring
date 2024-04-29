@@ -13,9 +13,6 @@
   <div style="height: 500px;" class="bg-light shadow-lg d-flex flex-column justify-content-end">
 
     <div style="overflow-y: auto;" class="m-3 mt-4 d-flex flex-column">
-        <!-- <div class="d-flex justify-content-start">
-            <p class="mx-3 bg-light shadow p-3" style="border-radius: 15px; max-width: 400px;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores, sed.</p>
-        </div> -->
 
         <div *ngFor="let message of messages">
           <div *ngIf="message.sender_id != loginuser.userEntity.id" class="d-flex justify-content-start">

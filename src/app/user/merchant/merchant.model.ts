@@ -15,6 +15,8 @@ export class Merchant {
     description!: string;
     image_merchant!: File;
     username!: string;
+    is_delete!: number;
+    is_active!: number;
     // file!: File;
     // url!: string;
 }

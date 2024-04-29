@@ -1,0 +1,210 @@
+<app-navbar></app-navbar>
+
+<div class="m-4 mt-5" style="min-height: 100vh;">
+
+  <div class="d-flex justify-content-between mb-4">
+    <h2>List Request User</h2>
+    <!-- <button type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#registCatering"><i class="fas fa-plus"></i> Register Catering</button> -->
+  </div>
+
+  <div *ngIf="x == 0" class="d-flex justify-content-between gap-2 mb-3">
+    <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickCatering()">
+      <div class="card-body text-center">
+        Request Catering
+      </div>
+    </div>
+    <div class="card w-100" style="cursor: pointer;" (click)="clickCustomer()">
+      <div class="card-body text-center">
+        Request Reset Password
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="x == 1" class="d-flex justify-content-between gap-2 mb-3">
+    <div class="card w-100" style="cursor: pointer;" (click)="clickCatering()">
+      <div class="card-body text-center">
+        Request Catering
+      </div>
+    </div>
+    <div class="card w-100" style="background-color: #c5a375; color: white; cursor: pointer;" (click)="clickCustomer()">
+      <div class="card-body text-center">
+        Request Reset Password
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="x == 0">
+    <div *ngFor="let merch of merchants; index as i">
+      <div *ngIf="merch.is_delete == 0 && merch.is_active == 1" class="card shadow mb-2" style="border: none;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex gap-3">
+              <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+              <img *ngIf="merch.picByte == null" src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+              <div class="d-flex flex-column justify-content-center">
+                <h5>{{ merch.merchant_name }}</h5>
+                <p><i class="fas fa-map-marker-alt"></i> {{ merch.address }}, {{ merch.city }}</p>
+              </div>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+              <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#viewCatering" (click)="onOpenModal(merch, 'view')"><i class="fas fa-eye"></i> Detail</button>
+              <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptCatering" (click)="onOpenModal(merch, 'accept')"><i class="fas fa-check"></i> Accept</button>
+              <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#rejectCatering" (click)="onOpenModal(merch, 'reject')"><i class="fas fa-times"></i> Reject</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="x == 1">
+    <div *ngFor="let user of users; index as i">
+        <div *ngIf="user.flag != 0 && user.is_request == 0" class="card shadow mb-2" style="border: none;">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex gap-3">
+                <!-- <img *ngIf="merch.picByte != null" [src]="getImageUrl(merch.picByte)" style="border-radius: 50%; width: 100px; height: 100px;" alt=""> -->
+                <img src="/assets/images/nopicture.jpg" style="border-radius: 50%; width: 100px; height: 100px;" alt="">
+                <div class="d-flex flex-column justify-content-center">
+                  <h5>{{ user.username }}</h5>
+                  <p *ngIf="user.flag == 1">Customer</p>
+                  <p *ngIf="user.flag == 2">Catering</p>
+                </div>
+              </div>
+              <div class="d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#detailRequest" (click)="onRequestModal(user)"><i class="fas fa-eye"></i> Detail</button>
+                <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#acceptRequest" (click)="onRequestModal(user)"><i class="fas fa-check"></i> Accept</button>
+                <button type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;" data-bs-toggle="modal" data-bs-target="#rejectRequest" (click)="onRequestModal(user)"><i class="fas fa-times"></i> Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+</div>
+<app-footer></app-footer>
+
+<div class="modal fade" id="viewCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">View Catering</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="viewCateringForm">
+        <div class="modal-body">
+          <label for="" class="form-label">Username</label>
+          <input type="text" class="form-control form-control-sm" name="username" formControlName="username" readonly>
+          <label for="" class="form-label">Catering Name</label>
+          <input type="text" class="form-control form-control-sm" name="merchant_name" formControlName="merchant_name" readonly>
+          <label for="" class="form-label">Address</label>
+          <input type="text" class="form-control form-control-sm" name="address" formControlName="address" readonly>
+          <label for="" class="form-label">City</label>
+          <input type="text" class="form-control form-control-sm" name="city" formControlName="city" readonly>
+          <label for="" class="form-label">Postal Code</label>
+          <input type="text" class="form-control form-control-sm" name="postal_code" formControlName="postal_code" readonly>
+          <label for="" class="form-label">Phone</label>
+          <input type="text" class="form-control form-control-sm" name="phone" formControlName="phone" readonly>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="add-customer-form"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="acceptCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Accept Catering</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to accept this catering?
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="accept-catering"><i class="fas fa-times"></i> Close</button>
+        <a type="submit" class="btn btn-sm" (click)="acceptCatering()" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="detailRequest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Detail User</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="requestForm">
+        <div class="modal-body">
+          <label for="" class="form-label">Username</label>
+          <input type="text" class="form-control form-control-sm" name="username" formControlName="username" readonly>
+          <label for="" class="form-label">Phone</label>
+          <input type="text" class="form-control form-control-sm" name="phone" formControlName="phone" readonly>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="add-customer-form"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="acceptRequest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Reset Password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to reset password?
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="accept-catering-password"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" class="btn btn-sm" (click)="acceptRequest()" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-times"></i> Reject</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="rejectRequest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Reject Request</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to reject this request?
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="reject-catering-password"><i class="fas fa-times"></i> Close</button>
+        <button type="submit" class="btn btn-sm" class="btn btn-sm" (click)="rejectRequest()" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Reject</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="rejectCatering" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Reject Catering</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to reject this catering?
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="reject-catering"><i class="fas fa-times"></i> Close</button>
+        <a type="submit" class="btn btn-sm" (click)="rejectCatering()" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Reject</a>
+      </div>
+    </div>
+  </div>
+</div>

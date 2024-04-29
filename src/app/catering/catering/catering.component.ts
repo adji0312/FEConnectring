@@ -52,15 +52,18 @@ export class CateringComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
+        // console.log(data);
 
-        this.merchants = data.sort();
+        // if(data.is_delete == 1 && data.is_active == 0){
+          this.merchants = data.sort();
+        // }
         // console.log(this.merchants);
 
     });
   }
 
   onOpenCatering(merchant: Merchant): void{
-    console.log(merchant);
+    // console.log(merchant);
     this.merchantService.viewCatering = merchant;
     this.router.navigate(['/detailCatering']);
   }

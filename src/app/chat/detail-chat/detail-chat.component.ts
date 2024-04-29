@@ -53,16 +53,16 @@ export class DetailChatComponent implements OnInit {
     this.viewChat = this.chatService.viewChat;
     this.customer = this.customerService.customer;
 
-    console.log(this.loginuser);
-    
-    console.log(this.catering);
-    console.log(this.customer);
+    // console.log(this.loginuser);
 
-    console.log(this.viewChat);
-    
-    
+    // console.log(this.catering);
+    // console.log(this.customer);
 
-    console.log(this.loginuser);
+    // console.log(this.viewChat);
+
+
+
+    // console.log(this.loginuser);
 
     // CUSTOMER
     if(this.loginuser.userEntity.flag == 1){
@@ -72,8 +72,8 @@ export class DetailChatComponent implements OnInit {
         parent_id : this.loginuser.userEntity.id
       });
 
-      console.log(this.messageForm.value);
-      
+      // console.log(this.messageForm.value);
+
     }
     // MERCHANT
     else if(this.loginuser.userEntity.flag == 2){
@@ -83,11 +83,11 @@ export class DetailChatComponent implements OnInit {
         parent_id : this.customer.parent.id
       });
 
-      console.log(this.messageForm.value);
+      // console.log(this.messageForm.value);
     }
 
     this.getMessage();
-    
+
   }
 
   goBack(){
@@ -101,32 +101,32 @@ export class DetailChatComponent implements OnInit {
     // this.chatService.getMessage(this.getChatId.value, this.loginuser.accessToken).subscribe(
     //   (data: ChatMessage) => {
     //     this.messages = data;
-        
+
     //   }
     // )
 
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.chatService.getMessage(this.getChatId.value, this.loginuser.accessToken)))
       .subscribe(data => {
-        
+
         this.messages = data;
-        
+
     });
   }
 
   onSubmitMessage(){
-    console.log(this.messageForm.value);
+    // console.log(this.messageForm.value);
     this.chatService.addMessage(this.messageForm.value, this.loginuser.accessToken).subscribe(
       (data) => {
-        console.log(data);
-        
+        // console.log(data);
+
       }
     )
 
     this.messageForm.patchValue({
       message: null
     })
-    
+
   }
 
 }

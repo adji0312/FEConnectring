@@ -69,7 +69,7 @@
           <form [formGroup]="addPackageForm">
             <div class="mb-2">
               <label for="package_name" class="form-label">Package Name</label>
-              <input type="text" class="form-control" formControlName="package_name" id="package_name" [ngClass]="{ 'is-invalid' : addPackageForm.controls['package_name'].touched && addPackageForm.controls['package_name'].errors}">
+              <input type="text" class="form-control form-control-sm" formControlName="package_name" id="package_name" [ngClass]="{ 'is-invalid' : addPackageForm.controls['package_name'].touched && addPackageForm.controls['package_name'].errors}">
               <div *ngIf="addPackageForm.controls['package_name'].touched && addPackageForm.controls['package_name'].errors" class="text-danger">
                 <div *ngIf="addPackageForm.controls['package_name'].touched && addPackageForm.controls['package_name'].errors['required']">
                   Package Name must be filled
@@ -79,7 +79,7 @@
             <div class="mb-2 d-flex justify-content-between gap-2">
               <div class="w-100">
                 <label for="startDate" class="form-label">Start Date</label>
-                <input type="date" class="form-control" formControlName="start_date" id="startDate" rows="3" [ngClass]="{ 'is-invalid' : addPackageForm.controls['start_date'].touched && addPackageForm.controls['start_date'].errors}">
+                <input type="date" class="form-control form-control-sm" formControlName="start_date" id="startDate" rows="3" [ngClass]="{ 'is-invalid' : addPackageForm.controls['start_date'].touched && addPackageForm.controls['start_date'].errors}">
                 <div *ngIf="addPackageForm.controls['start_date'].touched && addPackageForm.controls['start_date'].errors" class="text-danger">
                   <div *ngIf="addPackageForm.controls['start_date'].touched && addPackageForm.controls['start_date'].errors['required']">
                     Start Date must be filled
@@ -88,7 +88,7 @@
               </div>
               <div class="w-100">
                 <label for="endDate" class="form-label">End Date</label>
-                <input type="date" class="form-control" formControlName="end_date" id="endDate" rows="3" [ngClass]="{ 'is-invalid' : addPackageForm.controls['end_date'].touched && addPackageForm.controls['end_date'].errors}">
+                <input type="date" class="form-control form-control-sm" formControlName="end_date" id="endDate" rows="3" [ngClass]="{ 'is-invalid' : addPackageForm.controls['end_date'].touched && addPackageForm.controls['end_date'].errors}">
                 <div *ngIf="addPackageForm.controls['end_date'].touched && addPackageForm.controls['end_date'].errors" class="text-danger">
                   <div *ngIf="addPackageForm.controls['end_date'].touched && addPackageForm.controls['end_date'].errors['required']">
                     End Date must be filled
@@ -133,7 +133,7 @@
               </div>
               <div class="mb-2">
                 <label for="price" class="form-label">Price</label>
-                <input type="number" #price name="price" class="form-control" formControlName="price" [ngClass]="{ 'is-invalid' : addPackageForm.controls['price'].touched && addPackageForm.controls['price'].errors}" id="price" placeholder="" autocomplete="off">
+                <input type="number" #price name="price" class="form-control form-control-sm" formControlName="price" [ngClass]="{ 'is-invalid' : addPackageForm.controls['price'].touched && addPackageForm.controls['price'].errors}" id="price" placeholder="" autocomplete="off">
                 <div *ngIf="addPackageForm.controls['price'].touched && addPackageForm.controls['price'].errors" class="text-danger">
                   <div *ngIf="addPackageForm.controls['price'].touched && addPackageForm.controls['price'].errors['required']">
                     Price must be filled

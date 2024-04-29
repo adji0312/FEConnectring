@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription, switchMap, timer } from 'rxjs';
@@ -56,44 +56,50 @@ export class ProfileComponent implements OnInit {
     private router: Router,
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
+
+    this.editCustomerForm = this.formBuilder.group({
+      name : ['', Validators.required],
+      phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      username : [''],
+    });
   }
 
   ngOnInit(): void {
 
 
     this.changeImage = false;
-    console.log(this.loginuser);
+    // console.log(this.loginuser);
 
     this.changePasswordForm = this.formBuilder.group({
       username: [''],
       oldPassword: ['', Validators.required],
-      newPassword: ['', Validators.required, Validators.minLength(8)],
-      confirmPassword: ['', Validators.required, Validators.minLength(8)],
-    });
+      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+    },
+    {
+      validators: this.passwordMatchValidator,
+    }
+    );
 
     this.editMerchantForm = this.formBuilder.group({
       address : ['', Validators.required],
       city : ['', Validators.required],
-      phone : ['', Validators.required],
-      postal_code : ['', Validators.required],
+      phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      postal_code : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       merchant_name : ['', Validators.required],
       description : [''],
       username : ['']
     });
 
-    this.editCustomerForm = this.formBuilder.group({
-      name : ['', Validators.required],
-      phone : ['', Validators.required],
-      username : [''],
-    });
+
 
     this.getDetailCustomerMerchant();
 
     if(this.loginuser.userEntity.flag == 2){
       this.merchantService.getMerchant(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
         (data) => {
-          console.log(data);
-          
+          // console.log(data);
+
           this.merchant_name = data.merchant_name;
           this.username = data.parent.username;
           this.address = data.address;
@@ -112,23 +118,23 @@ export class ProfileComponent implements OnInit {
     else if(this.loginuser.userEntity.flag == 1){
       this.customerService.findCustomerByUsername(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
         (data) => {
-          console.log(data);
+          // console.log(data);
           this.customer = data;
         }
       )
     }
 
-    console.log(this.image_merchant);
-    
-    
+    // console.log(this.image_merchant);
+
+
   }
 
   onChangePassword(){
 
-    console.log(this.changePasswordForm.value);
+    // console.log(this.changePasswordForm.value);
 
     // console.log(this.changePasswordForm.get('username')?.value);
-    
+
     if(this.changePasswordForm.get('newPassword')?.value != this.changePasswordForm.get('confirmPassword')?.value){
       Swal.fire({
         position: 'center',
@@ -142,31 +148,45 @@ export class ProfileComponent implements OnInit {
     this.changePasswordForm.patchValue({
       username: this.loginuser.userEntity.username
     });
-    
+
+    // console.log(this.changePasswordForm.value);
+
+
     this.authService.changePassword(this.changePasswordForm.value, this.loginuser.accessToken).subscribe(
       (response: any) => {
-        console.log(response);
-        
-        // Swal.fire({
-        //   position: 'center',
-        //   icon: 'success',
-        //   title: "Success Change Password",
-        //   showConfirmButton: true,
-        //   timer: 1500
-        // })
-        
+        // console.log(response);
+
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Change Password",
+          showConfirmButton: true,
+          timer: 1500
+        })
+
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
-        // Swal.fire({
-        //   position: 'center',
-        //   icon: 'error',
-        //   title: "Failed Change Password",
-        //   showConfirmButton: true,
-        //   timer: 1500
-        // })
-        
+        // console.log(error.status);
+
+        if(error.status == 401){
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Wrong Old Password",
+            showConfirmButton: true,
+            timer: 1500
+          })
+        }else{
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Failed Change Password",
+            showConfirmButton: true,
+            timer: 1500
+          })
+
+        }
+
       }
     )
 
@@ -183,8 +203,8 @@ export class ProfileComponent implements OnInit {
 
       this.customerService.findCustomerByUsername(this.editMerchantForm.get('username')?.value, this.loginuser.accessToken).subscribe(
         data => {
-          console.log(data);
-          
+          // console.log(data);
+
           this.editCustomerForm.patchValue({
             name : data.name,
             phone : data.phone
@@ -197,11 +217,11 @@ export class ProfileComponent implements OnInit {
       this.editMerchantForm.patchValue({
         username: this.loginuser.userEntity.username
       });
-      
+
       this.merchantService.getMerchant(this.editMerchantForm.get('username')?.value, this.loginuser.accessToken).subscribe(
         data => {
-          console.log(data);
-          
+          // console.log(data);
+
           // this.detailMerchant = data;
           this.editMerchantForm.patchValue({
             address : data.address,
@@ -216,8 +236,8 @@ export class ProfileComponent implements OnInit {
           });
         }
       )
-        console.log(this.detailMerchant);
-        
+        // console.log(this.detailMerchant);
+
     }
   }
 
@@ -230,18 +250,18 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    console.log(this.editCustomerForm.value);
+    // console.log(this.editCustomerForm.value);
 
     this.customerData.set('name', this.editCustomerForm.get('name')?.value);
     this.customerData.set('phone', this.editCustomerForm.get('phone')?.value);
     this.customerData.set('username', this.editCustomerForm.get('username')?.value);
-    
-    
+
+
 
     this.customerService.updateCustomer(this.customerData, this.loginuser.accessToken).subscribe(
       (response: Customer) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -251,8 +271,8 @@ export class ProfileComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
+        // console.log(error);
+
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -263,22 +283,27 @@ export class ProfileComponent implements OnInit {
       }
     );
 
+    this.customerData.delete('name');
+    this.customerData.delete('phone');
+    this.customerData.delete('username');
+    this.customerData.delete('profile_image');
+
     document.getElementById('edit-merchant-form')!.click();
     // window.location.reload();
     // this.editMerchantForm.reset();
   }
-  
+
   onUpdateMerchant(){
 
-    
+
     this.editMerchantForm.patchValue({
       username: this.loginuser.userEntity.username
     });
-    console.log(this.editMerchantForm.value);
+    // console.log(this.editMerchantForm.value);
     if(this.editMerchantForm.invalid){
       return;
     }
-    
+
     this.merchantData.set('merchant_name', this.editMerchantForm.get('merchant_name')?.value);
     this.merchantData.set('username', this.editMerchantForm.get('username')?.value);
     this.merchantData.set('address', this.editMerchantForm.get('address')?.value);
@@ -289,8 +314,8 @@ export class ProfileComponent implements OnInit {
 
     this.merchantService.updateMerchant(this.merchantData, this.loginuser.accessToken).subscribe(
       (response: Merchant) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -300,7 +325,7 @@ export class ProfileComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
+        // console.log(error);
 
         Swal.fire({
           position: 'center',
@@ -311,6 +336,16 @@ export class ProfileComponent implements OnInit {
         })
       }
     )
+
+    this.merchantData.delete('merchant_name');
+    this.merchantData.delete('username');
+    this.merchantData.delete('address');
+    this.merchantData.delete('city');
+    this.merchantData.delete('phone');
+    this.merchantData.delete('postal_code');
+    this.merchantData.delete('desctiption');
+    this.merchantData.delete('profile_image');
+    document.getElementById('edit-merchant-form')!.click();
   }
 
   getImageUrl(blob: Blob) {
@@ -321,7 +356,7 @@ export class ProfileComponent implements OnInit {
   onFileChanged(event: any){
     if(event.target.files){
       const selectedFile = event.target.files[0];
-      console.log(selectedFile);
+      // console.log(selectedFile);
       if(this.loginuser.userEntity.flag == 1){
         this.customerData.append('profile_image', selectedFile, selectedFile.name);
         this.changeImage = true;
@@ -331,5 +366,19 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
+
+  passwordMatchValidator(control: AbstractControl){
+    return control.get('newPassword')?.value ===
+      control.get('confirmPassword')?.value
+      ? null
+      : { mismatch: true };
+  }
+
+  // passwordMatchValidator(control: AbstractControl){
+  //   return control.get('newPassword')?.value ===
+  //     control.get('confirmPassword')?.value
+  //     ? null
+  //     : { mismatch: true };
+  // }
 
 }

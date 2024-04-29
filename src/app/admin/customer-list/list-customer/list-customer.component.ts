@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription, switchMap, timer } from 'rxjs';
+import { UsernamecheckService } from 'src/app/auth/usernamecheck.service';
 import { Customer } from 'src/app/user/customer/customer.model';
 import { CustomerService } from 'src/app/user/customer/customer.service';
 import { User } from 'src/app/user/user.model';
@@ -23,6 +24,10 @@ export class ListCustomerComponent implements OnInit {
   addCustomerForm!: FormGroup;
   viewCustomerForm!: FormGroup;
   addData = new FormData;
+  resetPasswordCustomer: Customer = new Customer;
+  resetForm!: FormGroup;
+  page: number = 1;
+  tableSize: number = 10;
 
   private loadData(){
     this.getCustomers();
@@ -33,7 +38,9 @@ export class ListCustomerComponent implements OnInit {
     private formBuilder : FormBuilder,
     private http: HttpClient,
     private userService: UserService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: UserService,
+    private usernameValidator: UsernamecheckService
   ) {
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
   }
@@ -43,9 +50,9 @@ export class ListCustomerComponent implements OnInit {
     this.loadData();
 
     this.addCustomerForm = this.formBuilder.group({
-      username : ['', [Validators.required]],
+      username : ['', [Validators.required,  Validators.pattern("^[a-zA-Z0-9]*$")], this.usernameValidator.validateUsernameNotTaken.bind(this.usernameValidator)],
       name : ['', [Validators.required]],
-      phone : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       password : [''],
     });
 
@@ -54,6 +61,10 @@ export class ListCustomerComponent implements OnInit {
       phone : [''],
       username : ['']
     });
+
+    this.resetForm = this.formBuilder.group({
+      username: ['']
+    })
   }
 
   private getCustomers(){
@@ -73,17 +84,25 @@ export class ListCustomerComponent implements OnInit {
       });
     }else if(mode === 'delete'){
       this.deleteCustomer = customer;
-      console.log(this.deleteCustomer);
-      
-      
+      // console.log(this.deleteCustomer);
+      this.viewCustomerForm.setValue({
+        name : customer.name,
+        phone : customer.phone,
+        username : customer.parent.username
+      });
+
+    }else if(mode === 'reset'){
+      this.resetPasswordCustomer = customer;
+      // console.log(this.resetPasswordCustomer);
+
     }
-    
+
   }
 
-  onDeleteCustomer(customer: Customer){
-    console.log(this.deleteCustomer.parent.username);
+  onDeleteCustomer(){
+    // console.log(this.deleteCustomer.parent.username);
 
-    this.customerService.deleteCustomer(this.deleteCustomer.parent.username, this.loginuser.accessToken).subscribe(
+    this.customerService.deleteCustomer(this.viewCustomerForm.value, this.loginuser.accessToken).subscribe(
       (response: Customer) => {
         Swal.fire({
           position: 'center',
@@ -110,8 +129,8 @@ export class ListCustomerComponent implements OnInit {
 
     this.addCustomerForm.controls['password'].setValue('12345678');
 
-    console.log(this.addCustomerForm.value);
-    
+    // console.log(this.addCustomerForm.value);
+
 
     if(this.addCustomerForm.invalid){
       return;
@@ -124,8 +143,8 @@ export class ListCustomerComponent implements OnInit {
 
     this.userService.regisUser(this.addData).subscribe(
       (response: User) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -135,8 +154,8 @@ export class ListCustomerComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
+        // console.log(error);
+
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -146,15 +165,58 @@ export class ListCustomerComponent implements OnInit {
         });
       }
     );
-    
-    document.getElementById('add-customer-form')?.click();
+
+    this.addData.delete('name');
+    this.addData.delete('phone');
+    this.addData.delete('username');
+    this.addData.delete('password');
     this.addCustomerForm.reset();
-    
+    document.getElementById('add-customer-form')?.click();
+
   }
 
   getImageUrl(blob: Blob) {
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
+
+  resetPassword(){
+
+    this.resetForm.patchValue({
+      username: this.resetPasswordCustomer.parent.username
+    });
+    this.authService.resetPassword(this.resetForm.value, this.loginuser.accessToken).subscribe(
+      (response: User) => {
+        // console.log(response);
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: "Success Reset Customer's Password",
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        // console.log(error);
+
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: "Failed Reset Customer's Password",
+          showConfirmButton: true,
+          timer: 1500
+        });
+
+      }
+    )
+
+    document.getElementById('reset-merchant-form')!.click();
+    this.resetForm.reset();
+  }
+
+  onTableDataChange(event: any){
+    this.page = event;
+    // this.getFood();
   }
 
 }

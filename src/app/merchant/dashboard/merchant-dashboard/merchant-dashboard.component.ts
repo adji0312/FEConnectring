@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {MatDatepicker} from '@angular/material/datepicker';
+import { TransactionReport } from 'src/app/transaction/transaction.model';
+import { TransactionService } from 'src/app/transaction/transaction.service';
 
 @Component({
   selector: 'app-merchant-dashboard',
@@ -9,39 +11,67 @@ import {MatDatepicker} from '@angular/material/datepicker';
 })
 export class MerchantDashboardComponent implements OnInit {
 
+  @ViewChild('closeFilterBtn') closeFilterBtn: ElementRef | undefined;
 
-  constructor() { }
+  public loginuser: any = {};
+
+  reportForm!: FormGroup;
+
+  transactionRpt!: TransactionReport[];
+  yearList: string[] = [];
+
+  constructor(
+    private transactionService: TransactionService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
-    // const ctx = document.getElementById('myChart');
-    // if (ctx instanceof HTMLCanvasElement) {
-    //   const myChart = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: this.data,
-    //     options: {
-    //       scales: {
-    //         yAxes: [{
-    //           ticks: {
-    //             beginAtZero: true
-    //           }
-    //         }]
-    //       }
-    //     }
-    //   });
-    // }
+
+    this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
+
+    this.reportForm = this.formBuilder.group({
+      merchant_name: this.loginuser.userEntity.username,
+      order_date: new FormControl()
+    });
+
+    this.transactionService.getMerchantReportByMonth(this.reportForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.transactionRpt = data;
+    });
+
+
+    this.getLast10Years();
   }
 
-  data: any = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-      {
-        label: 'Visitors',
-        data: [100, 50, 0, 30, 60, 70, 80],
-        backgroundColor: ['#2980b9', '#f39c12', '#9b59b6', '#2ecc71', '#e74c3c', '#3498db', '#95a5a6'],
-        borderColor: ['#2980b9', '#f39c12', '#9b59b6', '#2ecc71', '#e74c3c', '#3498db', '#95a5a6'],
-        borderWidth: 1
+
+  getLast10Years(): void {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+
+    for (let i = currentYear; i >= currentYear - 10; i--) {
+      if (i === currentYear) {
+        this.yearList.push(new Date().toISOString());
+        this.reportForm.patchValue({
+          order_date: new Date().toISOString()
+        });
+      } else {
+        this.yearList.push(new Date(i, 11, 31).toISOString());
       }
-    ]
-  };
+    }
+  }
+
+
+  filterYear(){
+    this.transactionService.getMerchantReportByMonth(this.reportForm.value, this.loginuser.accessToken).subscribe(data => {
+      this.transactionRpt = data;
+    });
+
+    this.closeFilterModal();
+  }
+
+  closeFilterModal(){
+    if(this.closeFilterBtn){
+      this.closeFilterBtn.nativeElement.click();
+    }
+  }
 
 }

@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="m-4 mt-5">
+<div class="m-4 mt-5" style="min-height: 100vh;">
   <div class="d-flex justify-content-between mb-4">
       <h2>Profile</h2>
       <button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#changePasswordModal"><i class="fas fa-key"></i> Change Password</button>
@@ -7,12 +7,11 @@
 
   <!-- CUSTOMER -->
   <form *ngIf="loginuser.userEntity.flag == 1" #customerForm="ngForm" [formGroup]="editCustomerForm">
-    <!-- <label for="merchant_name" class="form-label">Profile Image</label> <br> -->
     <img *ngIf="customer.picByte != null" [src]="getImageUrl(customer.picByte)" alt="" style="border-radius: 50%; width: 200px; height: 200px;" class="mb-3">
     <img *ngIf="customer.picByte == null" src="/assets/images/nopicture.jpg" alt="" style="border-radius: 50%; width: 200px; height: 200px;" class="mb-3">
       <div class="mb-2">
         <label for="name" class="form-label">Name</label>
-        <input type="text" #name name="name" class="form-control" formControlName="name" [ngClass]="{ 'is-invalid' : editCustomerForm.controls['name'].touched && editCustomerForm.controls['name'].errors}" id="name" placeholder="" autocomplete="off">
+        <input type="text" #name name="name" class="form-control form-control-sm" formControlName="name" [ngClass]="{ 'is-invalid' : editCustomerForm.controls['name'].touched && editCustomerForm.controls['name'].errors}" id="name" placeholder="" autocomplete="off">
         <div *ngIf="editCustomerForm.controls['name'].touched && editCustomerForm.controls['name'].errors" class="text-danger">
           <div *ngIf="editCustomerForm.controls['name'].touched && editCustomerForm.controls['name'].errors['required']">
             <small>Name must be filled</small>
@@ -21,16 +20,21 @@
       </div>
       <div class="mb-2">
         <label for="exampleInputPassword1" class="form-label">Phone</label>
-        <input type="text" #phone name="phone" class="form-control" formControlName="phone" [ngClass]="{ 'is-invalid' : editCustomerForm.controls['phone'].touched && editCustomerForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
+        <input type="text" #phone name="phone" class="form-control form-control-sm" formControlName="phone" [ngClass]="{ 'is-invalid' : editCustomerForm.controls['phone'].touched && editCustomerForm.controls['phone'].errors}" id="phone" placeholder="" autocomplete="off">
         <div *ngIf="editCustomerForm.controls['phone'].touched && editCustomerForm.controls['phone'].errors" class="text-danger">
           <div *ngIf="editCustomerForm.controls['phone'].touched && editCustomerForm.controls['phone'].errors['required']">
             <small>Phone must be filled</small>
           </div>
         </div>
+        <div *ngIf="editCustomerForm.controls['phone'].touched && editCustomerForm.controls['phone'].errors" class="text-danger">
+          <div *ngIf="editCustomerForm.controls['phone'].touched && editCustomerForm.controls['phone'].errors['pattern']">
+            <small>Phone must be numeric</small>
+          </div>
+        </div>
       </div>
       <div class="mb-2">
         <label for="" class="form-label">Profile Image</label>
-        <input type="file" class="form-control" (change)="onFileChanged($event)" name="profile_image">
+        <input type="file" class="form-control form-control-sm" (change)="onFileChanged($event)" name="profile_image">
       </div>
       <button type="button" [disabled]="editCustomerForm.invalid" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#updateProfile"><i class="fas fa-pencil-alt"></i> Update Profile</button>
   </form>
@@ -74,6 +78,11 @@
           <small>Postal Code must be filled</small>
         </div>
       </div>
+      <div *ngIf="editMerchantForm.controls['postal_code'].touched && editMerchantForm.controls['postal_code'].errors" class="text-danger">
+        <div *ngIf="editMerchantForm.controls['postal_code'].touched && editMerchantForm.controls['postal_code'].errors['pattern']">
+          <small>Postal Code must be numeric</small>
+        </div>
+      </div>
     </div>
     <div class="mb-2">
       <label for="phone" class="form-label">Phone</label>
@@ -81,6 +90,11 @@
       <div *ngIf="editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors" class="text-danger">
         <div *ngIf="editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors['required']">
           <small>Phone must be filled</small>
+        </div>
+      </div>
+      <div *ngIf="editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors" class="text-danger">
+        <div *ngIf="editMerchantForm.controls['phone'].touched && editMerchantForm.controls['phone'].errors['pattern']">
+          <small>Phone must be numeric</small>
         </div>
       </div>
     </div>
@@ -95,9 +109,9 @@
     </div>
     <div class="mb-2">
       <label for="" class="form-label">Profile Image</label>
-      <input type="file" class="form-control" name="profile_image" (change)="onFileChanged($event)">
+      <input type="file" class="form-control form-control-sm" name="profile_image" (change)="onFileChanged($event)">
     </div>
-    <button type="button" (click)="onUpdateMerchant()" [disabled]="editMerchantForm.invalid" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;"><i class="fas fa-pencil-alt"></i> Update Profile</button>
+    <button type="button" [disabled]="editMerchantForm.invalid" class="btn btn-sm mt-3" style="background-color: #9DBC98; border-radius: 7px; width: 170px; color: white;" data-bs-toggle="modal" data-bs-target="#updateProfile"><i class="fas fa-pencil-alt"></i> Update Profile</button>
   </form>
 </div>
 
@@ -108,11 +122,11 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form #passwordForm="ngForm" [formGroup]="changePasswordForm">
-        <div class="modal-body">
+      <div class="modal-body">
+        <form #passwordForm="ngForm" [formGroup]="changePasswordForm">
           <div class="mb-2">
             <label for="oldPassword" class="form-label">Old Password</label>
-            <input type="password" #oldPassword name="oldPassword" class="form-control" formControlName="oldPassword" [ngClass]="{ 'is-invalid' : changePasswordForm.controls['oldPassword'].touched && changePasswordForm.controls['oldPassword'].errors}" id="oldPassword" placeholder="" autocomplete="off">
+            <input type="password" #oldPassword name="oldPassword" class="form-control form-control-sm" formControlName="oldPassword" [ngClass]="{ 'is-invalid' : changePasswordForm.controls['oldPassword'].touched && changePasswordForm.controls['oldPassword'].errors}" id="oldPassword" placeholder="" autocomplete="off">
             <div *ngIf="changePasswordForm.controls['oldPassword'].touched && changePasswordForm.controls['oldPassword'].errors" class="text-danger">
               <div *ngIf="changePasswordForm.controls['oldPassword'].touched && changePasswordForm.controls['oldPassword'].errors['required']">
                 <small>Old Password must be filled</small>
@@ -121,7 +135,7 @@
           </div>
           <div class="mb-2">
             <label for="newPassword" class="form-label">New Password</label>
-            <input type="password" #newPassword name="newPassword" class="form-control" formControlName="newPassword" [ngClass]="{ 'is-invalid' : changePasswordForm.controls['newPassword'].touched && changePasswordForm.controls['newPassword'].errors}" id="newPassword" placeholder="" autocomplete="off">
+            <input type="password" #newPassword name="newPassword" class="form-control form-control-sm" formControlName="newPassword" [ngClass]="{ 'is-invalid' : changePasswordForm.controls['newPassword'].touched && changePasswordForm.controls['newPassword'].errors}" id="newPassword" placeholder="" autocomplete="off">
             <div *ngIf="changePasswordForm.controls['newPassword'].touched && changePasswordForm.controls['newPassword'].errors" class="text-danger">
               <div *ngIf="changePasswordForm.controls['newPassword'].touched && changePasswordForm.controls['newPassword'].errors['required']">
                 <small>New Password must be filled</small>
@@ -130,19 +144,24 @@
           </div>
           <div class="mb-2">
             <label for="confirmPassword" class="form-label">Confirm New Password</label>
-            <input type="password" #confirmPassword name="confirmPassword" class="form-control" formControlName="confirmPassword" [ngClass]="{ 'is-invalid' : changePasswordForm.controls['confirmPassword'].touched && changePasswordForm.controls['confirmPassword'].errors}" id="confirmPassword" placeholder="" autocomplete="off">
+            <input type="password" #confirmPassword name="confirmPassword" class="form-control form-control-sm" formControlName="confirmPassword" [ngClass]="{ 'is-invalid' : changePasswordForm.controls['confirmPassword'].touched && changePasswordForm.controls['confirmPassword'].errors}" id="confirmPassword" placeholder="" autocomplete="off">
             <div *ngIf="changePasswordForm.controls['confirmPassword'].touched && changePasswordForm.controls['confirmPassword'].errors" class="text-danger">
               <div *ngIf="changePasswordForm.controls['confirmPassword'].touched && changePasswordForm.controls['confirmPassword'].errors['required']">
                 <small>Confirm Password must be filled</small>
               </div>
             </div>
+            <div *ngIf="changePasswordForm.controls['confirmPassword'].touched && changePasswordForm.controls['confirmPassword'].errors" class="text-danger">
+              <div *ngIf="changePasswordForm.controls['confirmPassword'].touched && changePasswordForm.controls['confirmPassword'].errors['mismatch']">
+                <small>Password and Confirm Password must be match</small>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 100px; color: white;" data-bs-dismiss="modal" id="change-password-form"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" [disabled]="changePasswordForm.invalid" (click)="onChangePassword()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100px; color: white;"><i class="fas fa-key"></i> Change</button>
-        </div>
-      </form>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 100px; color: white;" data-bs-dismiss="modal" id="change-password-form"><i class="fas fa-times"></i> Close</button>
+        <button type="button" [disabled]="changePasswordForm.invalid" (click)="onChangePassword()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100px; color: white;"><i class="fas fa-key"></i> Change</button>
+      </div>
     </div>
   </div>
 </div>

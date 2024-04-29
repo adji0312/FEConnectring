@@ -287,7 +287,7 @@ export class AddPackageComponent implements OnInit {
 
   editPackage(pack: Package){
 
-    console.log(pack.isActive == false);
+    // console.log(pack.isActive == false);
 
     this.selectedPackage = pack;
 
@@ -388,7 +388,7 @@ export class AddPackageComponent implements OnInit {
         return null;
       }
 
-      console.log('File MIME Type:', file.type);
+      // console.log('File MIME Type:', file.type);
 
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
@@ -431,7 +431,7 @@ export class AddPackageComponent implements OnInit {
       activateAll: true,
     });
 
-    console.log(this.addPackageForm.value);
+    // console.log(this.addPackageForm.value);
 
     this.formData.append("packageDto", JSON.stringify(this.addPackageForm.value));
 
