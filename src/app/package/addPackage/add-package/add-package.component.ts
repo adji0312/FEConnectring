@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgModule, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { PackageService } from '../../package.service';
 import { Package } from '../../package.model';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -23,6 +23,7 @@ export class AddPackageComponent implements OnInit {
   @ViewChild('closeAddPackage') closeAddPackage!: ElementRef;
   @ViewChild('closeEditPackage') closeEditPackage!: ElementRef;
   @ViewChild('closeActivatePackage') closeActivatePackage!: ElementRef;
+  @ViewChild('fileInput') fileInputRef!: ElementRef;
 
   public loginuser: any = {};
   addPackageForm!: FormGroup;
@@ -71,7 +72,7 @@ export class AddPackageComponent implements OnInit {
       packageItemList: ['', Validators.required],
       activateAll: [''],
       package_header: [''],
-    });
+    }, { validator: this.dateRangeValidator });
 
     this.combinedForm = this.formBuilder.group({
       packageForms: this.formBuilder.array([])
@@ -143,6 +144,23 @@ export class AddPackageComponent implements OnInit {
     return pack.packageItemDtoList.map(packageItem => packageItem.food_name).join(', ');
   }
 
+
+  dateRangeValidator: ValidatorFn = (): {[key: string]: any} | null => {
+    const startDate = this.addPackageForm && this.addPackageForm.get('start_date')?.value;
+    const endDate = this.addPackageForm && this.addPackageForm.get('end_date')?.value;
+
+    if (startDate && endDate) {
+      const startDateObj = new Date(startDate);
+      const endDateObj = new Date(endDate);
+
+      if (startDateObj > endDateObj) {
+        return { invalidRange: true };
+      }
+    }
+
+    return null;
+  };
+
   addPackageValidation(formGroup: FormGroup){
     const packageNameControl = formGroup.get('package_name');
     const startDateControl = formGroup.get('start_date');
@@ -150,6 +168,18 @@ export class AddPackageComponent implements OnInit {
 
     if (!packageNameControl || !startDateControl || !endDateControl) {
       return false;
+    }
+
+    const startDate = this.addPackageForm && this.addPackageForm.get('start_date')?.value;
+    const endDate = this.addPackageForm && this.addPackageForm.get('end_date')?.value;
+
+    if (startDate && endDate) {
+      const startDateObj = new Date(startDate);
+      const endDateObj = new Date(endDate);
+
+      if (startDateObj > endDateObj) {
+        return false;
+      }
     }
 
     return packageNameControl.valid && startDateControl.valid && endDateControl.valid;
@@ -268,6 +298,18 @@ export class AddPackageComponent implements OnInit {
     this.selectedFood = this.selectedPackage.packageItemDtoList;
   }
 
+  updatePackageValidation(formGroup: FormGroup){
+    const menuControl = formGroup.get('packageItemList');
+    const priceControl = formGroup.get('price');
+    const fileControl = formGroup.get('food_img');
+
+    if (!menuControl || !priceControl || !fileControl) {
+      return false;
+    }
+
+    return menuControl.valid && priceControl.valid && fileControl.valid;
+  }
+
   onUpdatePackage(event: any){
 
     var packageList = this.addPackageForm.value.packageItemList;
@@ -333,8 +375,45 @@ export class AddPackageComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
+
+  isImage(file: File): boolean {
+    return file.type.startsWith('image/');
+  }
+
+  imageValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const file = control.value as File;
+
+      if (!file) {
+        return null;
+      }
+
+      console.log('File MIME Type:', file.type);
+
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+
+      if (file.type && allowedTypes.includes(file.type)) {
+        return null; // Valid image type: return null (no validation error)
+      } else {
+        return { invalidImageType: true }; // Invalid image type: return validation error
+      }
+
+      return null;
+    };
+  }
+
   onFileSelected(event: any): void {
-    this.package_image = event.target.files[0];
+    // this.package_image = event.target.files[0];
+
+    const file: File = event.target.files[0];
+
+    // Check if the selected file is an image (JPEG, PNG, GIF)
+    if (file && this.isImage(file)) {
+      this.package_image = file;
+      return;
+    }else{
+      this.fileInputRef.nativeElement.value = '';
+    }
   }
 
   checkPackageActive(){

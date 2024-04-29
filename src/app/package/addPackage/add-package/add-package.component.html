@@ -94,6 +94,9 @@
                     End Date must be filled
                   </div>
                 </div>
+                <div *ngIf="addPackageForm.controls['end_date'].touched && addPackageForm.hasError('invalidRange')" class="text-danger">
+                  End Date must be greater than Start Date
+                </div>
               </div>
             </div>
           </form>
@@ -140,18 +143,18 @@
               <div class="mb-2">
                 <label for="photo" class="form-label">Photo</label>
                 <!-- <input type="file" accept="*.jpg.png" (change)="onFileSelected($event)" formControlName="image" class="form-control" id="photo" [ngClass]="{ 'is-invalid' : addPackageForm.controls['image'].touched && addPackageForm.controls['image'].errors}"> -->
-                <input type="file" accept="*.jpg.png" (change)="onFileSelected($event)" formControlName="food_img" class="form-control" id="photo">
-                <!-- <div *ngIf="addPackageForm.controls['food_img'].touched && addPackageForm.controls['food_img'].errors" class="text-danger">
-                  <div *ngIf="addPackageForm.controls['food_img'].touched && addPackageForm.controls['food_img'].errors['required']">
-                    Image must be filled
+                <input type="file" accept="image/*" #fileInput (change)="onFileSelected($event)" formControlName="food_img" class="form-control form-control-sm" id="photo">
+                <div *ngIf="addPackageForm.controls['food_img'].touched && addPackageForm.controls['food_img'].errors" class="text-danger">
+                  <div *ngIf="addPackageForm.controls['food_img'].touched && addPackageForm.get('food_img')?.hasError('invalidImageType')" class="text-danger">
+                    Image must be in JPG, JPEG, PNG
                   </div>
-                </div> -->
+                </div>
               </div>
             </form>
           </div>
         <div class="modal-footer">
           <button #closeEditPackage type="button" class="btn btn-sm" data-bs-dismiss="modal" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" (click)="closeEditPackageModal()"><i class="fas fa-times"></i> Close</button>
-          <button (click)="onUpdatePackage($event)" type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
+          <button (click)="onUpdatePackage($event)" [disabled]="!updatePackageValidation(addPackageForm)" type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-save"></i> Save</button>
         </div>
       </div>
     </div>
