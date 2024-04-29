@@ -47,7 +47,7 @@ export class ListRequestComponent implements OnInit {
   ngOnInit(): void {
     this.x = 0;
     this.loadData();
-    
+
     this.viewCateringForm = this.formBuilder.group({
       username : [''],
       address : [''],
@@ -72,7 +72,7 @@ export class ListRequestComponent implements OnInit {
         // if(data.is_active == 1){
           this.merchants = data.sort();
           // console.log(this.merchants);
-          
+
         // }
     });
   }
@@ -114,38 +114,38 @@ export class ListRequestComponent implements OnInit {
         description : merchant.description,
       });
       this.splitnumber = '62' + this.viewCateringForm.get('phone')?.value.substring(1);
-      console.log(this.splitnumber);
+      // console.log(this.splitnumber);
     }
-    
+
   }
-  
+
   onRequestModal(user: User){
-    console.log(user);
+    // console.log(user);
 
     if(user.flag == 1){
       this.customerService.findCustomerByUsername(user.username, this.loginuser.accessToken).subscribe(
         (res) => {
-          console.log(res);
+          // console.log(res);
           this.requestForm.setValue({
             username : user.username,
             phone : res.phone
           });
           this.splitnumber = '62' + this.requestForm.get('phone')?.value.substring(1);
-          console.log(this.splitnumber);
-          
+          // console.log(this.splitnumber);
+
         }
       )
     }else if(user.flag == 2){
       this.merchantService.getMerchant(user.username, this.loginuser.accessToken).subscribe(
         (res) => {
-          console.log(res);
+          // console.log(res);
           this.requestForm.setValue({
             username : user.username,
             phone : res.phone
           });
           this.splitnumber = '62' + this.requestForm.get('phone')?.value.substring(1);
-          console.log(this.splitnumber);
-          
+          // console.log(this.splitnumber);
+
         }
       )
     }
@@ -163,12 +163,12 @@ export class ListRequestComponent implements OnInit {
   }
 
   acceptCatering(){
-    console.log(this.viewCateringForm.value);
-    
+    // console.log(this.viewCateringForm.value);
+
     this.merchantService.acceptMerchant(this.viewCateringForm.value, this.loginuser.accessToken).subscribe(
       (response) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -176,11 +176,11 @@ export class ListRequestComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         })
-        
+
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
+        // console.log(error);
+
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -195,14 +195,14 @@ export class ListRequestComponent implements OnInit {
     document.getElementById('accept-catering')!.click();
     this.splitnumber = '';
   }
-  
+
   rejectCatering(){
-    console.log(this.viewCateringForm.value);
-    
+    // console.log(this.viewCateringForm.value);
+
     this.merchantService.rejectMerchant(this.viewCateringForm.get('username')?.value, this.loginuser.accessToken).subscribe(
       (response) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -212,8 +212,8 @@ export class ListRequestComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
+        // console.log(error);
+
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -230,7 +230,7 @@ export class ListRequestComponent implements OnInit {
   }
 
   acceptRequest(){
-    console.log(this.requestForm.value);
+    // console.log(this.requestForm.value);
 
     // this.userService.acceptRequest(this.requestForm.value, this.loginuser.accessToken).subscribe(
     //   (response) => {
@@ -260,7 +260,7 @@ export class ListRequestComponent implements OnInit {
   }
 
   rejectRequest(){
-    console.log(this.requestForm.value);
+    // console.log(this.requestForm.value);
 
     // this.userService.rejectRequest(this.requestForm.value, this.loginuser.accessToken).subscribe(
     //   (response) => {

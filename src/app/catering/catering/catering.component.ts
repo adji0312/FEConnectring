@@ -53,7 +53,7 @@ export class CateringComponent implements OnInit {
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
       .subscribe(data => {
         // console.log(data);
-        
+
         // if(data.is_delete == 1 && data.is_active == 0){
           this.merchants = data.sort();
         // }
@@ -63,7 +63,7 @@ export class CateringComponent implements OnInit {
   }
 
   onOpenCatering(merchant: Merchant): void{
-    console.log(merchant);
+    // console.log(merchant);
     this.merchantService.viewCatering = merchant;
     this.router.navigate(['/detailCatering']);
   }

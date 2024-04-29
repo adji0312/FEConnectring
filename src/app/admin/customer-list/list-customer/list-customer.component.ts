@@ -84,23 +84,23 @@ export class ListCustomerComponent implements OnInit {
       });
     }else if(mode === 'delete'){
       this.deleteCustomer = customer;
-      console.log(this.deleteCustomer);
+      // console.log(this.deleteCustomer);
       this.viewCustomerForm.setValue({
         name : customer.name,
         phone : customer.phone,
         username : customer.parent.username
       });
-      
+
     }else if(mode === 'reset'){
       this.resetPasswordCustomer = customer;
-      console.log(this.resetPasswordCustomer);
-      
+      // console.log(this.resetPasswordCustomer);
+
     }
-    
+
   }
 
   onDeleteCustomer(){
-    console.log(this.deleteCustomer.parent.username);
+    // console.log(this.deleteCustomer.parent.username);
 
     this.customerService.deleteCustomer(this.viewCustomerForm.value, this.loginuser.accessToken).subscribe(
       (response: Customer) => {
@@ -129,8 +129,8 @@ export class ListCustomerComponent implements OnInit {
 
     this.addCustomerForm.controls['password'].setValue('12345678');
 
-    console.log(this.addCustomerForm.value);
-    
+    // console.log(this.addCustomerForm.value);
+
 
     if(this.addCustomerForm.invalid){
       return;
@@ -143,8 +143,8 @@ export class ListCustomerComponent implements OnInit {
 
     this.userService.regisUser(this.addData).subscribe(
       (response: User) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -154,8 +154,8 @@ export class ListCustomerComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
+        // console.log(error);
+
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -165,14 +165,14 @@ export class ListCustomerComponent implements OnInit {
         });
       }
     );
-    
+
     this.addData.delete('name');
     this.addData.delete('phone');
     this.addData.delete('username');
     this.addData.delete('password');
     this.addCustomerForm.reset();
     document.getElementById('add-customer-form')?.click();
-    
+
   }
 
   getImageUrl(blob: Blob) {
@@ -187,7 +187,7 @@ export class ListCustomerComponent implements OnInit {
     });
     this.authService.resetPassword(this.resetForm.value, this.loginuser.accessToken).subscribe(
       (response: User) => {
-        console.log(response);
+        // console.log(response);
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -197,7 +197,7 @@ export class ListCustomerComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
+        // console.log(error);
 
         Swal.fire({
           position: 'center',
@@ -206,7 +206,7 @@ export class ListCustomerComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         });
-        
+
       }
     )
 

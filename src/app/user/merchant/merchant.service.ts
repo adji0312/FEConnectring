@@ -33,7 +33,7 @@ export class MerchantService {
   }
 
   updateMerchant(merchant: FormData, accessToken: any):Observable<any>{
-    console.log(merchant);
+    // console.log(merchant);
 
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + accessToken});
     return this.http.put(`${this.baseUrl}/update`, merchant, {headers: headers});
@@ -41,7 +41,7 @@ export class MerchantService {
 
   rejectMerchant(username: string, accessToken: any): Observable<Merchant>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
-    console.log(username);
+    // console.log(username);
 
     return this.http.post<Merchant>(`${this.baseUrl}/reject`, username, {headers: headers});
   }
@@ -57,15 +57,15 @@ export class MerchantService {
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.get(`${this.baseUrl}/findCityMerchant`, {headers: headers});
   }
-  
+
   acceptMerchant(merchant: Merchant, accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any>(`${this.baseUrl}/acceptMerchant`, merchant, {headers: headers});
   }
-  
+
   deleteMerchant(merchant: Merchant, accessToken: any): Observable<any>{
-    console.log(merchant);
-    
+    // console.log(merchant);
+
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any>(`${this.baseUrl}/deleteMerchant`, merchant, {headers: headers});
   }
@@ -73,7 +73,7 @@ export class MerchantService {
   findMerchantWithoutToken(merchant: Merchant): Observable<any>{
     // console.log(merchant);
     // console.log(accessToken);
-    
+
     const headers = new HttpHeaders({'Access-Control-Allow-Origin': '*'});
     return this.http.post(`${this.baseUrl}/findMerchantWithoutToken`, merchant, {headers:headers});
   }

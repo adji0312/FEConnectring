@@ -31,8 +31,8 @@ export class ChatService {
   // }
 
   findChat(chat: Chat, accessToken: any): Observable<any>{
-    console.log(chat);
-    
+    // console.log(chat);
+
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any>(`${this.baseUrl}/findChat`, chat, {headers:headers});
   }
@@ -68,13 +68,13 @@ export class ChatService {
   }
 
   findChatAdminCustomer(chat: Chat, accessToken: any): Observable<any>{
-    console.log(chat);
+    // console.log(chat);
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any>(`${this.baseUrl}/findAdminChatCustomer`, chat, {headers:headers});
   }
 
   findChatAdminMerchant(chat: Chat, accessToken: any): Observable<any>{
-    console.log(chat);
+    // console.log(chat);
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any>(`${this.baseUrl}/findAdminChatMerchant`, chat, {headers:headers});
   }
@@ -83,13 +83,13 @@ export class ChatService {
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.post<any>(`${this.baseUrl}/addMessageAdmin`, chat, {headers:headers});
   }
-  
+
   getAdminChat(accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.get<any>(`${this.baseUrl}/allAdminChat`, {headers:headers});
-    
+
   }
-  
+
   sendMessage(accessToken: any): Observable<any>{
     const headers = new HttpHeaders({'Authorization': 'Bearer ' + accessToken});
     return this.http.get<any>(`https://api.whatsapp.com/send?phone=0895394620186&text=I'm%20interested%20in%20your%20car%20for%20sale`, {headers:headers});

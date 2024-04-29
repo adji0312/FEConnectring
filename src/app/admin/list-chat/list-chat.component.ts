@@ -58,7 +58,7 @@ export class ListChatComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.chatService.getAdminChat(this.loginuser.accessToken)))
       .subscribe(data => {
-        
+
         this.chat = data.sort();
         // console.log(this.chat);
     });
@@ -88,11 +88,11 @@ export class ListChatComponent implements OnInit {
     this.getChatForm.patchValue({
       chat_id : chat.id
     });
-    console.log(chat);
+    // console.log(chat);
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.chatService.getMessage(this.getChatForm.value, this.loginuser.accessToken)))
       .subscribe(data => {
-        
+
         this.messages = data;
     });
   }
@@ -102,18 +102,18 @@ export class ListChatComponent implements OnInit {
     //   sender_id : this.loginuser.userEntity.id,
     //   user_id : this.loginuser.userEntity.id
     // });
-    console.log(this.messageForm.value);
+    // console.log(this.messageForm.value);
     this.chatService.addMessageAdmin(this.messageForm.value, this.loginuser.accessToken).subscribe(
       (data) => {
-        console.log(data);
-        
+        // console.log(data);
+
       }
     )
 
     this.messageForm.patchValue({
       message: null
     })
-    
+
   }
 
   onTableDataChange(event: any){

@@ -18,7 +18,7 @@ export class UsernamecheckService {
     // console.log(control);
     return this.userService.checkUsername(control.value).pipe(
       map(res => {
-        console.log(res);
+        // console.log(res);
         return res ? { usernameTaken: true } : null;
       })
     );

@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
 
     this.merchantService.getRandomMerchant(this.loginuser.accessToken).subscribe(data => {
       this.merchantList = data;
-      console.log(this.merchantList);
+      // console.log(this.merchantList);
     })
   }
 
@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   }
 
   onOpenCatering(merchant: Merchant): void{
-    console.log(merchant);
+    // console.log(merchant);
     this.merchantService.viewCatering = merchant;
     this.router.navigate(['/detailCatering']);
   }

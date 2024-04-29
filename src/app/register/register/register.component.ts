@@ -27,9 +27,9 @@ export class RegisterComponent implements OnInit {
   // confirm_password!: string;
 
   constructor(
-    private router: Router, 
-    private authService: UserService, 
-    private formBuilder : FormBuilder, 
+    private router: Router,
+    private authService: UserService,
+    private formBuilder : FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
     private usernameValidator: UsernamecheckService) {
@@ -44,13 +44,13 @@ export class RegisterComponent implements OnInit {
       confirmpassword: ['', [Validators.required, Validators.minLength(8)]],
     },
     {
-      validators: this.passwordMatchValidator, 
+      validators: this.passwordMatchValidator,
     }
     )
   }
 
   ngOnInit(): void {
-    
+
   }
 
   passwordMatchValidator(control: AbstractControl){
@@ -61,16 +61,16 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-    console.log(this.regisForm.value);
+    // console.log(this.regisForm.value);
     this.formRegis.append('name', this.regisForm.get('name')?.value);
     this.formRegis.append('username', this.regisForm.get('username')?.value);
     this.formRegis.append('phone', this.regisForm.get('phone')?.value);
     this.formRegis.append('password', this.regisForm.get('password')?.value);
-    
+
     this.authService.regisUser(this.formRegis).subscribe(
       (response: User) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -81,8 +81,8 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/login']);
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
+        // console.log(error);
+
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -101,11 +101,11 @@ export class RegisterComponent implements OnInit {
   }
 
   onFileChanged(event: any){
-    
+
     if(event.target.files){
       const selectedFile = event.target.files[0];
-      console.log(selectedFile);
-      
+      // console.log(selectedFile);
+
       this.formRegis.append('profile_image', selectedFile, selectedFile.name);
     }
   }

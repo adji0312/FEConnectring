@@ -142,7 +142,7 @@ export class PackageComponent implements OnInit {
   }
 
   updateFood(food: Food){
-    console.log(food);
+    // console.log(food);
 
     this.editFoodForm.patchValue({
       food_name: food.food_name,

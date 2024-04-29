@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
       // image_merchant : ['',],
     },
     {
-      validators: this.passwordMatchValidator, 
+      validators: this.passwordMatchValidator,
     }
     );
 
@@ -73,8 +73,8 @@ export class LoginComponent implements OnInit {
   }
 
   onForgotButton(){
-    console.log(this.forgotPasswordForm.value);
-    
+    // console.log(this.forgotPasswordForm.value);
+
     this.authService.checkUsername(this.forgotPasswordForm.controls['username'].value).subscribe(
       (response) => {
         if(response != null){
@@ -124,7 +124,7 @@ export class LoginComponent implements OnInit {
                     }
                   )
                 }
-                
+
               }
             )
             document.getElementById('forgot-form')!.click();
@@ -132,8 +132,8 @@ export class LoginComponent implements OnInit {
           }else{
             this.merchantService.findMerchantWithoutToken(this.forgotPasswordForm.value).subscribe(
               (res) => {
-                console.log(res);
-                
+                // console.log(res);
+
                 if((res.is_delete == 0 && res.is_active == 0) || (res.is_delete == 0 && res.is_active == 1)){
                   Swal.fire({
                     position: 'center',
@@ -154,11 +154,11 @@ export class LoginComponent implements OnInit {
                   this.forgotPasswordForm.setValue({
                     username : res.parent.username
                   })
-                  console.log(this.forgotPasswordForm.value);
+                  // console.log(this.forgotPasswordForm.value);
                   this.authService.sendRequest(this.forgotPasswordForm.value).subscribe(
                     (data) => {
-                      console.log(data);
-                      
+                      // console.log(data);
+
                       Swal.fire({
                         position: 'center',
                         icon: 'success',
@@ -169,8 +169,8 @@ export class LoginComponent implements OnInit {
                       this.forgotPasswordForm.reset();
                     },
                     (error: HttpErrorResponse) => {
-                      console.log(error);
-                      
+                      // console.log(error);
+
                       Swal.fire({
                         position: 'center',
                         icon: 'error',
@@ -181,7 +181,7 @@ export class LoginComponent implements OnInit {
                     }
                   )
                 }
-                
+
               }
             )
             document.getElementById('forgot-form')!.click();
@@ -196,17 +196,17 @@ export class LoginComponent implements OnInit {
             showConfirmButton: true,
             timer: 1500
           })
-          
+
         }
-        
+
       }
     )
   }
 
   onSubmit(){
 
-    console.log(this.registMerchantForm.value);
-    
+    // console.log(this.registMerchantForm.value);
+
     this.formData.append('merchant_name', this.registMerchantForm.get('merchant_name')?.value);
     this.formData.append('username', this.registMerchantForm.get('username')?.value);
     this.formData.append('address', this.registMerchantForm.get('address')?.value);
@@ -217,8 +217,8 @@ export class LoginComponent implements OnInit {
 
     this.authService.regisMerchant(this.formData).subscribe(
       (response: Merchant) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -229,7 +229,7 @@ export class LoginComponent implements OnInit {
         window.location.reload();
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
+        // console.log(error);
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -252,7 +252,7 @@ export class LoginComponent implements OnInit {
     this.registMerchantForm.get('profile_image')?.setValue(null);
     this.registMerchantForm.reset();
     this.closeAddMerchantModal();
-    
+
   }
 
   closeAddMerchantModal(){
@@ -269,34 +269,34 @@ export class LoginComponent implements OnInit {
   }
 
   onFileChanged(event: any){
-    
+
     if(event.target.files){
       const selectedFile = event.target.files[0];
-      console.log(selectedFile);
-      
+      // console.log(selectedFile);
+
       this.formData.append('profile_image', selectedFile, selectedFile.name);
     }
   }
 
   loginUser(user: any){
-    console.log(user);
-    
-    
+    // console.log(user);
+
+
     this.authService.loginUser(user).subscribe((response) => {
       if(response){
-        console.log(response);
-        
+        // console.log(response);
+
         if(response.accessToken){
           localStorage.setItem('currentUser', JSON.stringify(response));
-          
+
           if(response.userEntity.flag == 0){
             this.router.navigate(['/admin-dashboard']);
             this.toastr.success('You are success login', 'Login - Success');
-  
+
             const jwtToken = JSON.parse(atob(response.accessToken.split('.')[1]));
             const expires = new Date(jwtToken.exp * 1000);
             const timeout = expires.getTime() - Date.now();
-  
+
             setTimeout(() => this.authService.logout(), timeout);
           }else if(response.userEntity.flag == 1){
             this.customerService.findCustomerByUsername(user.username, response.accessToken).subscribe(
@@ -307,11 +307,11 @@ export class LoginComponent implements OnInit {
                 }else{
                   this.router.navigate(['/home']);
                   this.toastr.success('You are success login', 'Login - Success');
-        
+
                   const jwtToken = JSON.parse(atob(response.accessToken.split('.')[1]));
                   const expires = new Date(jwtToken.exp * 1000);
                   const timeout = expires.getTime() - Date.now();
-        
+
                   setTimeout(() => this.authService.logout(), timeout);
                 }
               }
@@ -326,21 +326,21 @@ export class LoginComponent implements OnInit {
                 }else{
                   this.router.navigate(['/merchant-dashboard']);
                   this.toastr.success('You are success login', 'Login - Success');
-        
+
                   const jwtToken = JSON.parse(atob(response.accessToken.split('.')[1]));
                   const expires = new Date(jwtToken.exp * 1000);
                   const timeout = expires.getTime() - Date.now();
-        
+
                   setTimeout(() => this.authService.logout(), timeout);
                 }
-                
+
               }
             )
           }
         }
       }
     }, (error) => {
-      console.log(error);
+      // console.log(error);
       this.toastr.error('Invalid Username or Password!', 'Login - Failed');
     })
 

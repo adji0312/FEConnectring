@@ -11,7 +11,7 @@ import { MerchantService } from 'src/app/user/merchant/merchant.service';
 import { User } from 'src/app/user/user.model';
 import { UserService } from 'src/app/user/user.service';
 import Swal from 'sweetalert2';
-declare var $: any; 
+declare var $: any;
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -43,14 +43,14 @@ export class AdminDashboardComponent implements OnInit {
   tableSize: number = 10;
 
   realTimeDataSubscription$!: Subscription;
-  
+
   private loadData(){
     this.getMerchants();
   }
   constructor(
-    private router: Router, 
-    private authService: UserService, 
-    private formBuilder : FormBuilder, 
+    private router: Router,
+    private authService: UserService,
+    private formBuilder : FormBuilder,
     private toastr: ToastrService,
     private http: HttpClient,
     private merchantService: MerchantService,
@@ -62,7 +62,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit(): void {
 
     // console.log(this.loginuser);
-    
+
 
     this.loadData();
 
@@ -89,7 +89,7 @@ export class AdminDashboardComponent implements OnInit {
     this.resetMerchantForm = this.formBuilder.group({
       username : ['']
     });
-    
+
   }
 
   private getMerchants(){
@@ -102,9 +102,9 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   btnDeleteMerchant(){
-    console.log(this.deleteMerchant);
-    console.log(this.editMerchantForm.value);
-    
+    // console.log(this.deleteMerchant);
+    // console.log(this.editMerchantForm.value);
+
     this.merchantService.deleteMerchant(this.editMerchantForm.value, this.loginuser.accessToken).subscribe(
       (response: Merchant) => {
         Swal.fire({
@@ -114,10 +114,10 @@ export class AdminDashboardComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         })
-      }, 
+      },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
+        // console.log(error);
+
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -132,7 +132,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onOpenModal(merchant: Merchant, mode: string){
-    console.log(merchant);
+    // console.log(merchant);
     // console.log(mode);
 
     if(mode == 'edit'){
@@ -148,7 +148,7 @@ export class AdminDashboardComponent implements OnInit {
       });
     }else if(mode === 'delete'){
       this.deleteMerchant = merchant;
-      console.log(this.deleteMerchant.parent.username);
+      // console.log(this.deleteMerchant.parent.username);
       this.editMerchantForm.setValue({
         username : merchant.parent.username,
         address : merchant.address,
@@ -160,10 +160,10 @@ export class AdminDashboardComponent implements OnInit {
       });
     }else if(mode === 'reset'){
       this.resetPasswordMerchant = merchant;
-      console.log(this.resetPasswordMerchant);
-      
+      // console.log(this.resetPasswordMerchant);
+
     }
-    
+
   }
 
   resetPassword(){
@@ -173,7 +173,7 @@ export class AdminDashboardComponent implements OnInit {
     });
     this.authService.resetPassword(this.resetMerchantForm.value, this.loginuser.accessToken).subscribe(
       (response: User) => {
-        console.log(response);
+        // console.log(response);
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -183,7 +183,7 @@ export class AdminDashboardComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
+        // console.log(error);
 
         Swal.fire({
           position: 'center',
@@ -192,7 +192,7 @@ export class AdminDashboardComponent implements OnInit {
           showConfirmButton: true,
           timer: 1500
         });
-        
+
       }
     )
 
@@ -211,13 +211,13 @@ export class AdminDashboardComponent implements OnInit {
     this.editData.set('phone', this.editMerchantForm.get('phone')?.value);
     this.editData.set('postal_code', this.editMerchantForm.get('postal_code')?.value);
 
-    console.log(this.editMerchantForm.value);
-    
+    // console.log(this.editMerchantForm.value);
+
 
     this.merchantService.updateMerchant(this.editData, this.loginuser.accessToken).subscribe(
       (response: Merchant) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -228,8 +228,8 @@ export class AdminDashboardComponent implements OnInit {
         window.location.reload();
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
-        
+        // console.log(error);
+
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -256,8 +256,8 @@ export class AdminDashboardComponent implements OnInit {
 
   onSubmit(){
 
-    console.log(this.registMerchantForm.value);
-    
+    // console.log(this.registMerchantForm.value);
+
     this.formData.append('merchant_name', this.registMerchantForm.get('merchant_name')?.value);
     this.formData.append('username', this.registMerchantForm.get('username')?.value);
     this.formData.append('address', this.registMerchantForm.get('address')?.value);
@@ -267,8 +267,8 @@ export class AdminDashboardComponent implements OnInit {
 
     this.authService.regisMerchant(this.formData).subscribe(
       (response: Merchant) => {
-        console.log(response);
-        
+        // console.log(response);
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -279,7 +279,7 @@ export class AdminDashboardComponent implements OnInit {
         window.location.reload();
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
+        // console.log(error);
         Swal.fire({
           position: 'center',
           icon: 'error',
@@ -303,11 +303,11 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onFileChanged(event: any){
-    
+
     if(event.target.files){
       const selectedFile = event.target.files[0];
-      console.log(selectedFile);
-      
+      // console.log(selectedFile);
+
       this.formData.append('profile_image', selectedFile, selectedFile.name);
       this.editData.append('profile_image', selectedFile, selectedFile.name);
     }

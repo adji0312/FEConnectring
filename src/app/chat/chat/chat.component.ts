@@ -92,32 +92,32 @@ export class ChatComponent implements OnInit {
     else if(this.loginuser.userEntity.flag == 2){
       this.findMerchant();
     }
-    
+
     this.chatExists = false;
 
     // this.btn.addE
     this.getCustomerMerchantChat();
-    
+
   }
 
   getCustomers(){
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.customerService.getAllCustomer(this.loginuser.accessToken)))
-      .subscribe(data => {        
+      .subscribe(data => {
         this.customers = data.sort();
-        
+
       });
       // console.log(this.customers);
-  
+
     }
   getAllMerchant(){
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.merchantService.getAllMerchant(this.loginuser.accessToken)))
-      .subscribe(data => {  
+      .subscribe(data => {
         // console.log(data);
-              
+
         this.merchants = data.sort();
-        
+
       });
   }
 
@@ -140,15 +140,15 @@ export class ChatComponent implements OnInit {
 
     this.checkChat.patchValue({
       merchantId : merchant.id,
-      // merchantId : 
+      // merchantId :
     })
-    console.log(this.checkChat.value);
+    // console.log(this.checkChat.value);
 
     this.chatService.findChat(this.checkChat.value, this.loginuser.accessToken).subscribe(
       (data: Chat) => {
         if(data){
-          console.log(data);
-          
+          // console.log(data);
+
           this.chatService.viewChat = data;
           this.merchantService.viewCatering = merchant;
           // this.customerService.customer = customer;
@@ -158,30 +158,30 @@ export class ChatComponent implements OnInit {
           this.addChat.controls['parent_id'].setValue(this.loginuser.userEntity.id);
           this.addChat.controls['merchant_id'].setValue(merchant.merchant_id);
 
-          console.log(this.addChat.value);
+          // console.log(this.addChat.value);
 
           this.chatService.addChat(this.addChat.value, this.loginuser.accessToken).subscribe(
             (response: Chat) => {
-              console.log(response);
+              // console.log(response);
               this.chatService.viewChat = response;
               this.merchantService.viewCatering = merchant;
               this.router.navigate(['/detailChat']);
             }
           )
-          
+
 
         }
       }
     )
   }
-  
+
   onChatMerchant(customer: Customer){
 
     this.checkChat.patchValue({
       customerId : customer.id,
-      // merchantId : 
+      // merchantId :
     })
-    console.log(this.checkChat.value);
+    // console.log(this.checkChat.value);
 
     if(this.loginuser.userEntity.flag == 2){
       this.merchantService.getMerchant(this.loginuser.userEntity.username, this.loginuser.accessToken).subscribe(
@@ -202,19 +202,19 @@ export class ChatComponent implements OnInit {
           }
           else{
             this.addChat.controls['parent_id'].setValue(customer.parent.id);
-            
-            console.log(this.addChat.value);
-            
+
+            // console.log(this.addChat.value);
+
             this.chatService.addChat(this.addChat.value, this.loginuser.accessToken).subscribe(
               (response: Chat) => {
-                console.log(response);
+                // console.log(response);
                 this.chatService.viewChat = response;
                 this.customerService.customer = customer;
                 this.router.navigate(['/detailChat']);
               }
             )
           }
-          
+
         }
       )
     }
@@ -229,7 +229,7 @@ export class ChatComponent implements OnInit {
         }
       )
     }
-    
+
   }
 
   findMerchant(){
@@ -238,7 +238,7 @@ export class ChatComponent implements OnInit {
         this.checkChat.patchValue({
           merchantId : response.id
         });
-        
+
       }
     )
   }
@@ -249,7 +249,7 @@ export class ChatComponent implements OnInit {
         this.checkChat.patchValue({
           customerId : response.id
         });
-        
+
       }
     )
   }
@@ -264,7 +264,7 @@ export class ChatComponent implements OnInit {
         });
 
         // console.log(this.checkChat.value);
-        
+
         this.realTimeDataSubscription$ = timer(0, 1000)
         .pipe(switchMap(_ => this.chatService.getCustomerChat(this.checkChat.value, this.loginuser.accessToken)))
         .subscribe(data => {
@@ -287,7 +287,7 @@ export class ChatComponent implements OnInit {
 
         });
       });
-      
+
     }
   }
 
@@ -309,25 +309,25 @@ export class ChatComponent implements OnInit {
             this.chatAdminForm.controls['parent_id'].setValue(this.loginuser.userEntity.id);
             this.chatService.addAdminChatCustomer(this.chatAdminForm.value, this.loginuser.accessToken).subscribe(
               (res: Chat) => {
-                console.log(res);
-                
+                // console.log(res);
+
               }
             )
           }else{
             this.getAdminChat.patchValue({
               chat_id : response.id
             })
-            console.log(response);
+            // console.log(response);
             this.realTimeDataSubscription$ = timer(0, 1000)
               .pipe(switchMap(_ => this.chatService.getMessage(this.getAdminChat.value, this.loginuser.accessToken)))
               .subscribe(data => {
-                
+
                 this.messages = data;
-                
-                
+
+
             });
           }
-          
+
         }
       )
       this.chatAdminForm.reset();
@@ -337,31 +337,31 @@ export class ChatComponent implements OnInit {
 
       this.chatService.findChatAdminMerchant(this.checkChatAdminForm.value, this.loginuser.accessToken).subscribe(
         (response) => {
-          console.log(response);
-          
+          // console.log(response);
+
           if(!response){
             this.chatAdminForm.controls['username'].setValue(this.loginuser.userEntity.username);
             this.chatService.addAdminChatMerchant(this.chatAdminForm.value, this.loginuser.accessToken).subscribe(
               (res: Chat) => {
-                console.log(res);
-                
+                // console.log(res);
+
               }
             )
           }else{
             this.getAdminChat.patchValue({
               chat_id : response.id
             })
-            console.log(response);
+            // console.log(response);
             this.realTimeDataSubscription$ = timer(0, 1000)
               .pipe(switchMap(_ => this.chatService.getMessage(this.getAdminChat.value, this.loginuser.accessToken)))
               .subscribe(data => {
-                
+
                 this.messages = data;
-                
-                
+
+
             });
           }
-          
+
         }
       )
       this.chatAdminForm.reset();
@@ -374,18 +374,18 @@ export class ChatComponent implements OnInit {
       sender_id : this.loginuser.userEntity.id,
       user_id : this.loginuser.userEntity.id
     });
-    console.log(this.messageForm.value);
+    // console.log(this.messageForm.value);
     this.chatService.addMessageAdmin(this.messageForm.value, this.loginuser.accessToken).subscribe(
       (data) => {
-        console.log(data);
-        
+        // console.log(data);
+
       }
     )
 
     this.messageForm.patchValue({
       message: null
     })
-    
+
   }
 
 }

@@ -105,7 +105,7 @@ export class DetailOrderComponent implements OnInit {
     this.transactionService.getCateringOrderDetail(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.orderDetailList = data;
 
-      console.log(data);
+      // console.log(data);
 
       if(this.orderDetailList[0].customer_username == null){
         this.orderIsEmpty = true;
@@ -134,7 +134,7 @@ export class DetailOrderComponent implements OnInit {
       flag_cancel: false
     });
 
-    console.log(this.detailOrderForm);
+    // console.log(this.detailOrderForm);
   }
 
   getImageUrl(blob: Blob) {
@@ -156,7 +156,7 @@ export class DetailOrderComponent implements OnInit {
       status = 'Add Note'
     }
 
-    console.log(this.detailOrderForm.value);
+    // console.log(this.detailOrderForm.value);
 
     this.transactionService.updateCustomerOrderDetail(this.detailOrderForm.value, this.loginuser.accessToken).subscribe(
         (response: any) => {
