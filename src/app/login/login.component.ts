@@ -82,7 +82,9 @@ export class LoginComponent implements OnInit {
           if(response.flag == 1){
             this.customerService.findCustomerWithoutToken(this.forgotPasswordForm.value).subscribe(
               (res) => {
-                if(res.is_delete == 0){
+                console.log(res);
+                
+                if(res.is_delete == true){
                   Swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -301,7 +303,7 @@ export class LoginComponent implements OnInit {
           }else if(response.userEntity.flag == 1){
             this.customerService.findCustomerByUsername(user.username, response.accessToken).subscribe(
               (response) => {
-                if(response.is_delete == 0){
+                if(response.is_delete == true){
                   this.router.navigate(['/login']);
                   this.toastr.error('Invalid Username or Password!', 'Login - Failed');
                 }else{
@@ -319,7 +321,9 @@ export class LoginComponent implements OnInit {
           }else if(response.userEntity.flag == 2){
             this.merchantService.getMerchant(user.username, response.accessToken).subscribe(
               (response) => {
-                if((response.is_delete == 0 && response.is_active == 0) || (response.is_delete == 0 && response.is_active == 1)){
+                console.log(response);
+                
+                if(response.is_delete == true || response.is_delete == null){
                   this.router.navigate(['/login']);
                   this.toastr.error('Invalid Username or Password!', 'Login - Failed');
                   // return;

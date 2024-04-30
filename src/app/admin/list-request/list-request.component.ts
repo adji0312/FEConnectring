@@ -232,27 +232,27 @@ export class ListRequestComponent implements OnInit {
   acceptRequest(){
     // console.log(this.requestForm.value);
 
-    // this.userService.acceptRequest(this.requestForm.value, this.loginuser.accessToken).subscribe(
-    //   (response) => {
-    //     console.log(response);
-    //     Swal.fire({
-    //       position: 'center',
-    //       icon: 'success',
-    //       title: 'Success Reset Password',
-    //       showConfirmButton: true,
-    //       timer: 1500
-    //     })
-    //   },
-    //   (error: HttpErrorResponse) => {
-    //     Swal.fire({
-    //       position: 'center',
-    //       icon: 'error',
-    //       title: 'Failed Reset Password',
-    //       showConfirmButton: true,
-    //       timer: 1500
-    //     })
-    //   }
-    // )
+    this.userService.acceptRequest(this.requestForm.value, this.loginuser.accessToken).subscribe(
+      (response) => {
+        console.log(response);
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Success Reset Password',
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Failed Reset Password',
+          showConfirmButton: true,
+          timer: 1500
+        })
+      }
+    )
     let link = 'https://wa.me/' + this.splitnumber + '?text=Your%20request%20has%20been%20successfully%20received,%20please%20log%20in%20to%20the%20application!';
     window.open(link);
     document.getElementById('accept-catering-password')!.click();
@@ -262,27 +262,27 @@ export class ListRequestComponent implements OnInit {
   rejectRequest(){
     // console.log(this.requestForm.value);
 
-    // this.userService.rejectRequest(this.requestForm.value, this.loginuser.accessToken).subscribe(
-    //   (response) => {
-    //     console.log(response);
-    //     Swal.fire({
-    //       position: 'center',
-    //       icon: 'success',
-    //       title: 'Success Reject Request',
-    //       showConfirmButton: true,
-    //       timer: 1500
-    //     })
-    //   },
-    //   (error: HttpErrorResponse) => {
-    //     Swal.fire({
-    //       position: 'center',
-    //       icon: 'error',
-    //       title: 'Failed Reject Request',
-    //       showConfirmButton: true,
-    //       timer: 1500
-    //     })
-    //   }
-    // )
+    this.userService.rejectRequest(this.requestForm.value, this.loginuser.accessToken).subscribe(
+      (response) => {
+        console.log(response);
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Success Reject Request',
+          showConfirmButton: true,
+          timer: 1500
+        })
+      },
+      (error: HttpErrorResponse) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Failed Reject Request',
+          showConfirmButton: true,
+          timer: 1500
+        })
+      }
+    )
     let link = 'https://wa.me/' + this.splitnumber + '?text=Your%20request%20has%20been%20rejected!';
     window.open(link);
     document.getElementById('reject-catering-password')!.click();

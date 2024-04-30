@@ -35,7 +35,7 @@
 
   <div *ngIf="x == 0">
     <div *ngFor="let merch of merchants; index as i">
-      <div *ngIf="merch.is_delete == 0 && merch.is_active == 1" class="card shadow mb-2" style="border: none;">
+      <div class="card shadow mb-2" style="border: none;">
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <div class="d-flex gap-3">
@@ -167,7 +167,7 @@
       </div>
       <div class="modal-footer">
         <button #closeDeleteGroup type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="accept-catering-password"><i class="fas fa-times"></i> Close</button>
-        <button type="submit" class="btn btn-sm" (click)="acceptRequest()" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-times"></i> Reject</button>
+        <button type="submit" class="btn btn-sm" (click)="acceptRequest()" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
       </div>
     </div>
   </div>
