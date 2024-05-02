@@ -112,7 +112,7 @@ export class OrderComponent implements OnInit {
 
     this.transactionService.getCateringOrder(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.cateringOrder = data;
-      // console.log(data);
+      console.log(data);
 
       // console.log(this.cateringOrder);
     });

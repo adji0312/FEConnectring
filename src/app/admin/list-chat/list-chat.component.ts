@@ -60,12 +60,12 @@ export class ListChatComponent implements OnInit {
       .subscribe(data => {
 
         this.chat = data.sort();
-        // console.log(this.chat);
+        console.log(this.chat);
     });
   }
 
   getImageUrl(blob: Blob) {
-    // console.log(blob);
+    console.log(blob);
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }

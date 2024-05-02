@@ -283,7 +283,7 @@ export class AdminDashboardComponent implements OnInit {
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: error.error,
+          title: "Failed Register Merchant",
           showConfirmButton: true,
           timer: 1500
         })

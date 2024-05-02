@@ -73,7 +73,7 @@
                 <td class="align-middle">{{ order.notes }}</td>
                 <td class="align-middle">
                   <button type="button" (click)="updateOrderCheck(order)" *ngIf="checkButton(order.flag_check)"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Check</button>
-                  <button type="button" *ngIf="!checkButton(order.flag_check)" class="btn btn-sm" style="background-color: #b3b3b3; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-check"></i> Checked</button>
+                  <button type="button" *ngIf="!checkButton(order.flag_check)" class="btn btn-sm" style="background-color: #b3b3b3; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Checked</button>
                 </td>
                 <!-- <td class="align-middle"></td> -->
             </tr>
@@ -94,8 +94,8 @@
           Are you sure want to cancel this order?
         </div>
         <div class="modal-footer">
-          <button type="button" #closeCancel class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-sm" (click)="onUpdateOrderDetail('cancel')" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Cancel</button>
+          <button type="button" #closeCancel class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> No</button>
+          <button type="submit" class="btn btn-sm" (click)="onUpdateOrderDetail('cancel')" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Yes</button>
         </div>
       </div>
     </div>
@@ -134,8 +134,8 @@
           Are you sure want to confirmation all order?
         </div>
         <div class="modal-footer">
-          <button type="button" #closeCheckAll class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" (click)="updateAll()"  class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
+          <button type="button" #closeCheckAll class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> No</button>
+          <button type="submit" (click)="updateAll()"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
         </div>
       </div>
     </div>
@@ -159,7 +159,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" #closeFilterDate class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
-          <button type="submit" (click)="searchDate()" class="btn btn-sm" style="background-color: #c5a375; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Filter</button>
+          <button type="submit" (click)="searchDate()" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-calendar-alt"></i> Filter</button>
         </div>
       </div>
     </div>

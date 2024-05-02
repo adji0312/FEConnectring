@@ -134,10 +134,13 @@
               <div style="font-size: 20px;">
                 {{ order.group.group_name }}
               </div>
-              <div *ngFor="let pckg of order.package | order: 'package_header'" class="d-flex flex-column">
-                <div>
-                  <p class="mb-0">{{ pckg.package_name }} : {{ pckg.totalOrder }} Pesanan</p>
+              <div class="d-flex flex-column gap-2 justify-content-between">
+                <div *ngFor="let pckg of order.package | order: 'package_header'" class="d-flex flex-column">
+                  <div>
+                    <p class="mb-0">{{ pckg.package_name }} : {{ pckg.totalOrder }} Pesanan</p>
+                  </div>
                 </div>
+                <p class="mb-0">{{ order.group.address }}, {{ order.group.city }}</p>
               </div>
             </div>
           </div>
@@ -166,8 +169,8 @@
             Are you sure want to accept this Order?
           </div>
           <div class="modal-footer">
-            <button #closeAcceptOrder type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-            <button type="submit" (click)="onUpdateStatus('ACC')" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Accept</button>
+            <button #closeAcceptOrder type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> No</button>
+            <button type="submit" (click)="onUpdateStatus('ACC')" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
           </div>
         </div>
       </div>
@@ -184,8 +187,8 @@
             Are you sure want to reject this Order?
           </div>
           <div class="modal-footer">
-            <button #closeRejectOrder type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
-            <button type="submit" (click)="onUpdateStatus('RJCT')" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Reject</button>
+            <button #closeRejectOrder type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> No</button>
+            <button type="submit" (click)="onUpdateStatus('RJCT')" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-trash-alt"></i> Yes</button>
           </div>
         </div>
       </div>
@@ -202,7 +205,7 @@
             Are you sure want to send this Invoice?
           </div>
           <div class="modal-footer">
-            <button #closeSendInvoice type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> Close</button>
+            <button #closeSendInvoice type="button" class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal" id="delete-merchant-form"><i class="fas fa-times"></i> No</button>
             <button type="submit" (click)="onUpdateStatus('UNPAID')" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
           </div>
         </div>

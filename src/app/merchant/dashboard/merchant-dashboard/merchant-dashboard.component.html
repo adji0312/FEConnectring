@@ -1,10 +1,13 @@
 <app-navbar></app-navbar>
 <div class="m-4 mt-5" style="height: 100vh;">
-  <div class="d-flex gap-3 mb-4">
-    <h2>Report</h2>
-    <div class="d-flex align-items-center gap-2">
-      <a type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#filtermonthyear"><i class="fas fa-filter"></i> Filter Year</a>
+  <div class="d-flex justify-content-between mb-4">
+    <div class="d-flex gap-3">
+      <h2>Report</h2>
+      <div class="d-flex align-items-center gap-2">
+        <a type="button" class="btn btn-sm" style="background-color: #c5a375; color: white;" data-bs-toggle="modal" data-bs-target="#filtermonthyear"><i class="fas fa-filter"></i> Filter Year</a>
+      </div>
     </div>
+    <h4>Grand Total : Rp {{ grandTotal | number }}</h4>
   </div>
 
   <div>

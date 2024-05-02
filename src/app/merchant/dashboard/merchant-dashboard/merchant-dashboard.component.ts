@@ -19,6 +19,8 @@ export class MerchantDashboardComponent implements OnInit {
 
   transactionRpt!: TransactionReport[];
   yearList: string[] = [];
+  grandTotal!: any;
+  // let grandTotal
 
   constructor(
     private transactionService: TransactionService,
@@ -28,17 +30,22 @@ export class MerchantDashboardComponent implements OnInit {
   ngOnInit(): void {
 
     this.loginuser = JSON.parse(localStorage.getItem('currentUser') as string);
-
+    // this.grandTotal = 0;
     this.reportForm = this.formBuilder.group({
       merchant_name: this.loginuser.userEntity.username,
       order_date: new FormControl()
     });
-
     this.transactionService.getMerchantReportByMonth(this.reportForm.value, this.loginuser.accessToken).subscribe(data => {
       this.transactionRpt = data;
+      // console.log(this.transactionRpt);
+      let total = 0;
+      for(let i = 0 ; i < data.length ; i ++){
+        total += data[i].totalPrice;
+        this.grandTotal = total;
+      }
     });
-
-
+    // console.log(this.grandTotal);
+    
     this.getLast10Years();
   }
 
@@ -63,6 +70,12 @@ export class MerchantDashboardComponent implements OnInit {
   filterYear(){
     this.transactionService.getMerchantReportByMonth(this.reportForm.value, this.loginuser.accessToken).subscribe(data => {
       this.transactionRpt = data;
+      console.log(this.transactionRpt);
+      let total = 0;
+      for(let i = 0 ; i < data.length ; i ++){
+        total += data[i].totalPrice;
+        this.grandTotal = total;
+      }
     });
 
     this.closeFilterModal();

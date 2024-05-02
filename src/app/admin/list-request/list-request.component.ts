@@ -81,8 +81,28 @@ export class ListRequestComponent implements OnInit {
     this.realTimeDataSubscription$ = timer(0, 1000)
       .pipe(switchMap(_ => this.userService.allUsers(this.loginuser.accessToken)))
       .subscribe(data => {
-        // console.log(data);
         this.users = data.sort();
+        // console.log(this.users);
+        
+        for(let i = 0 ; i < data.length ; i++){
+          // console.log(data[i].flag);
+          if(data[i].flag == 0 || data[i].is_request == null){
+            continue;
+          }
+
+          if(data[i].flag == 1){
+            this.customerService.findCustomerByUsername(data[i].username, this.loginuser.accessToken).subscribe(
+              (resp) => {
+                // console.log(resp);
+                // this.users = resp;
+                // console.log(this.users);
+                
+              }
+            )
+          }else{
+
+          }
+        }
       })
   }
 
