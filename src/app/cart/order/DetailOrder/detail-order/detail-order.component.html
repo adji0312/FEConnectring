@@ -29,7 +29,16 @@
                 <td class="align-middle"><img [src]="getImageUrl(package.package_id.food_img)" alt="" style="width: 300px; border-radius: 10px;"></td>
                 <td class="align-middle">Rp {{ package.package_id.price | number }}</td>
                 <td class="align-middle"><p *ngIf="package.notes != null">{{ package.notes }}</p><button *ngIf="checkStatus()" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #40679E; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#takeNotes"><i class="fas fa-sticky-note"></i> Take Notes</button></td>
-                <td class="align-middle"><p *ngIf="package.flag_cancel">Canceled</p><button *ngIf="checkStatus() && package.flag_cancel == null" (click)="updateOrderDetail(package.package_id)" type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#cancelOrder"><i class="fas fa-times-circle"></i> Cancel</button></td>
+                <td class="align-middle">
+                  <div>
+                    <p *ngIf="package.flag_cancel && package.flag_check == null">Canceled</p>
+                    <button *ngIf="checkStatus() && package.flag_cancel == null && package.flag_check == null" (click)="updateOrderDetail(package.package_id)" [disabled]="!(package.value_date < currentDate)" type="button" class="btn btn-sm" style="background-color: #D24545; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#cancelOrder"><i class="fas fa-times-circle"></i> Cancel</button>
+                  </div>
+                  <div *ngIf="!(package.value_date < currentDate)">
+                    <p *ngIf="package.flag_check == 1">Prepared</p>
+                    <p *ngIf="package.flag_check == 0">Delivered</p>
+                  </div>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -49,6 +58,9 @@
         <h5 *ngIf="orderDetailList" class="align-middle d-flex flex-column justify-content-center">{{ orderDetailList[0].order_date | date: 'dd MMMM yyyy' }}</h5>
         <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#filterDate"><i class="fas fa-calendar-alt"></i> Filter Date</button></td>
         <td class="align-middle"><button type="button" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#checkAll"><i class="fas fa-check"></i> Check All</button></td>
+        <div *ngIf="isToday(orderDate)">
+          <td class="align-middle"><button type="button" [disabled]="orderDetailList[0].flag_check == null" class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;" data-bs-toggle="modal" data-bs-target="#deliverAll"><i class="fas fa-check"></i> Deliver</button></td>
+        </div>
       </div>
     </div>
 
@@ -72,8 +84,9 @@
                 <td class="align-middle">{{ order.food_names }}</td>
                 <td class="align-middle">{{ order.notes }}</td>
                 <td class="align-middle">
-                  <button type="button" (click)="updateOrderCheck(order)" *ngIf="checkButton(order.flag_check)"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Check</button>
-                  <button type="button" *ngIf="!checkButton(order.flag_check)" class="btn btn-sm" style="background-color: #b3b3b3; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Checked</button>
+                  <button type="button" (click)="updateOrderCheck(order)" *ngIf="order.flag_check == null"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Check</button>
+                  <button type="button" *ngIf="order.flag_check == true" class="btn btn-sm" style="background-color: #b3b3b3; border-radius: 7px; width: 100%; color: white;"><i class="fas fa-check"></i> Checked</button>
+                  <p type="button" *ngIf="order.flag_check == false">Delivered</p>
                 </td>
                 <!-- <td class="align-middle"></td> -->
             </tr>
@@ -82,7 +95,7 @@
     </div>
 </div>
 
-<!-- modal delete group -->
+<!-- modal cancel order -->
 <div class="modal fade" id="cancelOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -139,6 +152,24 @@
         </div>
       </div>
     </div>
+</div>
+
+<div class="modal fade" id="deliverAll" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Deliver All Order</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure want to deliver all order?
+      </div>
+      <div class="modal-footer">
+        <button type="button" #closeDeliverAll class="btn btn-sm" style="background-color: #b4b4b4; border-radius: 7px; width: 88px; color: white;" data-bs-dismiss="modal"><i class="fas fa-times"></i> No</button>
+        <button type="submit" (click)="updateAll()"  class="btn btn-sm" style="background-color: #9DBC98; border-radius: 7px; width: 88px; color: white;"><i class="fas fa-check"></i> Yes</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- modal filter date -->

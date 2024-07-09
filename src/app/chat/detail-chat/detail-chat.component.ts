@@ -53,16 +53,6 @@ export class DetailChatComponent implements OnInit {
     this.viewChat = this.chatService.viewChat;
     this.customer = this.customerService.customer;
 
-    // console.log(this.loginuser);
-
-    // console.log(this.catering);
-    // console.log(this.customer);
-
-    // console.log(this.viewChat);
-
-
-
-    // console.log(this.loginuser);
 
     // CUSTOMER
     if(this.loginuser.userEntity.flag == 1){

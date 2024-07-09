@@ -22,6 +22,7 @@ export class DetailOrderComponent implements OnInit {
   @ViewChild('closeCancel') closeCancel: ElementRef | undefined;
   @ViewChild('closeFilterDate') closeFilterDate: ElementRef | undefined;
   @ViewChild('closeCheckAll') closeCheckAll: ElementRef | undefined;
+  @ViewChild('closeDeliverAll') closeDeliverAll: ElementRef | undefined;
 
   selectedOrder!: Transaction;
   selectedGroup!: Group;
@@ -32,6 +33,9 @@ export class DetailOrderComponent implements OnInit {
 
   detailOrderForm!: FormGroup;
   orderForm!: FormGroup;
+
+  currentDate: Date = new Date();
+  orderDate: Date = new Date();
 
   public loginuser: any = {};
 
@@ -107,6 +111,8 @@ export class DetailOrderComponent implements OnInit {
 
       // console.log(data);
 
+      this.orderDate = new Date(this.orderDetailList[0].order_date);
+
       if(this.orderDetailList[0].customer_username == null){
         this.orderIsEmpty = true;
       }else{
@@ -141,6 +147,13 @@ export class DetailOrderComponent implements OnInit {
     // console.log(blob);
     let objectURL = 'data:image/jpeg;base64,' + blob;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
+
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+           date.getMonth() === today.getMonth() &&
+           date.getFullYear() === today.getFullYear();
   }
 
   onUpdateOrderDetail(mode: string){
@@ -223,6 +236,7 @@ export class DetailOrderComponent implements OnInit {
     this.transactionService.updateOrderCheck(this.orderForm.value, this.loginuser.accessToken).subscribe(data => {
       this.initData();
       this.closeCheckAllModal();
+      this.closeDeliverAllModal();
     });
   }
 
@@ -247,6 +261,12 @@ export class DetailOrderComponent implements OnInit {
   closeCheckAllModal(){
     if(this.closeCheckAll){
       this.closeCheckAll.nativeElement.click();
+    }
+  }
+
+  closeDeliverAllModal(){
+    if(this.closeDeliverAll){
+      this.closeDeliverAll.nativeElement.click();
     }
   }
 
