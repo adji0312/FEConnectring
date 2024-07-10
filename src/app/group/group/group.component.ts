@@ -63,10 +63,25 @@ export class GroupComponent implements OnInit {
 
     // console.log(this.groupForm);
 
-    this.realTimeDataSubscription$ = timer(0, 1000)
-      .pipe(
-        switchMap(_ => this.groupService.findGroup(this.groupForm.value, this.loginuser.accessToken)))
-      .subscribe(data => {
+    // this.realTimeDataSubscription$ = timer(0, 1000)
+    //   .pipe(
+    //     switchMap(_ => this.groupService.findGroup(this.groupForm.value, this.loginuser.accessToken)))
+    //   .subscribe(data => {
+
+    //   this.findGroup = data;
+
+    //   if(this.findGroup){
+    //     this.groupForm.patchValue({
+    //       group_name: this.findGroup.group_name,
+    //       address: this.findGroup.address,
+    //       city: this.findGroup.city,
+    //       postal_code: this.findGroup.postal_code,
+    //       owner:  this.findGroup.owner
+    //     });
+    //   }
+    // });
+
+    this.groupService.findGroup(this.groupForm.value, this.loginuser.accessToken).subscribe(data => {
 
       this.findGroup = data;
 
