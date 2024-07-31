@@ -33,7 +33,6 @@ export class DetailOrderComponent implements OnInit {
 
   detailOrderForm!: FormGroup;
   orderForm!: FormGroup;
-
   currentDate: Date = new Date();
   orderDate: Date = new Date();
 
@@ -121,6 +120,32 @@ export class DetailOrderComponent implements OnInit {
     });
   }
 
+  normalizeDate(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  checkDate(i: number): boolean {
+    let packageValueDate = new Date(this.packageList[i].package_id.value_date);
+
+    // Log the package value date to check if it is valid
+    console.log('Package Value Date:', packageValueDate);
+
+    if (isNaN(packageValueDate.getTime())) {
+      // Try to correct the date format if it's invalid
+      const correctedDateString = this.packageList[i].package_id.value_date.replace(/^1/, '');
+      packageValueDate = new Date(correctedDateString);
+
+      if (isNaN(packageValueDate.getTime())) {
+        console.error('Invalid date format for package.value_date');
+        return false;
+      }
+    }
+
+    const normalizedPackageDate = this.normalizeDate(packageValueDate);
+    const normalizedCurrentDate = this.normalizeDate(this.currentDate);
+
+    return normalizedPackageDate <= normalizedCurrentDate;
+  }
 
   goBack(){
     this._location.back();
@@ -154,6 +179,21 @@ export class DetailOrderComponent implements OnInit {
     return date.getDate() === today.getDate() &&
            date.getMonth() === today.getMonth() &&
            date.getFullYear() === today.getFullYear();
+  }
+
+  isCheckedAll(): boolean {
+
+    let allTrue = true;
+
+    this.orderDetailList.forEach(order => {
+      if (order.flag_check == null) {
+        allTrue = false;
+      }
+    });
+
+    return allTrue;
+
+    // return this.orderDetailList[this.orderDetailList.length - 1].flag_check;
   }
 
   onUpdateOrderDetail(mode: string){
